@@ -30,4 +30,6 @@ def concatDf(dfList):
 def to_percentage_with_one_decimal(num):
     return f'{num * 100:.1f}%'
 
+# def tableList()
+
 todayPrice=baseDfTrans(pbr)[todayPriceColumn]

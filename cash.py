@@ -11,8 +11,21 @@ shareDf=concatDf([todayPrice,lastCash,avgCash,countCash,avgDividendRatio])
 
 def cashShareDf(shareDf):
     shareDf[cashDict['latestYield']]=shareDf.iloc[:,1]/shareDf[commonDict['price']]
-    shareDf[cashDict['avgYield']]=shareDf.iloc[:,2]/shareDf[commonDict['price']]
+    # shareDf[cashDict['avgYield']]=shareDf.iloc[:,2]/shareDf[commonDict['price']]
+    shareDf[cashDict['avgYield']]=shareDf[cashDict['avgDividend']] /shareDf[commonDict['price']]
+    shareDf[commonDict['priceGoal']]=shareDf[cashDict['avgDividend']]/0.05
+    shareDf[commonDict['expectEarn']]=shareDf[commonDict['priceGoal']]/shareDf[commonDict['price']]-1
     return shareDf
+
+def cashTable(shareDf,columnList,filterFunction,sortValue):
+    columns=dictList(cashDict,columnList)
+    cashShareData=cashShareDf(shareDf)
+    filterCondition=filterFunction(cashShareData)
+    filterDf=shareDf[filterCondition]
+    filterDf=filterDf[columns]
+    filterDf=filterDf.sort_values(by=cashDict[sortValue],ascending=False)
+    return filterDf.applymap(to_percentage_with_one_decimal)
+
 
 # 凡人說存股策略
 # 近一年股息殖利率大於５％
@@ -20,14 +33,19 @@ def cashShareDf(shareDf):
 # 連續５年發放股利
 # 股息發放率五年平均大於50%
 def starkFilter(cashShareDf):
-    return (cashShareDf[cashDict['latestYield']]>0.05)&(cashShareDf[cashDict['avgYield']]>0.05)&(cashShareDf[cashDict['cashCount']]==5)&(cashShareDf[cashDict['avgDividendRatio']])
+    return (cashShareDf[cashDict['latestYield']]>0.05)&(cashShareDf[cashDict['avgYield']]>0.05)&(cashShareDf[cashDict['cashCount']]==5)&(cashShareDf[cashDict['avgDividendRatio']]>50)
 
 def starkCash(shareDf):
-    starkColumn=dictList(cashDict, starkList)
-    cashShareData=cashShareDf(shareDf)
-    filterCondition=starkFilter(cashShareData)
-    filterDf=shareDf[filterCondition]
-    filterDf= filterDf[starkColumn]
-    filterDf= filterDf.sort_values(by=cashDict['avgYield'], ascending=False)
-    return filterDf.applymap(to_percentage_with_one_decimal)
+    return cashTable(shareDf,starkList,starkFilter,'avgYield')
     
+# 慶龍存股策略
+# 選擇進５年 年年都配息的股票
+# 以近５年現金股利的平均值 來計算殖利率
+# 當現金殖利率來到７％時買進
+# 當現金來到５％時賣出
+def longFilter(cashShareDf):
+    return cashShareDf[cashDict['avgYield']]>0.07
+
+def longCash(shareDf):
+    return cashTable(shareDf,longLIst,longFilter,'expectEarn')
+
