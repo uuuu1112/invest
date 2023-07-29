@@ -21,6 +21,7 @@ keyList=[commonDict['dataId'],commonDict['dataName']]
 todayPriceColumn=[commonDict['price']]
 starkList=['latestYield','avgYield']
 longLIst=['latestYield','avgYield','expectEarn']
+beTrueCashList=['latestYield','avgYield','expectEarn']
 
 def dictList(dict,keyList):
     return [dict[key] for key in keyList]

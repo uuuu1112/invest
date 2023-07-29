@@ -1,14 +1,10 @@
-import pandas as pd
 from commonWord import *
+from baseDf import *
 
 pbr=pd.read_csv('goodinfo/pbr.csv')
 
 
 
-def baseDfTrans(df):
-    df=df.replace(removeStr,'',regex=True)
-    df=df.set_index(keyList)
-    return df
 
 def lastNMeans(df,columnStr=commonDict['latestAvg'],n=5):
     df=baseDfTrans(df)
@@ -24,12 +20,8 @@ def countConditionNum(df,columnStr=commonDict['conditionCount'],compareBase=0,bi
     df[columnStr]=values_count
     return df[columnStr]
 
-def concatDf(dfList):
-    return pd.concat(dfList,axis=1)
-
 def to_percentage_with_one_decimal(num):
     return f'{num * 100:.1f}%'
 
-# def tableList()
 
 todayPrice=baseDfTrans(pbr)[todayPriceColumn]
