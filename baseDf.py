@@ -15,3 +15,6 @@ def shareTable(shareData,columns,filterFunction,sortValue):
     filterDf=filterDf[columns]
     filterDf=filterDf.sort_values(by=sortValue,ascending=False)
     return filterDf
+
+def dictList(dict,keyList):
+    return [dict[key] for key in keyList]

@@ -7,7 +7,7 @@ avgDividendRatio=lastNMeans(dividendRatio,cashDict['avgDividendRatio'])
 avgCash=lastNMeans(cash,cashDict['avgDividend'])
 countCash=countConditionNum(cash,cashDict['cashCount'])
 lastCash=baseDfTrans(cash).iloc[:,-1]
-shareDf=concatDf([todayPrice,lastCash,avgCash,countCash,avgDividendRatio])
+cashShareBaseDf=concatDf([todayPrice,lastCash,avgCash,countCash,avgDividendRatio])
 
 def cashShareDf(shareDf):
     shareDf[cashDict['latestYield']]=shareDf.iloc[:,1]/shareDf[commonDict['price']]

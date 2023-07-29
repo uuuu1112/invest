@@ -17,12 +17,11 @@ cashDict={
 }
 
 removeStr=[',','=','"']
-keyList=[commonDict['dataId'],commonDict['dataName']]
-todayPriceColumn=[commonDict['price']]
+keyList=['代號','名稱']
+todayPriceColumn=['成交']
 starkList=['latestYield','avgYield']
 longLIst=['latestYield','avgYield','expectEarn']
-beTrueCashList=['latestYield','avgYield','expectEarn']
+beTrueCashList=['avgYield','latestYield','expectEarn']
 
-def dictList(dict,keyList):
-    return [dict[key] for key in keyList]
+
 
