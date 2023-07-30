@@ -1,4 +1,4 @@
-from goodinfodata import *
+from base import *
 
 cash=pd.read_csv('goodinfo/year/cash.csv')
 dividendRatio=pd.read_csv('goodinfo/year/dividendRatio.csv')
@@ -7,7 +7,8 @@ avgDividendRatio=lastNMeans(dividendRatio,cashDict['avgDividendRatio'])
 avgCash=lastNMeans(cash,cashDict['avgDividend'])
 countCash=countConditionNum(cash,cashDict['cashCount'])
 lastCash=baseDfTrans(cash).iloc[:,-1]
-cashShareBaseDf=concatDf([todayPrice,lastCash,avgCash,countCash,avgDividendRatio])
+cagrTrends=cagrTrend(cash)
+cashShareBaseDf=concatDf([todayPrice,lastCash,avgCash,countCash,avgDividendRatio,cagrTrends])
 
 def cashShareDf(shareDf):
     shareDf[cashDict['latestYield']]=shareDf.iloc[:,1]/shareDf[commonDict['price']]

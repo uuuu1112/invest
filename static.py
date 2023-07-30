@@ -1,10 +1,4 @@
-from commonWord import *
-from baseDf import *
-
-pbr=pd.read_csv('goodinfo/pbr.csv')
-
-
-
+from cagr import *
 
 def lastNMeans(df,columnStr=commonDict['latestAvg'],n=5):
     df=baseDfTrans(df)
@@ -22,6 +16,3 @@ def countConditionNum(df,columnStr=commonDict['conditionCount'],compareBase=0,bi
 
 def to_percentage_with_one_decimal(num):
     return f'{num * 100:.1f}%'
-
-
-todayPrice=baseDfTrans(pbr)[todayPriceColumn]
