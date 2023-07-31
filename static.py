@@ -1,4 +1,5 @@
 from cagr import *
+from dcf import *
 
 def lastNMeans(df,columnStr=commonDict['latestAvg'],n=5):
     df=baseDfTrans(df)
