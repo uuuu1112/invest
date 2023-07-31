@@ -19,3 +19,8 @@ def discountValue(epsList,discountRate=0.1,gdpGrowth=0.02):
     outOf10Dis=epsList[-1]*(1+gdpGrowth)/(discountRate-gdpGrowth)/((1+discountRate)**10)
     epsDiscount=epsDiscount+outOf10Dis
     return epsDiscount
+
+def dcfEstimate(eps,startGrowth,normalGrowth=0.02,discountRate=0.1,gdpGrowth=0.02):
+    epsList=futureEpsList(eps,startGrowth,normalGrowth)
+    listDiscountValue=discountValue(epsList,discountRate,gdpGrowth)
+    return listDiscountValue
