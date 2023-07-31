@@ -15,6 +15,7 @@ def cashShareDf(shareDf):
     shareDf[cashDict['avgYield']]=shareDf[cashDict['avgDividend']] /shareDf[commonDict['price']]
     shareDf[commonDict['priceGoal']]=shareDf[cashDict['avgDividend']]/0.05
     shareDf[commonDict['expectEarn']]=shareDf[commonDict['priceGoal']]/shareDf[commonDict['price']]-1
+    shareDf[cashDict['dcf5expectEarn']]=dcfEstimate(shareDf.iloc[:,1],shareDf[cashDict['cagr5']])/shareDf[commonDict['price']]-1
     return shareDf
 
 def cashTable(shareDf,columnList,filterFunction,sortKey):

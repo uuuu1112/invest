@@ -18,6 +18,7 @@ cashDict={
     'cagr10':'10年CAGR',
     'cagr5':'5年CAGR',
     'cagr3':'3年CAGR',
+    'dcf5expectEarn':'5年DCF預期報酬率',
 }
 
 removeStr=[',','=','"']
@@ -25,7 +26,7 @@ keyList=['代號','名稱']
 todayPriceColumn=['成交']
 starkList=['latestYield','avgYield']
 longLIst=['latestYield','avgYield','expectEarn']
-beTrueCashList=['avgYield','latestYield','cagr10','cagr5','cagr3','expectEarn']
+beTrueCashList=['avgYield','latestYield','cagr10','cagr5','cagr3','expectEarn','dcf5expectEarn']
 
 
 
