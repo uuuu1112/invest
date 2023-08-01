@@ -11,11 +11,12 @@ cagrTrends=cagrTrend(cash)
 cashShareBaseDf=concatDf([todayPrice,lastCash,avgCash,countCash,avgDividendRatio,cagrTrends])
 
 def cashShareDf(shareDf):
+    shareDf[cashDict['cagrMin']]=shareDf[[cashDict['cagr5'],cashDict['cagr3']]].min(axis=1)
     shareDf[cashDict['latestYield']]=shareDf.iloc[:,1]/shareDf[commonDict['price']]
     shareDf[cashDict['avgYield']]=shareDf[cashDict['avgDividend']] /shareDf[commonDict['price']]
     shareDf[commonDict['priceGoal']]=shareDf[cashDict['avgDividend']]/0.05
     shareDf[commonDict['expectEarn']]=shareDf[commonDict['priceGoal']]/shareDf[commonDict['price']]-1
-    shareDf[cashDict['dcf5expectEarn']]=dcfEstimate(shareDf.iloc[:,1],shareDf[cashDict['cagr5']])/shareDf[commonDict['price']]-1
+    shareDf[cashDict['dcfexpectEarn']]=dcfEstimate(shareDf.iloc[:,1],shareDf[cashDict['cagrMin']])/shareDf[commonDict['price']]-1
     return shareDf
 
 def cashTable(shareDf,columnList,filterFunction,sortKey):
