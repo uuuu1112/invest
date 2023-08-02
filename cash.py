@@ -8,6 +8,7 @@ avgCash=lastNMeans(cash,cashDict['avgDividend'])
 countCash=countConditionNum(cash,cashDict['cashCount'])
 lastCash=baseDfTrans(cash).iloc[:,-1]
 cagrTrends=cagrTrend(cash)
+# 這是主要的df
 cashShareBaseDf=concatDf([todayPrice,lastCash,avgCash,countCash,avgDividendRatio,cagrTrends])
 
 def cashShareDf(shareDf):
@@ -55,7 +56,7 @@ def longCash(shareDf):
 # 連續５年發放股利
 # 股息發放率五年平均大於50%
 # 以近５年現金股利的平均值 來計算殖利率
-# 當現金殖利率來到７％時買進
 # 當現金來到５％時賣出
+# 依股息成長率估的報酬率
 def beTrueCash(shareDf):
     return cashTable(shareDf,beTrueCashList,starkFilter,'expectEarn')

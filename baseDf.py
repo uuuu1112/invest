@@ -7,6 +7,18 @@ def baseDfTrans(df):
     df=df.set_index(keyList)
     return df
 
+# 定義一個函數來處理欄位名稱的轉換
+def replace_column_names(column_name,transList=transList,transWord='M'):
+    columnName=column_name
+    for word in transList:
+        columnName=columnName.replace(word,transWord)
+    return columnName
+
+def revenueDfTrans(df):
+    df=baseDfTrans(df)
+    df.columns = df.columns.map(replace_column_names)
+    return df.apply(pd.to_numeric, errors='coerce')
+
 def concatDf(dfList):
     return pd.concat(dfList,axis=1)
 

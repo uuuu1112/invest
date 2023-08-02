@@ -21,13 +21,24 @@ cashDict={
     'dcfexpectEarn':'DCF預期報酬率',
     'cagrMin':'股息年成長率'
 }
+lynchDict={
+    'revenueGrowthOver30':'營收年增率超過30%',
+    'epsOver0':'eps大於0次數',
+    'expectEarn':commonDict['expectEarn'],
+    'per':'PER',
+}
 
 removeStr=[',','=','"']
 keyList=['代號','名稱']
 todayPriceColumn=['成交']
+todayPricePerColumn=['成交','PER']
+transList=['21M','22M','23M']
+
 starkList=['latestYield','avgYield']
 longLIst=['latestYield','avgYield','expectEarn']
 beTrueCashList=['avgYield','latestYield','cagr10','cagr5','cagr3','expectEarn','dcfexpectEarn']
+
+lynchList=['expectEarn','per']
 
 
 
