@@ -26,6 +26,7 @@ lynchDict={
     'epsOver0':'eps大於0次數',
     'expectEarn':commonDict['expectEarn'],
     'per':'PER',
+    'price':commonDict['price']
 }
 
 removeStr=[',','=','"']
@@ -38,7 +39,7 @@ starkList=['latestYield','avgYield']
 longLIst=['latestYield','avgYield','expectEarn']
 beTrueCashList=['avgYield','latestYield','cagr10','cagr5','cagr3','expectEarn','dcfexpectEarn']
 
-lynchList=['expectEarn','per']
+lynchList=['expectEarn']
 
 
 

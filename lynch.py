@@ -11,7 +11,7 @@ revenueGrowthCount=revenueGrowth(month,monthBefore)
 lynchShareBaseDf=concatDf([todayPER,epsPositiveCount,revenueGrowthCount])
 
 def lynchShareDf(shareDf):
-    shareDf[commonDict['expectEarn']]=(15/shareDf[todayPricePerColumn[0]]/shareDf[todayPricePerColumn[1]])-1
+    shareDf[commonDict['expectEarn']]=15/shareDf[todayPricePerColumn[1]]-1
     return shareDf
 
 def lynchTable(shareDf,columnList,filterFunction,sortKey):
@@ -19,7 +19,7 @@ def lynchTable(shareDf,columnList,filterFunction,sortKey):
     lynchShareData=lynchShareDf(shareDf)
     sortValue=lynchDict[sortKey]
     lynchTable=shareTable(lynchShareData,columns,filterFunction,sortValue)
-    return lynchTable
+    return lynchTable.applymap(to_percentage_with_one_decimal)
 
 # 慶龍林區成長股策略
 # 近3個月營收年增率都大於30%
