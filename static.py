@@ -22,10 +22,19 @@ def countConditionNum(df,columnStr=commonDict['conditionCount'],compareBase=0,bi
 def to_percentage_with_one_decimal(num):
     return f'{num * 100:.1f}%'
 
-def revenueGrowth(month,monthBefore,columnStr=lynchDict['revenueGrowthOver30']):
+def revenueGrowthResult(month,monthBefore):
     revenue=revenueDfTrans(month)
     revenueBefore=revenueDfTrans(monthBefore)
     result=revenue/revenueBefore-1
     result=result.iloc[:, :-2]
+    return result
+
+def revenueGrowthNum(month,monthBefore,columnStr):
+    result=revenueGrowthResult(month,monthBefore)
     result=countCondition(result,columnStr)
     return result
+
+def revenueGrowthMin(month,monthBefore,columnStr,n=3):
+    result=revenueGrowthResult(month,monthBefore)
+    result[columnStr]=result.iloc[:,-n:].min(axis=1)
+    return result[columnStr]

@@ -1,4 +1,7 @@
 from static import *
 
 pbr=pd.read_csv('goodinfo/pbr.csv')
-todayPrice=baseDfTrans(pbr)[todayPriceColumn]
+baseInfo=pd.read_csv('goodinfo/baseInfo.csv')
+
+todayPrice=baseDfTrans(pbr)[commonDict['price']]
+industry=baseDfTrans(baseInfo)[commonDict['industry']]

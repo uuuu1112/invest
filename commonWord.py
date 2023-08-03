@@ -6,7 +6,8 @@ commonDict={
     'price':'成交',
     'priceGoal':'目標價',
     'expectEarn':'預期報酬率',
-    'cagr':'年CAGR'
+    'cagr':'年CAGR',
+    'industry':'產業別'
 }
 cashDict={
     'avgDividendRatio':'平均股息發放率',
@@ -26,12 +27,14 @@ lynchDict={
     'epsOver0':'eps大於0次數',
     'expectEarn':commonDict['expectEarn'],
     'per':'PER',
-    'price':commonDict['price']
+    'price':commonDict['price'],
+    'industry':commonDict['industry'],
+    'minGrowth':'最小年增率',
+    'expectGrowthEarn':'預期成長估值報酬率'
 }
 
 removeStr=[',','=','"']
 keyList=['代號','名稱']
-todayPriceColumn=['成交']
 todayPricePerColumn=['成交','PER']
 transList=['21M','22M','23M']
 
@@ -40,6 +43,7 @@ longLIst=['latestYield','avgYield','expectEarn']
 beTrueCashList=['avgYield','latestYield','cagr10','cagr5','cagr3','expectEarn','dcfexpectEarn']
 
 lynchList=['expectEarn']
+beTrueGrowthList=['expectGrowthEarn']
 
 
 
