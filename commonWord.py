@@ -30,12 +30,16 @@ lynchDict={
     'price':commonDict['price'],
     'industry':commonDict['industry'],
     'minGrowth':'最小年增率',
-    'expectGrowthEarn':'預期成長估值報酬率'
+    'expectGrowthEarn':'預期成長估值報酬率',
+    'innerGrowthEarn':'內部成長估值報酬率',
+    'dividendRatio':'盈餘配發率',
+    'priceGoal':commonDict['priceGoal']
 }
 
 removeStr=[',','=','"']
 keyList=['代號','名稱']
 todayPricePerColumn=['成交','PER']
+roeEpsList=['ROE(%)','EPS(元)']
 transList=['21M','22M','23M']
 
 starkList=['latestYield','avgYield']
@@ -44,6 +48,7 @@ beTrueCashList=['avgYield','latestYield','cagr10','cagr5','cagr3','expectEarn','
 
 lynchList=['expectEarn']
 beTrueGrowthList=['expectGrowthEarn']
+buffettList=['innerGrowthEarn']
 
 
 
