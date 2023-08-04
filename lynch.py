@@ -43,6 +43,10 @@ def lynchFilter(lynchShareDf):
 def lynchGrowth(shareDf):
     return lynchTable(shareDf,lynchList,lynchFilter,'expectEarn')
 
+# 林區巴菲特選股
+# 近4季ROE在20%以上
+# 近4季EPS本益比在10以下(沒設)
+# 近4季皆有獲利
 def buffettFilter(lynchShareDf):
     return (lynchShareDf[roeEpsList[0]]>20)&(lynchShareDf[lynchDict['epsOver0']]==4)
 
