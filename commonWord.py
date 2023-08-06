@@ -35,10 +35,18 @@ lynchDict={
     'dividendRatio':'盈餘配發率',
     'priceGoal':commonDict['priceGoal']
 }
+balaceDict={
+    'debt':'負債總額(%)',
+    'stock':'存貨(%)',
+    'receive':'應收帳款(%)',
+    'invest':'投資(%)',
+    'liquidationValue':'清算價值'
+}
 
 removeStr=[',','=','"']
 keyList=['代號','名稱']
 todayPricePerColumn=['成交','PER']
+todayPricePbrColumn=['成交','PBR']
 roeEpsList=['ROE(%)','EPS(元)']
 transList=['21M','22M','23M']
 
@@ -49,6 +57,8 @@ beTrueCashList=['avgYield','latestYield','cagr10','cagr5','cagr3','expectEarn','
 lynchList=['expectEarn']
 beTrueGrowthList=['expectGrowthEarn']
 buffettList=['innerGrowthEarn']
+
+deductList=['debt','stock','receive','invest']
 
 
 
