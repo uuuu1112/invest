@@ -40,13 +40,14 @@ balaceDict={
     'stock':'存貨(%)',
     'receive':'應收帳款(%)',
     'invest':'投資(%)',
-    'liquidationValue':'清算價值'
+    'liquidationValue':'清算價值',
+    'liquidEarn':'清算價值報酬率'
 }
 
 removeStr=[',','=','"']
 keyList=['代號','名稱']
 todayPricePerColumn=['成交','PER']
-todayPricePbrColumn=['成交','PBR']
+todayPricePbrColumn=['成交','PBR','PER']
 roeEpsList=['ROE(%)','EPS(元)']
 transList=['21M','22M','23M']
 
@@ -59,6 +60,7 @@ beTrueGrowthList=['expectGrowthEarn']
 buffettList=['innerGrowthEarn']
 
 deductList=['debt','stock','receive','invest']
+liquidationModelList=['liquidEarn']
 
 
 
