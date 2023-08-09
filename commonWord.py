@@ -19,7 +19,7 @@ cashDict={
     'cagr10':'10年CAGR',
     'cagr5':'5年CAGR',
     'cagr3':'3年CAGR',
-    'dcfexpectEarn':'DCF預期報酬率',
+    # 'dcfexpectEarn':'DCF預期報酬率',
     'cagrMin':'股息年成長率'
 }
 lynchDict={
@@ -53,7 +53,7 @@ transList=['21M','22M','23M']
 
 starkList=['latestYield','avgYield']
 longLIst=['latestYield','avgYield','expectEarn']
-beTrueCashList=['avgYield','latestYield','cagr10','cagr5','cagr3','expectEarn','dcfexpectEarn']
+beTrueCashList=['avgYield','latestYield','cagr10','cagr5','cagr3','expectEarn']
 
 lynchList=['expectEarn']
 beTrueGrowthList=['expectGrowthEarn']

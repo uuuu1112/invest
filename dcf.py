@@ -1,13 +1,18 @@
 from baseDf import *
 
 # 做出未來10年的EPS列表
-def futureEpsList(eps,startGrowth,normalGrowth=0.02):
+def futureEpsList(eps,startGrowth,n=5,halfGrowthRatio=1,normalGrowth=0.02):
     epsNow=eps
     epsList=[]
-    for i in range(5):
+    growhNow=startGrowth
+    for i in range(n):
         epsNow=epsNow*(1+startGrowth)
         epsList.append(epsNow)
-    for j in range(5):
+    for j in range(5-n):
+        growhNow=growhNow*halfGrowthRatio
+        epsNow=epsNow*(1+growhNow)
+        epsList.append(epsNow)
+    for k in range(5):
         epsNow=epsNow*(1+normalGrowth)
         epsList.append(epsNow)
     return epsList
@@ -22,7 +27,7 @@ def discountValue(epsList,discountRate=0.1,gdpGrowth=0.02):
     return epsDiscount
 
 # 給EPS和成長率做折現估值
-def dcfEstimate(eps,startGrowth,normalGrowth=0.02,discountRate=0.1,gdpGrowth=0.02):
-    epsList=futureEpsList(eps,startGrowth,normalGrowth)
+def dcfEstimate(eps,startGrowth,n=5,halfGrowthRatio=1,normalGrowth=0.02,discountRate=0.1,gdpGrowth=0.02):
+    epsList=futureEpsList(eps,startGrowth,n,halfGrowthRatio,normalGrowth)
     listDiscountValue=discountValue(epsList,discountRate,gdpGrowth)
     return listDiscountValue
