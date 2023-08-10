@@ -1,17 +1,12 @@
-from base import *
-
-month=pd.read_csv('goodinfo/month/month.csv')
-monthBefore=pd.read_csv('goodinfo/month/monthBefore.csv')
-eps4Season=pd.read_csv('goodinfo/last4Season/eps.csv')
-roe4Season=pd.read_csv('goodinfo/last4Season/roe.csv')
-dividendRatio=pd.read_csv('goodinfo/year/dividendRatio.csv')
+from static import *
+from base import pbr,eps4Season,roe4Season,dividendRatio,industry
+from growth import revenueGrowthCount,minGrowth
 
 todayPER=baseDfTrans(pbr)[todayPricePerColumn]
 roeEps=baseDfTrans(roe4Season)[roeEpsList]
 dividendRatioDf=baseDfTrans(dividendRatio).iloc[:,-1]
 epsPositiveCount=countConditionNum(eps4Season,lynchDict['epsOver0'],0,1,4)
-revenueGrowthCount=revenueGrowthNum(month,monthBefore,lynchDict['revenueGrowthOver30'])
-minGrowth=revenueGrowthMin(month,monthBefore,lynchDict['minGrowth'])
+
 # 這是主要的df
 lynchShareBaseDf=concatDf([todayPER,industry,epsPositiveCount,revenueGrowthCount,minGrowth,roeEps,dividendRatioDf])
 

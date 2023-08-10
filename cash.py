@@ -1,7 +1,5 @@
-from base import *
-
-cash=pd.read_csv('goodinfo/year/cash.csv')
-dividendRatio=pd.read_csv('goodinfo/year/dividendRatio.csv')
+from static import *
+from base import cash,dividendRatio,todayPrice
 
 avgDividendRatio=lastNMeans(dividendRatio,cashDict['avgDividendRatio'])
 avgCash=lastNMeans(cash,cashDict['avgDividend'])

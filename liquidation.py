@@ -1,6 +1,5 @@
-from base import *
-
-balance=pd.read_csv('goodinfo/last4Season/balance.csv')
+from static import *
+from base import pbr,balance
 
 todayPBR=baseDfTrans(pbr)[todayPricePbrColumn]
 deduct=baseDfTrans(balance)[dictList(balaceDict,deductList)].fillna(0)
