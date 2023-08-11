@@ -1,9 +1,5 @@
 from static import *
 
-def stockYoY():
-    from base import stockYoYcsv
-    return baseDfTrans(stockYoYcsv)
-
 class RevenueGrowth:
     from base import month,monthBefore
     def __init__(self):
@@ -23,3 +19,14 @@ class InnerGrowth:
         innerGrowthDf=concatDf([self.roeEps,self.dividendRatioDf])
         innerGrowth=innerGrowthDf[roeEpsList[0]]*(1-innerGrowthDf[lynchDict['dividendRatio']]/100)
         return innerGrowth
+    
+class PastGrowth:
+    from base import eps
+    def __init__(self):
+        self.epsTrend=cagrTrend(self.eps).applymap(to_percentage_with_one_decimal)
+        self.epsMinGrowth=self.epsTrend[[cashDict['cagr5'],cashDict['cagr3']]].min(axis=1)
+
+class StockGrowht:
+    from base import stockYoYcsv
+    def __init__(self):
+        self.stockYoY=baseDfTrans(self.stockYoYcsv)

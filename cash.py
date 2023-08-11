@@ -5,12 +5,12 @@ avgDividendRatio=lastNMeans(dividendRatio,cashDict['avgDividendRatio'])
 avgCash=lastNMeans(cash,cashDict['avgDividend'])
 countCash=countConditionNum(cash,cashDict['cashCount'])
 lastCash=baseDfTrans(cash).iloc[:,-1]
-cagrTrends=cagrTrend(cash)
+# cagrTrends=cagrTrend(cash)
 # 這是主要的df
-cashShareBaseDf=concatDf([todayPrice,lastCash,avgCash,countCash,avgDividendRatio,cagrTrends])
+cashShareBaseDf=concatDf([todayPrice,lastCash,avgCash,countCash,avgDividendRatio])
 
 def cashShareDf(shareDf):
-    shareDf[cashDict['cagrMin']]=shareDf[[cashDict['cagr5'],cashDict['cagr3']]].min(axis=1)
+    # shareDf[cashDict['cagrMin']]=shareDf[[cashDict['cagr5'],cashDict['cagr3']]].min(axis=1)
     shareDf[cashDict['latestYield']]=shareDf.iloc[:,1]/shareDf[commonDict['price']]
     shareDf[cashDict['avgYield']]=shareDf[cashDict['avgDividend']] /shareDf[commonDict['price']]
     shareDf[commonDict['priceGoal']]=shareDf[cashDict['avgDividend']]/0.05

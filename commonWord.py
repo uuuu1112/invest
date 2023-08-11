@@ -53,7 +53,7 @@ transList=['21M','22M','23M']
 
 starkList=['latestYield','avgYield']
 longLIst=['latestYield','avgYield','expectEarn']
-beTrueCashList=['avgYield','latestYield','cagr10','cagr5','cagr3','expectEarn']
+beTrueCashList=['avgYield','latestYield','expectEarn']
 
 lynchList=['expectEarn']
 beTrueGrowthList=['expectGrowthEarn']
