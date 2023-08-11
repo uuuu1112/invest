@@ -1,21 +1,22 @@
 from static import *
-from base import pbr,eps4Season,roe4Season,dividendRatio,industry
-from growth import revenueGrowthCount,minGrowth
+from base import pbr,eps4Season,industry
+from growth import InnerGrowth,RevenueGrowth
 
 todayPER=baseDfTrans(pbr)[todayPricePerColumn]
-roeEps=baseDfTrans(roe4Season)[roeEpsList]
-dividendRatioDf=baseDfTrans(dividendRatio).iloc[:,-1]
 epsPositiveCount=countConditionNum(eps4Season,lynchDict['epsOver0'],0,1,4)
+revenue=RevenueGrowth()
+innerGrowth=InnerGrowth()
+revenueGrowthCount=revenue.revenueGrowthCount
+minGrowth=revenue.minGrowth
+
 
 # 這是主要的df
-lynchShareBaseDf=concatDf([todayPER,industry,epsPositiveCount,revenueGrowthCount,minGrowth,roeEps,dividendRatioDf])
+lynchShareBaseDf=concatDf([todayPER,industry,epsPositiveCount,revenueGrowthCount,minGrowth,innerGrowth.roeEps])
 
 def lynchShareDf(shareDf):
-    dividendRationColuumn=dividendRatioDf.name
-    shareDf=shareDf.rename(columns={dividendRationColuumn:lynchDict['dividendRatio']})
     shareDf[commonDict['expectEarn']]=15/shareDf[todayPricePerColumn[1]]-1
     shareDf[lynchDict['expectGrowthEarn']]=shareDf[lynchDict['minGrowth']]*50/shareDf[todayPricePerColumn[1]]-1
-    shareDf[lynchDict['priceGoal']]=shareDf[roeEpsList[0]]*(1-shareDf[lynchDict['dividendRatio']] /100)*shareDf[roeEpsList[1]]
+    shareDf[lynchDict['priceGoal']]=innerGrowth.getInnerGrowth()*shareDf[roeEpsList[1]]
     shareDf[lynchDict['innerGrowthEarn']]=shareDf[lynchDict['priceGoal']]/shareDf[todayPricePerColumn[0]]-1
     return shareDf
 
