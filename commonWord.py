@@ -43,6 +43,8 @@ balaceDict={
     'liquidationValue':'清算價值',
     'liquidEarn':'清算價值報酬率'
 }
+baseDropRows=['名稱','成交','排名','漲跌價','漲跌幅']
+monthDrop=['\xa0平均\xa0營收(億)','\xa0合計\xa0營收(億)']
 
 removeStr=[',','=','"']
 keyList=['代號','名稱']

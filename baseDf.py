@@ -31,3 +31,15 @@ def shareTable(shareData,columns,filterFunction,sortValue):
 
 def dictList(dict,keyList):
     return [dict[key] for key in keyList]
+
+class BaseTrans:
+    def baseDf(self,csvData):
+        csvData=csvData.astype(str)
+        csvData=csvData.replace(removeStr,'',regex=True)
+        csvData=csvData.set_index('代號')
+        csvData=csvData.apply(lambda s:pd.to_numeric(s,errors='coerce'))
+        return csvData
+    def transDf(self,csvData):
+        return self.baseDf(csvData).transpose()
+    def dropRows(self,csvData,dropRows):
+        return self.transDf(csvData).drop(index=dropRows)
