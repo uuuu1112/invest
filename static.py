@@ -38,3 +38,11 @@ def revenueGrowthMin(month,monthBefore,columnStr,n=3):
     result=revenueGrowthResult(month,monthBefore)
     result[columnStr]=result.iloc[:,-n:].min(axis=1)
     return result[columnStr]
+
+class CaCul:
+    def nPeriodSum(self,transDf,n):
+        return transDf.rolling(window=n,min_periods=n).sum()
+    def nPeriodGrowth(self,transDf,n):
+        return transDf/transDf.shift(n)-1
+    def nPeriodMin(self,transDf,n):
+        return transDf.rolling(window=n,min_periods=n).min()
