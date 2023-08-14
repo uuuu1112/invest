@@ -15,6 +15,7 @@ cashDict={
     'cashCount':'發放股息次數',
     'latestYield':'近一年股息殖利率',
     'avgYield':'5年平均股息殖利率',
+    'minCash':'5年最低股息',
     'expectEarn':commonDict['expectEarn'],
     'cagr10':'10年CAGR',
     'cagr5':'5年CAGR',
@@ -43,7 +44,7 @@ balaceDict={
     'liquidationValue':'清算價值',
     'liquidEarn':'清算價值報酬率'
 }
-baseDropRows=['名稱','成交','排名','漲跌價','漲跌幅']
+baseDropRows=['成交','排名','漲跌價','漲跌幅']
 monthDrop=['\xa0平均\xa0營收(億)','\xa0合計\xa0營收(億)']
 
 removeStr=[',','=','"']

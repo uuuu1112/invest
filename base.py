@@ -1,4 +1,5 @@
 from static import *
+cacul=CaCul()
 
 pbr=pd.read_csv('goodinfo/pbr.csv')
 today=pd.read_csv('goodinfo/today.csv')
@@ -8,7 +9,7 @@ cash=pd.read_csv('goodinfo/year/cash.csv')
 dividendRatio=pd.read_csv('goodinfo/year/dividendRatio.csv')
 eps=pd.read_csv('goodinfo/year/eps.csv')
 
-eps4Season=pd.read_csv('goodinfo/season/eps.csv')
+seasonEps=pd.read_csv('goodinfo/season/eps.csv')
 seasonRoe=pd.read_csv('goodinfo/season/roe.csv')
 balance=pd.read_csv('goodinfo/season/balance.csv')
 seasonStock=pd.read_csv('goodinfo/season/stock.csv')
@@ -26,6 +27,12 @@ class Eps:
 class Cash(BaseTrans):
     def __init__(self):
         self.cashTrans=self.transDf(cash)
+    def latestCash(self):
+        return self.cashTrans.iloc[-1]
+    def avgCash(self,n):
+        return cacul.nPeriodMean(self.cashTrans,n).iloc[-1]
+    def minCash(self,n):
+        return cacul.nPeriodMin(self.cashTrans,n).iloc[-1]
 
 class DividendRatio(BaseTrans):
     def __init__(self):
@@ -34,6 +41,8 @@ class DividendRatio(BaseTrans):
         # self.dividendRatioDf=self.getDividendRatioDf()
     def latestDividendRatio(self):
         return self.dividendRatioTrans.iloc[-1]
+    def avgDividendRatio(self,n):
+        return cacul.nPeriodMean(self.dividendRatioTrans,n).iloc[-1]
     def getDividendRatioDf(self):
         dividendRatioDf=baseDfTrans(dividendRatio).iloc[:,-1]
         dividendRatioDf.name=lynchDict['dividendRatio']
@@ -44,13 +53,24 @@ class SeasonRoe:
         # self.seasonRoe=seasonRoe
         self.roeEps=baseDfTrans(seasonRoe)[roeEpsList]
 
+class SeasonEps(BaseTrans):
+    def __init__(self):
+        self.seasonEpsTrans=self.transDf(seasonEps)
+
+class Stock(BaseTrans):
+    def __init__(self):
+        # self.stock=seasonStock
+        self.stockTrans=self.dropRows(seasonStock,baseDropRows+['平均存貨(億)'])
+
 class Revenue(BaseTrans):
     def __init__(self):
-        self.month=month
-        self.monthBefore=monthBefore
+        # self.month=month
+        # self.monthBefore=monthBefore
         self.monthTrans=self.dropRows(month,baseDropRows+monthDrop)
         self.monthBeforeTrans=self.dropRows(monthBefore,baseDropRows+monthDrop)
         self.revenueDf=pd.concat([self.monthBeforeTrans,self.monthTrans])
+    def revenueGrowth(self,n):
+        return cacul.nPeriodGrowth(self.revenueDf,n)
 
 class Today(BaseTrans):
     def __init__(self):
@@ -60,7 +80,8 @@ class Today(BaseTrans):
         self.todayPbr=self.todayTrans.loc['PBR']
         self.todayPrice=self.todayTrans.loc['成交']
 
-class Stock(BaseTrans):
+class BaseInfo(BaseTrans):
     def __init__(self):
-        # self.stock=seasonStock
-        self.stockTrans=self.dropRows(seasonStock,baseDropRows+['平均存貨(億)'])
+        self.baseInfoTrans=self.transDf(baseInfo)
+
+

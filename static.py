@@ -46,3 +46,5 @@ class CaCul:
         return transDf/transDf.shift(n)-1
     def nPeriodMin(self,transDf,n):
         return transDf.rolling(window=n,min_periods=n).min()
+    def nPeriodMean(self,transDf,n):
+        return transDf.rolling(window=n,min_periods=n).mean()

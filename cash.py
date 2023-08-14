@@ -27,5 +27,15 @@ class CashInvest:
         self.cash=Cash()
         self.dividendRatio=DividendRatio()
         self.todayPrice=Today().todayPrice
-    # def stark():
-    #     self.dividendRatio
+    def expectEarn(self):
+        self.df=pd.DataFrame({})
+        self.df[cashDict['latestYield']]=(self.cash.latestCash()/self.todayPrice)
+        self.df[cashDict['avgYield']]=(self.cash.avgCash(5)/self.todayPrice)
+        self.df[cashDict['minCash']]=self.cash.minCash(5)
+        self.df[cashDict['avgDividendRatio']]=self.dividendRatio.avgDividendRatio(5)
+        self.df[cashDict['expectEarn']]=(self.cash.avgCash(5)/0.05/self.todayPrice-1)
+        self.filterCondition=(self.df[cashDict['latestYield']]>0.05)&(self.df[cashDict['avgYield']]>0.05)&(self.df[cashDict['minCash']]>0)&(self.df[cashDict['avgDividendRatio']]>50)
+        self.df=self.df[self.filterCondition]
+        self.df=self.df.sort_values(by=cashDict['expectEarn'],ascending=False)
+        self.df[cashDict['expectEarn']]=self.df[cashDict['expectEarn']].apply(lambda x: f'{x*100:.2f}%')
+        return self.df

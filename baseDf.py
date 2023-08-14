@@ -36,7 +36,7 @@ class BaseTrans:
     def baseDf(self,csvData):
         csvData=csvData.astype(str)
         csvData=csvData.replace(removeStr,'',regex=True)
-        csvData=csvData.set_index('代號')
+        csvData=csvData.set_index(keyList)
         csvData=csvData.apply(lambda s:pd.to_numeric(s,errors='coerce'))
         return csvData
     def transDf(self,csvData):
