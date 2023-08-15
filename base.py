@@ -1,5 +1,4 @@
 from static import *
-cacul=CaCul()
 
 pbr=pd.read_csv('goodinfo/pbr.csv')
 today=pd.read_csv('goodinfo/today.csv')
@@ -7,7 +6,7 @@ baseInfo=pd.read_csv('goodinfo/baseInfo.csv')
 
 cash=pd.read_csv('goodinfo/year/cash.csv')
 dividendRatio=pd.read_csv('goodinfo/year/dividendRatio.csv')
-eps=pd.read_csv('goodinfo/year/eps.csv')
+yearEps=pd.read_csv('goodinfo/year/eps.csv')
 
 seasonEps=pd.read_csv('goodinfo/season/eps.csv')
 seasonRoe=pd.read_csv('goodinfo/season/roe.csv')
@@ -20,9 +19,9 @@ monthBefore=pd.read_csv('goodinfo/month/monthBefore.csv')
 todayPrice=baseDfTrans(pbr)[commonDict['price']]
 industry=baseDfTrans(baseInfo)[commonDict['industry']]
 
-class Eps:
+class YearEps(BaseTrans):
     def __init__(self):
-        self.eps=eps
+        self.epsTrans=self.transDf(yearEps)
 
 class Cash(BaseTrans):
     def __init__(self):
@@ -36,21 +35,12 @@ class Cash(BaseTrans):
 
 class DividendRatio(BaseTrans):
     def __init__(self):
-        # self.dividendRatio=dividendRatio
         self.dividendRatioTrans=self.transDf(dividendRatio)
-        # self.dividendRatioDf=self.getDividendRatioDf()
-    # def latestDividendRatio(self):
-    #     return self.dividendRatioTrans.iloc[-1]
     def avgDividendRatio(self,n):
         return cacul.nPeriodMean(self.dividendRatioTrans,n)
-    # def getDividendRatioDf(self):
-    #     dividendRatioDf=baseDfTrans(dividendRatio).iloc[:,-1]
-    #     dividendRatioDf.name=lynchDict['dividendRatio']
-    #     return dividendRatioDf
 
 class SeasonRoe(BaseTrans):
     def __init__(self):
-        # self.seasonRoe=seasonRoe
         self.roeEps=baseDfTrans(seasonRoe)[roeEpsList]
         self.seasonRoeTrans=self.transDf(seasonRoe)
 
@@ -78,11 +68,7 @@ class Revenue(BaseTrans):
 
 class Today(BaseTrans):
     def __init__(self):
-        # self.today=today
         self.todayTrans=self.transDf(today)
-        # self.todayPer=self.todayTrans.loc['PER']
-        # self.todayPbr=self.todayTrans.loc['PBR']
-        # self.todayPrice=self.todayTrans.loc['成交']
     def todayPrice(self):
         return self.todayTrans.loc['成交']
 

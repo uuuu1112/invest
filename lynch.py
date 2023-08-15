@@ -28,7 +28,7 @@ class LynchInvest:
 # 近4季ROE在20%以上
 # 近4季EPS本益比在10以下(沒設)
 # 近4季皆有獲利  
-#   
+
 class Buffett:
     def __init__(self,today,seasonRoe,seasonEps,dividendRatio):
         self.today=today
