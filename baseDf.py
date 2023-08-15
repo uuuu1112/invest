@@ -43,3 +43,13 @@ class BaseTrans:
         return self.baseDf(csvData).transpose()
     def dropRows(self,csvData,dropRows):
         return self.transDf(csvData).drop(index=dropRows)
+    def baseTrans(self,csvData):
+        csvData=csvData.replace(removeStr,'',regex=True)
+        csvData=csvData.set_index(keyList)
+        return csvData.transpose()
+    
+def expectEarnTrans(df,filterCondition):
+    df=df[filterCondition]
+    df=df.sort_values(by=cashDict['expectEarn'],ascending=False)
+    df[cashDict['expectEarn']]=df[commonDict['expectEarn']].apply(lambda x: f'{x*100:.2f}%')
+    return df

@@ -12,29 +12,25 @@ commonDict={
 cashDict={
     'avgDividendRatio':'平均股息發放率',
     'avgDividend':'平均股息',
-    'cashCount':'發放股息次數',
     'latestYield':'近一年股息殖利率',
     'avgYield':'5年平均股息殖利率',
     'minCash':'5年最低股息',
     'expectEarn':commonDict['expectEarn'],
-    'cagr10':'10年CAGR',
-    'cagr5':'5年CAGR',
-    'cagr3':'3年CAGR',
-    # 'dcfexpectEarn':'DCF預期報酬率',
     'cagrMin':'股息年成長率'
 }
 lynchDict={
-    'revenueGrowthOver30':'營收年增率超過30%',
-    'epsOver0':'eps大於0次數',
+    # 'revenueGrowthOver30':'營收年增率超過30%',
+    # 'epsOver0':'eps大於0次數',
     'expectEarn':commonDict['expectEarn'],
     'per':'PER',
     'price':commonDict['price'],
     'industry':commonDict['industry'],
     'minGrowth':'最小年增率',
+    'minEps':'最小EPS',
     'expectGrowthEarn':'預期成長估值報酬率',
     'innerGrowthEarn':'內部成長估值報酬率',
     'dividendRatio':'盈餘配發率',
-    'priceGoal':commonDict['priceGoal']
+    'priceGoal':commonDict['priceGoal'],
 }
 balaceDict={
     'debt':'負債總額(%)',
