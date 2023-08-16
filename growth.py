@@ -1,5 +1,5 @@
 from static import *
-from base import DividendRatio,SeasonRoe,YearEps,cacul
+from base import SeasonRoe,SeasonStock,DividendRatio,YearEps,cacul
 
 
 class InnerGrowth:
@@ -13,7 +13,7 @@ class InnerGrowth:
         self.df=self.df[roeEpsList[0]]*(1-self.df[lynchDict['dividendRatio']])
         return self.df
     
-class PastGrowth(CAGR):
+class YearCAGR(CAGR):
     def __init__(self,yearEps):
         self.epsTrans=yearEps.epsTrans
     def year10Cagr(self):
@@ -26,8 +26,21 @@ class PastGrowth(CAGR):
         index=self.year3Cagr().index
         min_values = [min(val1, val2) for val1, val2 in zip(self.year3Cagr(), self.year5Cagr())]
         return pd.Series(min_values, index=index)
+    
 class ShortGrowht:
-    def __init__(self,Revenue,Stock):
-        self.revenue=Revenue()
-        self.stock=Stock()
+    def __init__(self,revenue,stock):
+        self.revenue=revenue
+        self.stock=stock
+    def revenueMoM(self):
+        return self.revenue.revenueGrowth(1)
+    def revenueYoY(self):
+        return self.revenue.revenueGrowth(12)
+    def revenue3Growth(self):
+        return self.revenue.revenueNGrowth(3,1)
+    def revenue3YoY(self):
+        return self.revenue.revenueNGrowth(3,12)
+    def stockQoQ(self):
+        return self.stock.stockGrowth(1)
+    def stockYoY(self):
+        return self.stock.stockGrowth(4)
 

@@ -10,14 +10,14 @@ yearEps=pd.read_csv('goodinfo/year/eps.csv')
 
 seasonEps=pd.read_csv('goodinfo/season/eps.csv')
 seasonRoe=pd.read_csv('goodinfo/season/roe.csv')
-balance=pd.read_csv('goodinfo/season/balance.csv')
+seasonBalance=pd.read_csv('goodinfo/season/balance.csv')
 seasonStock=pd.read_csv('goodinfo/season/stock.csv')
 
 month=pd.read_csv('goodinfo/month/month.csv')
 monthBefore=pd.read_csv('goodinfo/month/monthBefore.csv')
 
-todayPrice=baseDfTrans(pbr)[commonDict['price']]
-industry=baseDfTrans(baseInfo)[commonDict['industry']]
+# todayPrice=baseDfTrans(pbr)[commonDict['price']]
+# industry=baseDfTrans(baseInfo)[commonDict['industry']]
 
 class YearEps(BaseTrans):
     def __init__(self):
@@ -41,7 +41,7 @@ class DividendRatio(BaseTrans):
 
 class SeasonRoe(BaseTrans):
     def __init__(self):
-        self.roeEps=baseDfTrans(seasonRoe)[roeEpsList]
+        # self.roeEps=baseDfTrans(seasonRoe)[roeEpsList]
         self.seasonRoeTrans=self.transDf(seasonRoe)
 
 class SeasonEps(BaseTrans):
@@ -52,9 +52,25 @@ class SeasonEps(BaseTrans):
     def sumEps(self,n):
         return cacul.nPeriodSum(self.seasonEpsTrans,n)
 
-class Stock(BaseTrans):
+class SeasonStock(BaseTrans):
     def __init__(self):
         self.stockTrans=self.dropRows(seasonStock,baseDropRows+['平均存貨(億)'])
+    def stockGrowth(self,n):
+        return cacul.nPeriodGrowth(self.stockTrans,n)
+
+class SeasonBalance(BaseTrans):
+    def __init__(self):
+        self.balanceTrans=self.transDf(seasonBalance)
+    def getNetWorth(self):
+        return self.balanceTrans.loc['每股淨值(元)']
+    def getDebt(self):
+        return self.balanceTrans.loc['負債總額(%)']*self.getNetWorth()/100
+    def getStock(self):
+        return self.balanceTrans.loc['存貨(%)']*self.getNetWorth()/100
+    def getInvest(self):
+        return self.balanceTrans.loc['投資(%)']*self.getNetWorth()/100
+    def getReceive(self):
+        return self.balanceTrans.loc['應收帳款(%)']*self.getNetWorth()/100
 
 class Revenue(BaseTrans):
     def __init__(self):
@@ -65,12 +81,18 @@ class Revenue(BaseTrans):
         return cacul.nPeriodGrowth(self.revenueDf,n)
     def minGrowth(self,n,k):
         return cacul.nPeriodMin(self.revenueGrowth(n),k)
+    def revenueNGrowth(self,n,k):
+        revenueNSum=cacul.nPeriodMin(self.revenueDf,n)
+        revenueNGrowth=cacul.nPeriodGrowth(revenueNSum,k)
+        return revenueNGrowth
 
 class Today(BaseTrans):
     def __init__(self):
         self.todayTrans=self.transDf(today)
     def todayPrice(self):
         return self.todayTrans.loc['成交']
+    def todayPBR(self):
+        return self.todayTrans.loc['PBR']
 
 class BaseInfo(BaseTrans):
     def __init__(self):
