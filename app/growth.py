@@ -1,5 +1,5 @@
 from static import *
-from base import SeasonRoe,SeasonStock,DividendRatio,YearEps,cacul
+from base import SeasonRoe,SeasonStock,DividendRatio,YearEps,Revenue,cacul
 
 
 class InnerGrowth:
@@ -43,4 +43,13 @@ class ShortGrowht:
         return self.stock.stockGrowth(1)
     def stockYoY(self):
         return self.stock.stockGrowth(4)
+    def allGrowth(self):
+        self.df=pd.DataFrame({})
+        self.df[shortGrowthDict['mom']]=self.revenueMoM().iloc[-1]
+        self.df[shortGrowthDict['yoy']]=self.revenueYoY().iloc[-1]
+        self.df[shortGrowthDict['revenue3Growth']]=self.revenue3Growth().iloc[-1]
+        self.df[shortGrowthDict['revenue3YoY']]=self.revenue3YoY().iloc[-1]
+        self.df[shortGrowthDict['stockQoQ']]=self.stockQoQ().iloc[-1]
+        self.df[shortGrowthDict['stockYoY']]=self.stockYoY().iloc[-1]
+        return self.df.applymap(lambda x: f'{x*100:.2f}%') 
 

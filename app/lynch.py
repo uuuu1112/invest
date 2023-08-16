@@ -35,13 +35,14 @@ class Buffett:
         self.seasonRoe=seasonRoe
         self.seasonEps=seasonEps
         self.dividendRatio=dividendRatio
+        self.innerGrowth=InnerGrowth(self.dividendRatio,self.seasonRoe)
     def expectEarn(self):
         self.df=pd.DataFrame({})
         self.df[roeEpsList[0]]=self.seasonRoe.seasonRoeTrans.loc[roeEpsList[0]]
         self.df[roeEpsList[1]]=self.seasonRoe.seasonRoeTrans.loc[roeEpsList[1]]
         self.df[lynchDict['dividendRatio']]=self.dividendRatio.dividendRatioTrans.iloc[-1]
         self.df[lynchDict['minEps']]=self.seasonEps.minEps(4).iloc[-1]
-        self.df[lynchDict['expectEarn']]=InnerGrowth(self.dividendRatio,self.seasonRoe).getInnerGrowth()*self.df[roeEpsList[1]]/self.today.todayPrice()-1
+        self.df[lynchDict['expectEarn']]=self.innerGrowth.getInnerGrowth()*self.df[roeEpsList[1]]/self.today.todayPrice()-1
         self.filterCondition=(self.df[roeEpsList[0]]>20)&(self.df[lynchDict['minEps']]>0)
         return expectEarnTrans(self.df,self.filterCondition)
 

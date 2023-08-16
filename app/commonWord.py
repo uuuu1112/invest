@@ -1,3 +1,4 @@
+dataPath='../data'
 commonDict={
     'latestAvg':'近期平均',
     'conditionCount':'符合個數',
@@ -16,7 +17,6 @@ cashDict={
     'avgYield':'5年平均股息殖利率',
     'minCash':'5年最低股息',
     'expectEarn':commonDict['expectEarn'],
-    'cagrMin':'股息年成長率'
 }
 lynchDict={
     'expectEarn':commonDict['expectEarn'],
@@ -35,8 +35,17 @@ balaceDict={
     'invest':'投資(%)',
     'liquidationValue':'清算價值',
     'expectEarn':commonDict['expectEarn'],
-    'price':'成交',
+    'price':commonDict['price'],
 }
+shortGrowthDict={
+    'mom':'營收MoM',
+    'yoy':'營收YoY',
+    'revenue3Growth':'3個月營收MoM',
+    'revenue3YoY':'3個月營收YoY',
+    'stockQoQ':'存貨QoQ',
+    'stockYoY':'存貨YoY'
+}
+
 baseDropRows=['成交','排名','漲跌價','漲跌幅']
 monthDrop=['\xa0平均\xa0營收(億)','\xa0合計\xa0營收(億)']
 
