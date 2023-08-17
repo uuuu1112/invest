@@ -1,4 +1,4 @@
-from static import *
+from stats import *
 from base import SeasonRoe,SeasonStock,DividendRatio,YearEps,Revenue,cacul
 
 

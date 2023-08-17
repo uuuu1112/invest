@@ -1,4 +1,4 @@
-from static import *
+from stats import *
 
 today=pd.read_csv(dataPath+'/today.csv')
 baseInfo=pd.read_csv(dataPath+'/baseInfo.csv')
