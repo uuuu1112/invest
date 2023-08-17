@@ -16,7 +16,8 @@ class CAGR:
     def baseCagr(self,transDf,n):
         result=cacul.nPeriodGrowth(transDf,n)+1
         result=np.power(result,1/n)-1
-        return result.iloc[-1].apply(lambda x: f'{x*100:.2f}%')   
+        return result.iloc[-1]
+        # return result.iloc[-1].apply(lambda x: f'{x*100:.2f}%')   
 
 class DCF:    
     # 做出未來10年的EPS列表

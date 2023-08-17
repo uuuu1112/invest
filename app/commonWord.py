@@ -45,6 +45,12 @@ shortGrowthDict={
     'stockQoQ':'存貨QoQ',
     'stockYoY':'存貨YoY'
 }
+cagrDict={
+    'year10Cagr':'CAGR(10年)',
+    'year5Cagr':'CAGR(5年)',
+    'year3Cagr':'CAGR(3年)',
+    'minCagr':'CAGR(保守)'
+}
 
 baseDropRows=['成交','排名','漲跌價','漲跌幅']
 monthDrop=['\xa0平均\xa0營收(億)','\xa0合計\xa0營收(億)']

@@ -26,6 +26,13 @@ class YearCAGR(CAGR):
         index=self.year3Cagr().index
         min_values = [min(val1, val2) for val1, val2 in zip(self.year3Cagr(), self.year5Cagr())]
         return pd.Series(min_values, index=index)
+    def allCAGR(self):
+        self.df=pd.DataFrame({})
+        self.df[cagrDict['year10Cagr']]=self.year10Cagr()
+        self.df[cagrDict['year5Cagr']]=self.year5Cagr()
+        self.df[cagrDict['year3Cagr']]=self.year3Cagr()
+        self.df[cagrDict['minCagr']]=self.minCagr()
+        return self.df
     
 class ShortGrowht:
     def __init__(self,revenue,stock):

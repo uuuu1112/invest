@@ -109,3 +109,16 @@ class Buffett:
 # 連續4計的eps都大於0
 # 最小年增率乘以50當成本益比賣出
 # 不要營建股
+
+class BeTrue:
+    def __init__(self,today,liquidationInvest,revenue,seasonRoe):
+        self.today=today
+        self.liquidationInvest=liquidationInvest
+        self.revenue=revenue
+        self.seasonRoe=seasonRoe
+    def expectEarn(self):
+        self.df=pd.DataFrame({})
+        self.df[balaceDict['liquidationValue']]=self.liquidationInvest.getLiquidation()
+        self.df[roeEpsList[1]]=self.seasonRoe.seasonRoeTrans.loc[roeEpsList[1]]
+        self.df[lynchDict['minGrowth']]=self.revenue.minGrowth(12,3).iloc[-1]
+        return self.df
