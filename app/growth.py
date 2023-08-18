@@ -1,5 +1,5 @@
 from stats import *
-from base import SeasonRoe,SeasonStock,DividendRatio,YearEps,Revenue,cacul
+from base import SeasonRoe,SeasonStock,DividendRatio,YearEps,Revenue,YearRoe,cacul
 
 
 class InnerGrowth:
@@ -8,10 +8,21 @@ class InnerGrowth:
         self.dividendRatio=dividendRatio
     def getInnerGrowth(self):
         self.df=pd.DataFrame({})
-        self.df[roeEpsList[0]]=self.seasonRoe.seasonRoeTrans.loc[roeEpsList[0]]
+        self.df[roeDict['roe']]=self.seasonRoe.seasonRoeTrans.loc[roeDict['roe']]/100
         self.df[lynchDict['dividendRatio']]=self.dividendRatio.dividendRatioTrans.iloc[-1]/100
-        self.df=self.df[roeEpsList[0]]*(1-self.df[lynchDict['dividendRatio']])
+        self.df=self.df[roeDict['roe']]*(1-self.df[lynchDict['dividendRatio']])
         return self.df
+class AvgInnerGrowth:
+    def __init__(self,dividendRatio,yearRoe):
+        self.yearRoe=yearRoe
+        self.dividendRatio=dividendRatio
+    def avgInnerGrowth(self,n=5):
+        self.df=pd.DataFrame({})
+        self.df[roeDict['avgRoe']]=self.yearRoe.avgRoe(n).iloc[-1]/100
+        self.df[cashDict['avgDividendRatio']]=self.dividendRatio.avgDividendRatio(n).iloc[-1]/100
+        self.df=self.df[roeDict['avgRoe']]*(1-self.df[cashDict['avgDividendRatio']])
+        return self.df
+
     
 class YearCAGR(CAGR):
     def __init__(self,yearEps):

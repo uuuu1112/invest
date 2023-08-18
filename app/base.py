@@ -6,6 +6,7 @@ baseInfo=pd.read_csv(dataPath+'/baseInfo.csv')
 cash=pd.read_csv(dataPath+'/year/cash.csv')
 dividendRatio=pd.read_csv(dataPath+'/year/dividendRatio.csv')
 yearEps=pd.read_csv(dataPath+'/year/eps.csv')
+yearRoe=pd.read_csv(dataPath+'/year/roe.csv')
 
 seasonEps=pd.read_csv(dataPath+'/season/eps.csv')
 seasonRoe=pd.read_csv(dataPath+'/season/roe.csv')
@@ -19,6 +20,11 @@ class YearEps(BaseTrans):
     def __init__(self):
         self.epsTrans=self.transDf(yearEps)
 
+class YearRoe(BaseTrans):
+    def __init__(self):
+        self.roeTrans=self.transDf(yearRoe)
+    def avgRoe(self,n):
+        return cacul.nPeriodMean(self.roeTrans,n)
 class Cash(BaseTrans):
     def __init__(self):
         self.cashTrans=self.transDf(cash)
@@ -37,7 +43,6 @@ class DividendRatio(BaseTrans):
 
 class SeasonRoe(BaseTrans):
     def __init__(self):
-        # self.roeEps=baseDfTrans(seasonRoe)[roeEpsList]
         self.seasonRoeTrans=self.transDf(seasonRoe)
 
 class SeasonEps(BaseTrans):
@@ -56,7 +61,7 @@ class SeasonStock(BaseTrans):
 
 class SeasonBalance(BaseTrans):
     def __init__(self):
-        self.balanceTrans=self.transDf(seasonBalance)
+        self.balanceTrans=self.transDf(seasonBalance).fillna(0)
     def getNetWorth(self):
         return self.balanceTrans.loc['每股淨值(元)']
     def getDebt(self):

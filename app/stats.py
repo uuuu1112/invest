@@ -51,3 +51,4 @@ class DCF:
         epsList=self.futureEpsList(eps,startGrowth,n,halfGrowthRatio,normalGrowth)
         listDiscountValue=self.discountValue(epsList,discountRate,gdpGrowth)
         return listDiscountValue
+dcf=DCF()

@@ -8,7 +8,8 @@ commonDict={
     'priceGoal':'目標價',
     'expectEarn':'預期報酬率',
     'cagr':'年CAGR',
-    'industry':'產業別'
+    'industry':'產業別',
+    'eps':'EPS(元)'
 }
 cashDict={
     'avgDividendRatio':'平均股息發放率',
@@ -17,16 +18,18 @@ cashDict={
     'avgYield':'5年平均股息殖利率',
     'minCash':'5年最低股息',
     'expectEarn':commonDict['expectEarn'],
+    'avgCash':'5年平均股息'
 }
 lynchDict={
     'expectEarn':commonDict['expectEarn'],
     'per':'PER',
     'price':commonDict['price'],
     'industry':commonDict['industry'],
-    'minGrowth':'最小年增率',
+    'minGrowth':'最小營收年增率',
     'minEps':'最小EPS',
     'dividendRatio':'盈餘配發率',
     'priceGoal':commonDict['priceGoal'],
+    'innerGrowth':'內部成長率',
 }
 balaceDict={
     'debt':'負債總額(%)',
@@ -36,6 +39,10 @@ balaceDict={
     'liquidationValue':'清算價值',
     'expectEarn':commonDict['expectEarn'],
     'price':commonDict['price'],
+}
+roeDict={
+    'avgRoe':'平均ROE(%)',
+    'roe':'ROE',
 }
 shortGrowthDict={
     'mom':'營收MoM',
@@ -51,13 +58,16 @@ cagrDict={
     'year3Cagr':'CAGR(3年)',
     'minCagr':'CAGR(保守)'
 }
+cashDistDict={
+    'cashDiscount':'股息折現',
+    'avgInnerGrowth':'平均內部成長率',
+}
 
 baseDropRows=['成交','排名','漲跌價','漲跌幅']
 monthDrop=['\xa0平均\xa0營收(億)','\xa0合計\xa0營收(億)']
 
 removeStr=[',','=','"']
 keyList=['代號','名稱']
-roeEpsList=['ROE(%)','EPS(元)']
 
 
 
