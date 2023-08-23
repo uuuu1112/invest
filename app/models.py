@@ -1,6 +1,6 @@
 from stats import *
-from base import Today,SeasonBalance,Cash,DividendRatio,SeasonEps,BaseInfo,Revenue,SeasonRoe,YearRoe
-from growth import InnerGrowth,AvgInnerGrowth
+from base import Today,SeasonBalance,Cash,DividendRatio,SeasonEps,BaseInfo,Revenue,SeasonRoe,YearRoe,YearEps
+from growth import *
 
 # 清算價值=總資產-()-()
 # (短期負債 長期負債)
@@ -52,7 +52,7 @@ class CashInvest:
         self.todayPrice=today.todayPrice()
     def baseDf(self):
         self.df=pd.DataFrame({})
-        self.df[cashDict['latestYield']]=(self.cash.latestCash().iloc[-1]/self.todayPrice)
+        self.df[cashDict['latestYield']]=(self.cash.latest()/self.todayPrice)
         self.df[cashDict['avgYield']]=(self.cash.avgCash(5).iloc[-1]/self.todayPrice)
         self.df[cashDict['minCash']]=self.cash.minCash(5).iloc[-1]
         self.df[cashDict['avgDividendRatio']]=self.dividendRatio.avgDividendRatio(5).iloc[-1]
@@ -118,40 +118,54 @@ class Buffett:
         return expectEarnTrans(self.df,self.filterCondition)
 
 class CashDiscount:
-    def __init__(self,cash,dividendRatio,yearRoe,today):
+    def __init__(self,cash,growth,today):
         self.cash=cash
-        self.avgInnerGrowth=AvgInnerGrowth(dividendRatio,yearRoe)
+        self.growth=growth
         self.today=today
-    def expectEarn(self):
+    def getCashDiscount(self):
         self.df=pd.DataFrame({})
         self.df[commonDict['price']]=self.today.todayPrice()
-        self.df[cashDict['avgCash']]=self.cash.avgCash(5).iloc[-1]
-        self.df[cashDistDict['avgInnerGrowth']]=self.avgInnerGrowth.avgInnerGrowth(5)
-        self.df[commonDict['priceGoal']]=dcf.dcfEstimate(self.df[cashDict['avgCash']],self.df[cashDistDict['avgInnerGrowth']])
-        self.df[commonDict['expectEarn']]=self.df[commonDict['priceGoal']]/self.df[commonDict['price']]-1
-        self.filterCondition=self.df[commonDict['price']]>0
-        return expectEarnTrans(self.df,self.filterCondition)
-class BeTrue:
-    def __init__(self,seasonBalance,today,dividendRatio,yearRoe,cash,seasonEps,revenue,baseInfo):
-        self.liquidationInvest=LiquidationInvest(seasonBalance,today)
-        self.avgInnerGrowth=AvgInnerGrowth(dividendRatio,yearRoe)
-        self.cash=cash
-        self.today=today
-        self.seasonEps=seasonEps
-        self.revenue=revenue
-        self.baseInfo=baseInfo
+        self.df[cashDistDict['beginCash']]=self.cash
+        self.df[cashDistDict['expectGrowth']]=self.growth
+        self.df[commonDict['priceGoal']]=dcf.dcfEstimate(self.df[cashDistDict['beginCash']],self.df[cashDistDict['expectGrowth']])
+        return self.df
     def expectEarn(self):
-        self.df=pd.DataFrame({})
-        self.df[lynchDict['industry']]=self.baseInfo.industry()
-        self.df[commonDict['price']]=self.today.todayPrice()
-        self.df[balaceDict['liquidationValue']]= self.liquidationInvest.getLiquidation()
-        self.df[cashDict['avgCash']]=self.cash.avgCash(5).iloc[-1]
-        self.df[cashDistDict['avgInnerGrowth']]=self.avgInnerGrowth.avgInnerGrowth(5)
-        self.df[cashDistDict['cashDiscount']]=dcf.dcfEstimate(self.df[cashDict['avgCash']],self.df[cashDistDict['avgInnerGrowth']])
-        self.df[lynchDict['minEps']]=self.seasonEps.minEps(4).iloc[-1]
-        self.df[lynchDict['minGrowth']]=self.revenue.minGrowth(12,3).iloc[-1]
-        self.df[commonDict['priceGoal']]=(self.df[balaceDict['liquidationValue']]+self.df[cashDistDict['cashDiscount']]).fillna(self.df[balaceDict['liquidationValue']])
+        self.df=self.getCashDiscount()
         self.df[commonDict['expectEarn']]=self.df[commonDict['priceGoal']]/self.df[commonDict['price']]-1
-        # self.filterCondition=(self.df[lynchDict['minEps']]>0)*(self.df[lynchDict['minGrowth']]>-0.3)&(self.df[commonDict['expectEarn']]>0)
-        self.filterCondition=(self.df[commonDict['priceGoal']]>0)
-        return expectEarnTrans(self.df,self.filterCondition)
+        return expectEarnTrans(self.df)
+    
+class InnerValue:
+    def __init__(self,cashDiscount,liquidationInvest,today):
+        self.cashDiscount=cashDiscount
+        self.liquidationInvest=liquidationInvest
+        self.today=today
+    def getInnerValue(self):
+        self.df=pd.DataFrame({})
+        self.df[commonDict['price']]=self.today.todayPrice()
+        self.df[balaceDict['liquidationValue']]=self.liquidationInvest.getLiquidation()
+        self.df[cashDistDict['discount']]=self.cashDiscount.getCashDiscount()[commonDict['priceGoal']]
+        return self.df
+    
+# class BeTrue:
+#     def __init__(self,seasonBalance,today,dividendRatio,yearRoe,cash,seasonEps,revenue,baseInfo):
+#         self.liquidationInvest=LiquidationInvest(seasonBalance,today)
+#         self.avgInnerGrowth=AvgInnerGrowth(dividendRatio,yearRoe)
+#         self.cash=cash
+#         self.today=today
+#         self.seasonEps=seasonEps
+#         self.revenue=revenue
+#         self.baseInfo=baseInfo
+#     def expectEarn(self):
+#         self.df=pd.DataFrame({})
+#         self.df[lynchDict['industry']]=self.baseInfo.industry()
+#         self.df[commonDict['price']]=self.today.todayPrice()
+#         self.df[balaceDict['liquidationValue']]= self.liquidationInvest.getLiquidation()
+#         self.df[cashDict['avgCash']]=self.cash.avgCash(5).iloc[-1]
+#         self.df[cashDistDict['avgInnerGrowth']]=self.avgInnerGrowth.avgInnerGrowth(5)
+#         self.df[cashDistDict['cashDiscount']]=dcf.dcfEstimate(self.df[cashDict['avgCash']],self.df[cashDistDict['avgInnerGrowth']])
+#         self.df[lynchDict['minEps']]=self.seasonEps.minEps(4).iloc[-1]
+#         self.df[lynchDict['minGrowth']]=self.revenue.minGrowth(12,3).iloc[-1]
+#         self.df[commonDict['priceGoal']]=(self.df[balaceDict['liquidationValue']]+self.df[cashDistDict['cashDiscount']]).fillna(self.df[balaceDict['liquidationValue']])
+#         self.df[commonDict['expectEarn']]=self.df[commonDict['priceGoal']]/self.df[commonDict['price']]-1
+#         self.filterCondition=(self.df[commonDict['priceGoal']]>0)
+#         return expectEarnTrans(self.df,self.filterCondition)

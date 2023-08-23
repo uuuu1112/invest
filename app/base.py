@@ -28,8 +28,8 @@ class YearRoe(BaseTrans):
 class Cash(BaseTrans):
     def __init__(self):
         self.cashTrans=self.transDf(cash)
-    def latestCash(self):
-        return self.cashTrans
+    def latest(self):
+        return self.cashTrans.iloc[-1]
     def avgCash(self,n):
         return cacul.nPeriodMean(self.cashTrans,n)
     def minCash(self,n):
@@ -52,6 +52,8 @@ class SeasonEps(BaseTrans):
         return cacul.nPeriodMin(self.seasonEpsTrans,n)
     def sumEps(self,n):
         return cacul.nPeriodSum(self.seasonEpsTrans,n)
+    def latest(self):
+        return self.seasonEpsTrans.iloc[-1]
 
 class SeasonStock(BaseTrans):
     def __init__(self):

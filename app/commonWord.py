@@ -42,7 +42,7 @@ balaceDict={
 }
 roeDict={
     'avgRoe':'平均ROE(%)',
-    'roe':'ROE',
+    'roe':'ROE(%)',
 }
 shortGrowthDict={
     'mom':'營收MoM',
@@ -61,6 +61,9 @@ cagrDict={
 cashDistDict={
     'cashDiscount':'股息折現',
     'avgInnerGrowth':'平均內部成長率',
+    'beginCash':'起初EPS或股利',
+    'expectGrowth':'預估成長率',
+    'discount':'折現',
 }
 
 baseDropRows=['成交','排名','漲跌價','漲跌幅']

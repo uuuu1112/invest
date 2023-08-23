@@ -18,8 +18,9 @@ class BaseTrans:
         csvData=csvData.set_index(keyList)
         return csvData.transpose()
     
-def expectEarnTrans(df,filterCondition):
-    df=df[filterCondition]
+def expectEarnTrans(df,filterCondition=""):
+    if len(filterCondition)>0:
+        df=df[filterCondition]
     df=df.sort_values(by=cashDict['expectEarn'],ascending=False)
     df[cashDict['expectEarn']]=df[commonDict['expectEarn']].apply(lambda x: f'{x*100:.2f}%')
     return df
