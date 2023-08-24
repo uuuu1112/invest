@@ -1,8 +1,12 @@
-# from flask import render_template
-# from . import app
+# app/routes.py
+from flask import Blueprint
 
-# @app.route('/')
-# def index():
-#     return render_template('index.html')
+bp = Blueprint('routes', __name__)
 
-# # 其他路由和視圖函數
+@bp.route('/')
+def index():
+    return 'Welcome to the main page'
+
+@bp.route('/about')
+def about():
+    return 'This is the about page'
