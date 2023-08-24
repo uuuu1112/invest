@@ -16,23 +16,6 @@ seasonStockPath=os.path.join(os.path.dirname(__file__), '..', 'data','season', '
 monthPath=os.path.join(os.path.dirname(__file__), '..', 'data', 'month','month.csv')
 monthBeforePath=os.path.join(os.path.dirname(__file__), '..', 'data', 'month','monthBefore.csv')
 
-
-
-# today=pd.read_csv(dataPath+'/today.csv')
-# baseInfo=pd.read_csv(dataPath+'/baseInfo.csv')
-
-# cash=pd.read_csv(dataPath+'/year/cash.csv')
-# dividendRatio=pd.read_csv(dataPath+'/year/dividendRatio.csv')
-# yearEps=pd.read_csv(dataPath+'/year/eps.csv')
-# yearRoe=pd.read_csv(dataPath+'/year/roe.csv')
-
-# seasonEps=pd.read_csv(dataPath+'/season/eps.csv')
-# seasonRoe=pd.read_csv(dataPath+'/season/roe.csv')
-# seasonBalance=pd.read_csv(dataPath+'/season/balance.csv')
-# seasonStock=pd.read_csv(dataPath+'/season/stock.csv')
-
-# month=pd.read_csv(dataPath+'/month/month.csv')
-# monthBefore=pd.read_csv(dataPath+'/month/monthBefore.csv')
 today=pd.read_csv(todayPath)
 baseInfo=pd.read_csv(baseInfoPath)
 

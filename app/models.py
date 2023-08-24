@@ -127,7 +127,7 @@ class CashDiscount:
         self.df[commonDict['price']]=self.today.todayPrice()
         self.df[cashDistDict['beginCash']]=self.cash
         self.df[cashDistDict['expectGrowth']]=self.growth
-        self.df[commonDict['priceGoal']]=dcf.dcfEstimate(self.df[cashDistDict['beginCash']],self.df[cashDistDict['expectGrowth']])
+        self.df[commonDict['priceGoal']]=dcf.dcfEstimate(self.df[cashDistDict['beginCash']],self.df[cashDistDict['expectGrowth']]).fillna(0)
         return self.df
     def expectEarn(self):
         self.df=self.getCashDiscount()
