@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
-from commonWord import *
+import os
+from app.commonWord import *
 
 class BaseTrans:
     def baseDf(self,csvData):

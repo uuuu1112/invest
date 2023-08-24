@@ -1,5 +1,5 @@
-from stats import *
-from base import SeasonRoe,SeasonStock,DividendRatio,YearEps,Revenue,YearRoe,cacul
+from app.stats import *
+from app.base import SeasonRoe,SeasonStock,DividendRatio,YearEps,Revenue,YearRoe,cacul
 
 
 class InnerGrowth:

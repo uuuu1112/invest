@@ -1,20 +1,53 @@
-from stats import *
+from app.stats import *
 
-today=pd.read_csv(dataPath+'/today.csv')
-baseInfo=pd.read_csv(dataPath+'/baseInfo.csv')
 
-cash=pd.read_csv(dataPath+'/year/cash.csv')
-dividendRatio=pd.read_csv(dataPath+'/year/dividendRatio.csv')
-yearEps=pd.read_csv(dataPath+'/year/eps.csv')
-yearRoe=pd.read_csv(dataPath+'/year/roe.csv')
+todayPath=os.path.join(os.path.dirname(__file__), '..', 'data', 'today.csv')
+baseInfoPath=os.path.join(os.path.dirname(__file__), '..', 'data', 'baseInfo.csv')
+cashPath=os.path.join(os.path.dirname(__file__), '..', 'data', 'year','cash.csv')
+dividendRatioPath=os.path.join(os.path.dirname(__file__), '..', 'data','year', 'dividendRatio.csv')
+yearEpsPath=os.path.join(os.path.dirname(__file__), '..', 'data','year', 'eps.csv')
+yearRoePath=os.path.join(os.path.dirname(__file__), '..', 'data', 'year','roe.csv')
 
-seasonEps=pd.read_csv(dataPath+'/season/eps.csv')
-seasonRoe=pd.read_csv(dataPath+'/season/roe.csv')
-seasonBalance=pd.read_csv(dataPath+'/season/balance.csv')
-seasonStock=pd.read_csv(dataPath+'/season/stock.csv')
+seasonEpsPath=os.path.join(os.path.dirname(__file__), '..', 'data','season', 'eps.csv')
+seasonRoePath=os.path.join(os.path.dirname(__file__), '..', 'data','season', 'roe.csv')
+seasonBalancePath=os.path.join(os.path.dirname(__file__), '..', 'data','season', 'balance.csv')
+seasonStockPath=os.path.join(os.path.dirname(__file__), '..', 'data','season', 'stock.csv')
 
-month=pd.read_csv(dataPath+'/month/month.csv')
-monthBefore=pd.read_csv(dataPath+'/month/monthBefore.csv')
+monthPath=os.path.join(os.path.dirname(__file__), '..', 'data', 'month','month.csv')
+monthBeforePath=os.path.join(os.path.dirname(__file__), '..', 'data', 'month','monthBefore.csv')
+
+
+
+# today=pd.read_csv(dataPath+'/today.csv')
+# baseInfo=pd.read_csv(dataPath+'/baseInfo.csv')
+
+# cash=pd.read_csv(dataPath+'/year/cash.csv')
+# dividendRatio=pd.read_csv(dataPath+'/year/dividendRatio.csv')
+# yearEps=pd.read_csv(dataPath+'/year/eps.csv')
+# yearRoe=pd.read_csv(dataPath+'/year/roe.csv')
+
+# seasonEps=pd.read_csv(dataPath+'/season/eps.csv')
+# seasonRoe=pd.read_csv(dataPath+'/season/roe.csv')
+# seasonBalance=pd.read_csv(dataPath+'/season/balance.csv')
+# seasonStock=pd.read_csv(dataPath+'/season/stock.csv')
+
+# month=pd.read_csv(dataPath+'/month/month.csv')
+# monthBefore=pd.read_csv(dataPath+'/month/monthBefore.csv')
+today=pd.read_csv(todayPath)
+baseInfo=pd.read_csv(baseInfoPath)
+
+cash=pd.read_csv(cashPath)
+dividendRatio=pd.read_csv(dividendRatioPath)
+yearEps=pd.read_csv(yearEpsPath)
+yearRoe=pd.read_csv(yearRoePath)
+
+seasonEps=pd.read_csv(seasonEpsPath)
+seasonRoe=pd.read_csv(seasonRoePath)
+seasonBalance=pd.read_csv(seasonBalancePath)
+seasonStock=pd.read_csv(seasonStockPath)
+
+month=pd.read_csv(monthPath)
+monthBefore=pd.read_csv(monthBeforePath)
 
 class YearEps(BaseTrans):
     def __init__(self):
@@ -102,5 +135,7 @@ class BaseInfo(BaseTrans):
         self.baseInfoTrans=self.baseTrans(baseInfo)
     def industry(self):
         return self.baseInfoTrans.loc['產業別']
+    
+# print(Today().todayPrice())
 
 

@@ -1,6 +1,6 @@
-from stats import *
-from base import Today,SeasonBalance,Cash,DividendRatio,SeasonEps,BaseInfo,Revenue,SeasonRoe,YearRoe,YearEps
-from growth import *
+from app.stats import *
+from app.base import Today,SeasonBalance,Cash,DividendRatio,SeasonEps,BaseInfo,Revenue,SeasonRoe,YearRoe,YearEps
+from app.growth import *
 
 # 清算價值=總資產-()-()
 # (短期負債 長期負債)
