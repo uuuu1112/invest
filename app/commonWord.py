@@ -63,7 +63,8 @@ cashDistDict={
     'avgInnerGrowth':'平均內部成長率',
     'beginCash':'起初EPS或股利',
     'expectGrowth':'預估成長率',
-    'discount':'折現',
+    'discount':'折現價值',
+    'priceGoal':commonDict['priceGoal']
 }
 
 baseDropRows=['成交','排名','漲跌價','漲跌幅']

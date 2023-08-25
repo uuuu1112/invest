@@ -1,9 +1,8 @@
 from app.stats import *
 from app.base import SeasonRoe,SeasonStock,DividendRatio,YearEps,Revenue,YearRoe,cacul
 
-
 class InnerGrowth:
-    def __init__(self,dividendRatio,seasonRoe):
+    def __init__(self,dividendRatio=DividendRatio(),seasonRoe=SeasonRoe()):
         self.seasonRoe=seasonRoe
         self.dividendRatio=dividendRatio
     def getInnerGrowth(self):
@@ -13,19 +12,19 @@ class InnerGrowth:
         self.df=self.df[roeDict['roe']]*(1-self.df[lynchDict['dividendRatio']])
         return self.df
 class AvgInnerGrowth:
-    def __init__(self,dividendRatio,yearRoe):
+    def __init__(self,n=5,dividendRatio=DividendRatio(),yearRoe=YearRoe()):
         self.yearRoe=yearRoe
         self.dividendRatio=dividendRatio
-    def avgInnerGrowth(self,n=5):
+        self.n=n
+    def avgInnerGrowth(self):
         self.df=pd.DataFrame({})
-        self.df[roeDict['avgRoe']]=self.yearRoe.avgRoe(n).iloc[-1]/100
-        self.df[cashDict['avgDividendRatio']]=self.dividendRatio.avgDividendRatio(n).iloc[-1]/100
+        self.df[roeDict['avgRoe']]=self.yearRoe.avgRoe(self.n).iloc[-1]/100
+        self.df[cashDict['avgDividendRatio']]=self.dividendRatio.avgDividendRatio(self.n).iloc[-1]/100
         self.df=self.df[roeDict['avgRoe']]*(1-self.df[cashDict['avgDividendRatio']])
         return self.df
 
-    
 class YearCAGR(CAGR):
-    def __init__(self,yearEps):
+    def __init__(self,yearEps=YearEps()):
         self.epsTrans=yearEps.epsTrans
     def year10Cagr(self):
         return self.baseCagr(self.epsTrans,10)
@@ -45,28 +44,37 @@ class YearCAGR(CAGR):
         self.df[cagrDict['minCagr']]=self.minCagr()
         return self.df
     
-class ShortGrowht:
-    def __init__(self,revenue,stock):
+class ShortRevenueGrowth:
+    def __init__(self,revenue=Revenue()):
         self.revenue=revenue
-        self.stock=stock
     def revenueMoM(self):
-        return self.revenue.revenueGrowth(1)
+        return self.revenue.revenueGrowth(1).iloc[-1]
     def revenueYoY(self):
-        return self.revenue.revenueGrowth(12)
+        return self.revenue.revenueGrowth(12).iloc[-1]
     def revenue3Growth(self):
-        return self.revenue.revenueNGrowth(3,1)
+        return self.revenue.revenueNGrowth(3,1).iloc[-1]
     def revenue3YoY(self):
-        return self.revenue.revenueNGrowth(3,12)
+        return self.revenue.revenueNGrowth(3,12).iloc[-1]
+    def revenue3MinYoY(self):
+        return self.revenue.minGrowth(12,3).iloc[-1]
+    def allGrowth(self):
+        self.df=pd.DataFrame({})
+        self.df[shortGrowthDict['mom']]=self.revenueMoM()
+        self.df[shortGrowthDict['yoy']]=self.revenueYoY()
+        self.df[shortGrowthDict['revenue3Growth']]=self.revenue3Growth()
+        self.df[shortGrowthDict['revenue3YoY']]=self.revenue3YoY()
+        self.df[lynchDict['minGrowth']]=self.revenue3MinYoY()
+        return self.df.applymap(lambda x: f'{x*100:.2f}%') 
+    
+class ShortStockGrowht:
+    def __init__(self,stock=SeasonStock()):
+        self.stock=stock
     def stockQoQ(self):
         return self.stock.stockGrowth(1)
     def stockYoY(self):
         return self.stock.stockGrowth(4)
     def allGrowth(self):
         self.df=pd.DataFrame({})
-        self.df[shortGrowthDict['mom']]=self.revenueMoM().iloc[-1]
-        self.df[shortGrowthDict['yoy']]=self.revenueYoY().iloc[-1]
-        self.df[shortGrowthDict['revenue3Growth']]=self.revenue3Growth().iloc[-1]
-        self.df[shortGrowthDict['revenue3YoY']]=self.revenue3YoY().iloc[-1]
         self.df[shortGrowthDict['stockQoQ']]=self.stockQoQ().iloc[-1]
         self.df[shortGrowthDict['stockYoY']]=self.stockYoY().iloc[-1]
         return self.df.applymap(lambda x: f'{x*100:.2f}%') 

@@ -68,8 +68,6 @@ class SeasonEps(BaseTrans):
         return cacul.nPeriodMin(self.seasonEpsTrans,n)
     def sumEps(self,n):
         return cacul.nPeriodSum(self.seasonEpsTrans,n)
-    def latest(self):
-        return self.seasonEpsTrans.iloc[-1]
 
 class SeasonStock(BaseTrans):
     def __init__(self):
