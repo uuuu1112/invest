@@ -1,22 +1,36 @@
 from app.stats import *
 from app.base import Cash,SeasonEps,YearEps
 
-class SeasonEpsList:
+class SeasonEpsList(SeasonEps):
     def __init__(self):
-        self.seasonEps=SeasonEps()
+        super().__init__()
     def latestEps(self):
-        return self.seasonEps.seasonEps.sumEps(4).iloc[-1]
+        return self.sumEps(4).iloc[-1]
     
-class YearEpsList:
+class YearEpsList(YearEps):
     def __init__(self):
-        self.yearEps=YearEps()
+        super().__init__()
     def avgEps(self,n=5):
-        return cacul.nPeriodMean(self.yearEps.epsTrans,n).iloc[-1]
+        return cacul.nPeriodMean(self.epsTrans,n).iloc[-1]
     
-class CashList:
+class CashList(Cash):
     def __init__(self):
-        self.cash=Cash()
+        super().__init__()
     def latestCash(self):
-        return self.cash.latest()
-    def avgCash(self,n=5):
-        return self.cash.avgCash(self.cash.cashTrans,n)
+        return self.latest()
+    def avgCashList(self,n=5):
+        return self.avgCash(n).iloc[-1]
+
+class AllCashList(SeasonEpsList):
+    def __init__(self):
+        super().__init__()
+        self.cashList=CashList()
+        self.yearEpsList=YearEpsList()
+    def latestSeasonEpsList(self):
+        return self.latestEps()
+    def avgYearEpsList(self,n=5):
+        return self.yearEpsList.avgEps(n)
+    def latestCashList(self):
+        return self.cashList.latestCash()
+    def avgCashList(self,n=5):
+        return self.cashList.avgCashList(n)
