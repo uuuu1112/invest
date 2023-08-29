@@ -21,16 +21,3 @@ class CashList(Cash):
     def avgCashList(self,n=5):
         return self.avgCash(n).iloc[-1]
 
-class AllCashList(SeasonEpsList):
-    def __init__(self):
-        super().__init__()
-        self.cashList=CashList()
-        self.yearEpsList=YearEpsList()
-    def latestSeasonEpsList(self):
-        return self.latestEps()
-    def avgYearEpsList(self,n=5):
-        return self.yearEpsList.avgEps(n)
-    def latestCashList(self):
-        return self.cashList.latestCash()
-    def avgCashList(self,n=5):
-        return self.cashList.avgCashList(n)

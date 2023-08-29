@@ -2,7 +2,7 @@ from app.stats import *
 from app.base import SeasonRoe,SeasonStock,DividendRatio,YearEps,Revenue,YearRoe,cacul
 
 class InnerGrowth:
-    def __init__(self,dividendRatio=DividendRatio(),seasonRoe=SeasonRoe()):
+    def __init__(self,dividendRatio,seasonRoe):
         self.seasonRoe=seasonRoe
         self.dividendRatio=dividendRatio
     def getInnerGrowth(self):
@@ -12,7 +12,7 @@ class InnerGrowth:
         self.df=self.df[roeDict['roe']]*(1-self.df[lynchDict['dividendRatio']])
         return self.df
 class AvgInnerGrowth:
-    def __init__(self,n=5,dividendRatio=DividendRatio(),yearRoe=YearRoe()):
+    def __init__(self,dividendRatio,yearRoe,n=5):
         self.yearRoe=yearRoe
         self.dividendRatio=dividendRatio
         self.n=n
@@ -24,7 +24,7 @@ class AvgInnerGrowth:
         return self.df
 
 class YearCAGR(CAGR):
-    def __init__(self,yearEps=YearEps()):
+    def __init__(self,yearEps):
         self.epsTrans=yearEps.epsTrans
     def year10Cagr(self):
         return self.baseCagr(self.epsTrans,10)
@@ -45,7 +45,7 @@ class YearCAGR(CAGR):
         return self.df
     
 class ShortRevenueGrowth:
-    def __init__(self,revenue=Revenue()):
+    def __init__(self,revenue):
         self.revenue=revenue
     def revenueMoM(self):
         return self.revenue.revenueGrowth(1).iloc[-1]
@@ -66,9 +66,9 @@ class ShortRevenueGrowth:
         self.df[lynchDict['minGrowth']]=self.revenue3MinYoY()
         return self.df.applymap(lambda x: f'{x*100:.2f}%') 
     
-class ShortStockGrowht:
-    def __init__(self,stock=SeasonStock()):
-        self.stock=stock
+class ShortStockGrowth:
+    def __init__(self,seasonStock):
+        self.stock=seasonStock
     def stockQoQ(self):
         return self.stock.stockGrowth(1)
     def stockYoY(self):

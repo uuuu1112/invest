@@ -1,9 +1,11 @@
 from app.stats import *
-from app.base import Today,SeasonBalance,Cash,SeasonEps,BaseInfo
+from app.base import Today,SeasonBalance,BaseInfo
+# ,Cash,SeasonEps
 from app.growth import *
 from app.cashList import *
 
 today=Today()
+baseDf=pd.DataFrame({commonDict['price']:today.todayPrice()})
 
 # 清算價值=總資產-()-()
 # (短期負債 長期負債)
@@ -12,23 +14,25 @@ today=Today()
 # 市價大於清算價值３０％賣出
 
 class LiquidationInvest:
-    def __init__(self,seasonBalance=SeasonBalance()):
+    def __init__(self,seasonBalance):
         self.seasonBalance=seasonBalance
-        self.todayPrice=today.todayPrice()
     def getLiquidation(self):
         return self.seasonBalance.getNetWorth()-self.seasonBalance.getDebt()-self.seasonBalance.getStock()-self.seasonBalance.getInvest()-self.seasonBalance.getReceive()
     def baseDf(self):
-        self.df=pd.DataFrame({})
+        self.df=baseDf.copy()
         self.df[balaceDict['liquidationValue']]=self.getLiquidation()
         return self.df
+    def filterCondition(self):
+        self.df=self.baseDf()
+        self.filterCondition=self.df[balaceDict['liquidationValue']]*1.3>self.df[commonDict['price']]
+        return self.filterCondition
     def priceGoal(self):
         self.df=self.baseDf()
         self.df[commonDict['priceGoal']]=self.getLiquidation()*1.3
         return self.df
     def expectEarn(self):
         self.df=self.priceGoal()
-        self.df[commonDict['expectEarn']]=self.df[commonDict['priceGoal']]/self.todayPrice-1
-        return expectEarnTrans(self.df)
+        return expectEarnTrans(self.df,self.filterCondition())
 
 # 凡人說存股策略
 # 近一年股息殖利率大於５％
@@ -52,20 +56,19 @@ class LiquidationInvest:
 # 依股息成長率估的報酬率
 
 class CashInvest:
-    def __init__(self,cash=Cash(),dividendRatio=DividendRatio()):
-        self.cash=cash
+    def __init__(self,cashList,dividendRatio):
+        self.cash=cashList
         self.dividendRatio=dividendRatio
-        self.todayPrice=today.todayPrice()
     def baseDf(self):
-        self.df=pd.DataFrame({})
-        self.df[cashDict['latestYield']]=(self.cash.latest()/self.todayPrice)
-        self.df[cashDict['avgYield']]=(self.cash.avgCash(5).iloc[-1]/self.todayPrice)
-        self.df[cashDict['minCash']]=self.cash.minCash(5).iloc[-1]
-        self.df[cashDict['avgDividendRatio']]=self.dividendRatio.avgDividendRatio(5).iloc[-1]
+        self.df=baseDf.copy()
+        self.df.loc[:,cashDict['latestYield']]=(self.cash.latest()/self.df[commonDict['price']])
+        self.df.loc[:,cashDict['avgYield']]=(self.cash.avgCash(5).iloc[-1]/self.df[commonDict['price']])
+        self.df.loc[:,cashDict['minCash']]=self.cash.minCash(5).iloc[-1]
+        self.df.loc[:,cashDict['avgDividendRatio']]=self.dividendRatio.avgDividendRatio(5).iloc[-1]
         return self.df
     def priceGoal(self):
         self.df=self.baseDf()
-        self.df[commonDict['priceGoal']]=self.cash.avgCash(5).iloc[-1]/0.05
+        self.df.loc[:,commonDict['priceGoal']]=self.cash.avgCash(5).iloc[-1]/0.05
         return self.df
     def filterCondition(self):
         self.df=self.baseDf()
@@ -73,7 +76,6 @@ class CashInvest:
         return self.filterCondition
     def expectEarn(self):
         self.df=self.priceGoal()
-        self.df[commonDict['expectEarn']]=self.df[commonDict['priceGoal']]/self.todayPrice-1
         return expectEarnTrans(self.df,self.filterCondition())
 
 # 慶龍林區成長股策略
@@ -84,20 +86,19 @@ class CashInvest:
 # 不要營建股
 
 class LynchInvest:
-    def __init__(self,seasonEps=SeasonEps(),baseInfo=BaseInfo()):
-        self.shortRevenueGrowht=ShortRevenueGrowth()
-        self.seasonEps=seasonEps
+    def __init__(self,seasonEpsList,baseInfo,shortRevenueGrowth):
+        self.shortRevenueGrowth=shortRevenueGrowth
+        self.seasonEps=seasonEpsList
         self.baseInfo=baseInfo
-        self.todayPrice=today.todayPrice()
     def baseDf(self):
-        self.df=pd.DataFrame({})
-        self.df[lynchDict['minGrowth']]=self.shortRevenueGrowht.revenue3MinYoY()
+        self.df=baseDf.copy()
+        self.df[lynchDict['minGrowth']]=self.shortRevenueGrowth.revenue3MinYoY()
         self.df[lynchDict['minEps']]=self.seasonEps.minEps(4).iloc[-1]
         self.df[lynchDict['industry']]=self.baseInfo.industry()
         return self.df
     def filterCondition(self):
-        self.df=self.baseDf()
-        self.filterCondition=(self.df[lynchDict['minGrowth']]>0.3)&(self.df[lynchDict['minEps']]>0)&(self.df[lynchDict['industry']]!='建材營造業')
+        self.df=self.priceGoal()
+        self.filterCondition=(self.df[lynchDict['minGrowth']]>0.3)&(self.df[lynchDict['minEps']]>0)&(self.df[lynchDict['industry']]!='建材營造業')&(self.df[commonDict['priceGoal']]>self.df[commonDict['price']])
         return self.filterCondition
     def priceGoal(self):
         self.df=self.baseDf()
@@ -105,7 +106,6 @@ class LynchInvest:
         return self.df
     def expectEarn(self):
         self.df=self.priceGoal()
-        self.df[commonDict['expectEarn']]=self.df[commonDict['priceGoal']]/self.todayPrice-1
         return expectEarnTrans(self.df,self.filterCondition())
 
 # 林區巴菲特選股
@@ -114,14 +114,13 @@ class LynchInvest:
 # 近4季皆有獲利  
 
 class Buffett:
-    def __init__(self,seasonRoe=SeasonRoe(),seasonEps=SeasonEps(),dividendRatio=DividendRatio()):
+    def __init__(self,seasonRoe,seasonEpsList,dividendRatio):
         self.seasonRoe=seasonRoe
-        self.seasonEps=seasonEps
+        self.seasonEps=seasonEpsList
         self.dividendRatio=dividendRatio
         self.innerGrowth=InnerGrowth(self.dividendRatio,self.seasonRoe)
-        self.todayPrice=today.todayPrice()
     def baseDf(self):
-        self.df=pd.DataFrame({})
+        self.df=baseDf.copy()
         self.df[roeDict['roe']]=self.seasonRoe.seasonRoeTrans.loc[roeDict['roe']]
         self.df[commonDict['eps']]=self.seasonRoe.seasonRoeTrans.loc[commonDict['eps']]
         self.df[lynchDict['dividendRatio']]=self.dividendRatio.dividendRatioTrans.iloc[-1]
@@ -138,16 +137,14 @@ class Buffett:
         return self.df
     def expectEarn(self):
         self.df=self.priceGoal()
-        self.df[commonDict['expectEarn']]=self.df[commonDict['priceGoal']]/self.todayPrice-1
         return expectEarnTrans(self.df,self.filterCondition())
 
 class CashDiscount:
     def __init__(self,cashList,growth):
         self.cashList=cashList
         self.growth=growth
-        self.todayPrice=today.todayPrice()
     def baseDf(self):
-        self.df=pd.DataFrame({})
+        self.df=baseDf.copy()
         self.df[cashDistDict['beginCash']]=self.cashList
         self.df[cashDistDict['expectGrowth']]=self.growth
         return self.df
@@ -164,23 +161,19 @@ class CashDiscount:
         return self.filterCondition
     def expectEarn(self):
         self.df=self.priceGoal()
-        self.df[commonDict['expectEarn']]=self.df[commonDict['priceGoal']]/self.todayPrice-1
         return expectEarnTrans(self.df,self.filterCondition())
     
 class InnerValue:
-    def __init__(self,cashDiscount,liquidationInvest=LiquidationInvest()):
+    def __init__(self,cashDiscount,liquidationInvest):
         self.cashDiscount=cashDiscount
         self.liquidationInvest=liquidationInvest
-        self.todayPrice=today.todayPrice()
     def baseDf(self):
         self.df=self.cashDiscount.priceGoal()
         self.df.rename(columns={commonDict['priceGoal']:cashDistDict['discount']},inplace=True)
         self.df[balaceDict['liquidationValue']]=self.liquidationInvest.getLiquidation()
-        self.df[commonDict['price']]=self.todayPrice
         self.df[commonDict['priceGoal']]=self.df[balaceDict['liquidationValue']]+self.df[cashDistDict['discount']]
         return self.df
     def expectEarn(self):
         self.df=self.baseDf()
-        self.df[commonDict['expectEarn']]=self.df[commonDict['priceGoal']]/self.todayPrice-1
         return expectEarnTrans(self.df)
     
