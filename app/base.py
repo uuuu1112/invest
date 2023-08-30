@@ -44,8 +44,8 @@ class YearRoe(BaseTrans):
 class Cash(BaseTrans):
     def __init__(self):
         self.cashTrans=self.transDf(cash)
-    def latest(self):
-        return self.cashTrans.iloc[-1]
+    # def latest(self):
+    #     return self.cashTrans.iloc[-1]
     def avgCash(self,n):
         return cacul.nPeriodMean(self.cashTrans,n)
     def minCash(self,n):

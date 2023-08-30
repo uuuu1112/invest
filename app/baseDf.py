@@ -26,3 +26,8 @@ def expectEarnTrans(df,filterCondition=""):
     df=df.sort_values(by=cashDict['expectEarn'],ascending=False)
     df.loc[:,cashDict['expectEarn']]=df[commonDict['expectEarn']].apply(lambda x: f'{x*100:.2f}%')
     return df
+
+def transToApi(dfWithIndex):
+    df=dfWithIndex.reset_index()
+    df_json =df.to_json(orient='records')
+    return df_json 
