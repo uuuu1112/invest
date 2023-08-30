@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint,render_template
 from app.models import *
 
 seasonEpsList=SeasonEpsList()
@@ -8,7 +8,8 @@ bp = Blueprint('routes', __name__)
 
 @bp.route('/')
 def index():
-    return 'Welcome to the main page'
+    return render_template('index.html')
+
 
 @bp.route('/about')
 def about():

@@ -1,9 +1,9 @@
-# from flask import Flask
+# app/__init__.py
+from flask import Flask
+from app.routes import bp as routes_bp
 
-# app = Flask(__name__)
+app = Flask(__name__)
+app.template_folder = 'templates'
 
-# # 將資料庫模型載入這裡
-# from . import models1, models2, models3
-
-# # 將路由和視圖載入這裡
-# from . import routes
+# 註冊藍圖
+app.register_blueprint(routes_bp)

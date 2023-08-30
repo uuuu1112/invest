@@ -21,7 +21,7 @@ class CAGR:
 
 class DCF:    
     # 做出未來10年的EPS列表
-    def futureEpsList(self,eps,startGrowth,n=5,halfGrowthRatio=1,normalGrowth=0.02):
+    def halfGrowthEpsList(self,eps,startGrowth,n=5,normalGrowth=0.02):
         epsNow=eps
         epsList=[]
         growhNow=startGrowth
@@ -29,12 +29,26 @@ class DCF:
             epsNow=epsNow*(1+startGrowth)
             epsList.append(epsNow)
         for j in range(5-n):
-            growhNow=growhNow*halfGrowthRatio
+            growhNow=growhNow*0.5
             epsNow=epsNow*(1+growhNow)
             epsList.append(epsNow)
         for k in range(5):
             epsNow=epsNow*(1+normalGrowth)
             epsList.append(epsNow)
+        return epsList
+    
+    def futureEpsList(self, eps, startGrowth, n=5, normalGrowth=0.02):
+        epsNow=eps
+        epsList=[]
+        growhNow=startGrowth
+        for i in range(n):
+            epsNow=epsNow*(1+startGrowth)
+            epsList.append(epsNow)
+        for j in range(10-n):
+            growhNow=growhNow*0.5
+            epsNow=epsNow*(1+normalGrowth)
+            epsList.append(epsNow)
+
         return epsList
 
     # 用EPS列表折現
@@ -47,8 +61,11 @@ class DCF:
         return epsDiscount
 
     # 給EPS和成長率做折現估值
-    def dcfEstimate(self,eps,startGrowth,n=5,halfGrowthRatio=1,normalGrowth=0.02,discountRate=0.1,gdpGrowth=0.02):
-        epsList=self.futureEpsList(eps,startGrowth,n,halfGrowthRatio,normalGrowth)
+    def dcfEstimate(self,eps,startGrowth,halfGrowthMode=False,n=5,normalGrowth=0.02,discountRate=0.1,gdpGrowth=0.02):
+        if halfGrowthMode:
+            epsList=self.halfGrowthEpsList(eps,startGrowth,n,normalGrowth)
+        else:
+            epsList=self.futureEpsList(eps,startGrowth,n,normalGrowth)
         listDiscountValue=self.discountValue(epsList,discountRate,gdpGrowth)
         return listDiscountValue
 dcf=DCF()
