@@ -13,7 +13,10 @@ def index():
 
 @bp.route('/about')
 def about():
-    return 'This is the about page'
+    return render_template('about.html')
+@bp.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 @bp.route('/liquidation')
 def liquidation():
