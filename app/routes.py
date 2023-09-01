@@ -18,7 +18,8 @@ def contact():
 
 @bp.route('/integrateInvest/<selectValue>')
 def integrateInvest(selectValue):
-    return integrateInvest(selectValue)
+    # return integrateInvest(selectValue)
+    return testF(selectValue)
 
 # @bp.route('/liquidation')
 # def liquidation():

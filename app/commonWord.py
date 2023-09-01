@@ -67,10 +67,10 @@ cashDistDict={
     'priceGoal':commonDict['priceGoal']
 }
 InvestDict={
-    'LiquidationInvest':1,
-    'CashInvest':2,
-    'LynchInvest':3,
-    'BuffettInvest':4
+    'LiquidationInvest':"1",
+    'CashInvest':"2",
+    'LynchInvest':"3",
+    'BuffettInvest':"4"
 }
 
 baseDropRows=['成交','排名','漲跌價','漲跌幅']
