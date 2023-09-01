@@ -1,8 +1,6 @@
 from flask import Blueprint,render_template
 from app.models import *
 
-seasonEpsList=SeasonEpsList()
-dividendRatio=DividendRatio()
 
 bp = Blueprint('routes', __name__)
 
@@ -18,28 +16,32 @@ def about():
 def contact():
     return render_template('contact.html')
 
-@bp.route('/liquidation')
-def liquidation():
-    seasonBalance=SeasonBalance()
-    liquidationInvest=LiquidationInvest(seasonBalance)
-    return liquidationInvest.expectEarnApi()
+@bp.route('/integrateInvest/<selectValue>')
+def integrateInvest(selectValue):
+    return integrateInvest(selectValue)
 
-@bp.route('/cashInvest')
-def cashInvest():
-    cashList=CashList()
-    cashInvest=CashInvest(cashList,dividendRatio)
-    return cashInvest.expectEarnApi()
+# @bp.route('/liquidation')
+# def liquidation():
+#     seasonBalance=SeasonBalance()
+#     liquidationInvest=LiquidationInvest(seasonBalance)
+#     return liquidationInvest.expectEarnApi()
 
-@bp.route('/lynchInvest')
-def lynchInvest():
-    revenue=Revenue()
-    shortRevenueGrowth=ShortRevenueGrowth(revenue)
-    baseInfo=BaseInfo()
-    lynchInvest=LynchInvest(seasonEpsList,baseInfo,shortRevenueGrowth)
-    return lynchInvest.expectEarnApi()
+# @bp.route('/cashInvest')
+# def cashInvest():
+#     cashList=CashList()
+#     cashInvest=CashInvest(cashList,dividendRatio)
+#     return cashInvest.expectEarnApi()
 
-@bp.route('/buffettInvest')
-def buffettInvest():
-    seasonRoe=SeasonRoe()
-    buffettInvest=BuffettInvest(seasonRoe,seasonEpsList,dividendRatio)
-    return buffettInvest.expectEarnApi()
+# @bp.route('/lynchInvest')
+# def lynchInvest():
+#     revenue=Revenue()
+#     shortRevenueGrowth=ShortRevenueGrowth(revenue)
+#     baseInfo=BaseInfo()
+#     lynchInvest=LynchInvest(seasonEpsList,baseInfo,shortRevenueGrowth)
+#     return lynchInvest.expectEarnApi()
+
+# @bp.route('/buffettInvest')
+# def buffettInvest():
+#     seasonRoe=SeasonRoe()
+#     buffettInvest=BuffettInvest(seasonRoe,seasonEpsList,dividendRatio)
+#     return buffettInvest.expectEarnApi()

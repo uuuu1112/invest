@@ -137,8 +137,29 @@ class BuffettInvest(InvestBase):
     def priceGoal(self):
         self.df=self.baseDf()
         self.df[commonDict['priceGoal']]=self.df[lynchDict['innerGrowth']]*self.df[commonDict['eps']]
-        return self.df
-
+        return self.df    
+    
+def integrateInvest(selectValue):
+    seasonEpsList=SeasonEpsList()
+    dividendRatio=DividendRatio()
+    if selectValue==InvestDict['LiquidationInvest']:
+        seasonBalance=SeasonBalance()
+        liquidationInvest=LiquidationInvest(seasonBalance)
+        return liquidationInvest.expectEarnApi()
+    elif selectValue==InvestDict['CashInvest']:
+        cashList=CashList()
+        cashInvest=CashInvest(cashList,dividendRatio)
+        return cashInvest.expectEarnApi()
+    elif selectValue==InvestDict['LynchInvest']:
+        revenue=Revenue()
+        shortRevenueGrowth=ShortRevenueGrowth(revenue)
+        baseInfo=BaseInfo()
+        lynchInvest=LynchInvest(seasonEpsList,baseInfo,shortRevenueGrowth)        
+        return lynchInvest.expectEarnApi()
+    elif selectValue==InvestDict['BuffettInvest']:
+        seasonRoe=SeasonRoe()
+        buffettInvest=BuffettInvest(seasonRoe,seasonEpsList,dividendRatio)        
+        return buffettInvest.expectEarnApi()
 class CashDiscount(InvestBase):
     def __init__(self,cashList,growth):
         self.cashList=cashList

@@ -66,6 +66,12 @@ cashDistDict={
     'discount':'折現價值',
     'priceGoal':commonDict['priceGoal']
 }
+InvestDict={
+    'LiquidationInvest':1,
+    'CashInvest':2,
+    'LynchInvest':3,
+    'BuffettInvest':4
+}
 
 baseDropRows=['成交','排名','漲跌價','漲跌幅']
 monthDrop=['\xa0平均\xa0營收(億)','\xa0合計\xa0營收(億)']
