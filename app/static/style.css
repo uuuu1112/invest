@@ -29,7 +29,7 @@ nav ul li a {
 
 main {
     padding: 50px;
-    text-align: center;
+    text-align:center;
 }
 
 .intro h1 {
@@ -55,3 +55,4 @@ footer {
     background-color: #333;
     color: #fff;
 }
+

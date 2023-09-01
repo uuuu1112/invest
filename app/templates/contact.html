@@ -1,7 +1,12 @@
 {% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="static/contact.css">
+{% endblock %}
+
 {% block content %}
 <h1 class="mb-3">Contact Us</h1>
-<form>
+<form class="contactForm">
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" required>
