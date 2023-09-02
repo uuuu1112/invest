@@ -16,10 +16,9 @@ def about():
 def contact():
     return render_template('contact.html')
 
-@bp.route('/integrateInvest/<selectValue>')
-def integrateInvest(selectValue):
-    # return integrateInvest(selectValue)
-    return testF(selectValue)
+@bp.route('/allInvest/<selectValue>')
+def allInvest(selectValue):
+    return integrateInvest(selectValue)
 
 # @bp.route('/liquidation')
 # def liquidation():
