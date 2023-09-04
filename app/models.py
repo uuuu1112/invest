@@ -161,6 +161,11 @@ def integrateInvest(selectValue):
         seasonRoe=SeasonRoe()
         buffettInvest=BuffettInvest(seasonRoe,seasonEpsList,dividendRatio)        
         return buffettInvest.expectEarnApi()
+    else:
+        seasonBalance=SeasonBalance()
+        cashList=CashList()
+        liquidationInvest=LiquidationInvest(seasonBalance)
+        cashInvest=CashInvest(cashList,dividendRatio)
 
 class CashDiscount(InvestBase):
     def __init__(self,cashList,growth):

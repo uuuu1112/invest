@@ -1,5 +1,6 @@
-from flask import Blueprint,render_template
+from flask import Blueprint,render_template,request
 from app.models import *
+import requests
 
 
 bp = Blueprint('routes', __name__)
@@ -15,6 +16,19 @@ def about():
 @bp.route('/contact')
 def contact():
     return render_template('contact.html')
+@bp.route('/invest')
+def invest():
+    return render_template('invest.html', invest_options=InvestDict)
+
+@bp.route('/form')
+def form():
+    selected_option=request.args.get('selected_option')
+    api_url=request.url_root+'allInvest/'+str(selected_option)
+    api_response=requests.get(api_url)
+
+    return render_template('invest.html', invest_options=InvestDict,api_data=api_response.json()),
+
+    # return api_response.json()
 
 @bp.route('/allInvest/<selectValue>')
 def allInvest(selectValue):

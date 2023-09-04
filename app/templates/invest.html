@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block js %}
+<script src="{{ url_for('static', filename='invest.js') }}" defer></script>
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="static/invest.css">
+{% endblock%}
+{% block content %}
+    <div class="jumbotron text-center">
+        <h1 class="display-4">INVESTMENTS</h1>
+        <br>
+        <form method="get" action="/form">
+            <!-- 下拉式選單 -->
+            <label for="dropdown">Select an option:</label>
+            <select id="dropdown" name="selected_option">
+                {% for key, value in invest_options.items() %}
+                    <option value="{{ value }}">{{ key }}</option>
+                {% endfor %}
+            </select>
+   
+            
+            
+            <!-- 提交按鈕 -->
+            <input type="submit" value="Submit">
+        </form>
+        {{api_data}}
+        <div id="table-container"></div>
+        
+    </div>
+{% endblock %}
