@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% block js %}
+<!-- {% block js %}
 <script src="{{ url_for('static', filename='invest.js') }}" defer></script>
-{% endblock %}
+{% endblock %} -->
 {% block css %}
 <link rel="stylesheet" type="text/css" href="static/invest.css">
 {% endblock%}
@@ -11,20 +11,20 @@
         <br>
         <form method="get" action="/form">
             <!-- 下拉式選單 -->
-            <label for="dropdown">Select an option:</label>
+            <label for="dropdown">choose an investment:</label>
             <select id="dropdown" name="selected_option">
                 {% for key, value in invest_options.items() %}
                     <option value="{{ value }}">{{ key }}</option>
                 {% endfor %}
             </select>
    
-            
-            
             <!-- 提交按鈕 -->
             <input type="submit" value="Submit">
         </form>
-        {{api_data}}
-        <div id="table-container"></div>
+        
+        <div id="table-container">
+            {{ table_html|safe }}
+        </div>
         
     </div>
 {% endblock %}

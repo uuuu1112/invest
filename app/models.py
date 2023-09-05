@@ -15,9 +15,9 @@ class InvestBase:
     def expectEarn(self):
         self.df=self.priceGoal()
         return expectEarnTrans(self.df,self.filterCondition())
-    def expectEarnApi(self):
-        self.df=self.expectEarn()
-        return transToApi(self.df)  
+    # def expectEarnApi(self):
+    #     self.df=self.expectEarn()
+    #     return transToApi(self.df)  
 
 # 清算價值=總資產-()-()
 # (短期負債 長期負債)
@@ -41,7 +41,7 @@ class LiquidationInvest(InvestBase):
     def priceGoal(self):
         self.df=self.baseDf()
         self.df[commonDict['priceGoal']]=self.getLiquidation()*1.3
-        return self.df
+        return self.df.round(1)
 
 # 凡人說存股策略
 # 近一年股息殖利率大於５％
@@ -109,7 +109,7 @@ class LynchInvest(InvestBase):
     def priceGoal(self):
         self.df=self.baseDf()
         self.df[commonDict['priceGoal']]=self.seasonEps.latestEps()*15
-        return self.df
+        return self.df.round(1)
 
 # 林區巴菲特選股
 # 近4季ROE在20%以上
@@ -137,7 +137,7 @@ class BuffettInvest(InvestBase):
     def priceGoal(self):
         self.df=self.baseDf()
         self.df[commonDict['priceGoal']]=self.df[lynchDict['innerGrowth']]*self.df[commonDict['eps']]
-        return self.df    
+        return self.df.round(1)    
     
 # 所有基本投資策略的總結
 def integrateInvest(selectValue):
@@ -146,21 +146,21 @@ def integrateInvest(selectValue):
     if selectValue==InvestDict['LiquidationInvest']:
         seasonBalance=SeasonBalance()
         liquidationInvest=LiquidationInvest(seasonBalance)
-        return liquidationInvest.expectEarnApi()
+        return liquidationInvest.expectEarn().reset_index()
     elif selectValue==InvestDict['CashInvest']:
         cashList=CashList()
         cashInvest=CashInvest(cashList,dividendRatio)
-        return cashInvest.expectEarnApi()
+        return cashInvest.expectEarn().reset_index()
     elif selectValue==InvestDict['LynchInvest']:
         revenue=Revenue()
         shortRevenueGrowth=ShortRevenueGrowth(revenue)
         baseInfo=BaseInfo()
         lynchInvest=LynchInvest(seasonEpsList,baseInfo,shortRevenueGrowth)        
-        return lynchInvest.expectEarnApi()
+        return lynchInvest.expectEarn().reset_index()
     elif selectValue==InvestDict['BuffettInvest']:
         seasonRoe=SeasonRoe()
         buffettInvest=BuffettInvest(seasonRoe,seasonEpsList,dividendRatio)        
-        return buffettInvest.expectEarnApi()
+        return buffettInvest.expectEarn().reset_index()
     else:
         seasonBalance=SeasonBalance()
         cashList=CashList()

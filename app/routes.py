@@ -9,7 +9,6 @@ bp = Blueprint('routes', __name__)
 def index():
     return render_template('index.html')
 
-
 @bp.route('/about')
 def about():
     return render_template('about.html')
@@ -23,16 +22,15 @@ def invest():
 @bp.route('/form')
 def form():
     selected_option=request.args.get('selected_option')
-    api_url=request.url_root+'allInvest/'+str(selected_option)
-    api_response=requests.get(api_url)
+    api_response=integrateInvest(selected_option)
+    table_html=api_response.to_html(classes='table table-bordered', index=False)
 
-    return render_template('invest.html', invest_options=InvestDict,api_data=api_response.json()),
+    return render_template('invest.html', invest_options=InvestDict, table_html=table_html)
 
-    # return api_response.json()
 
-@bp.route('/allInvest/<selectValue>')
-def allInvest(selectValue):
-    return integrateInvest(selectValue)
+# @bp.route('/allInvest/<selectValue>')
+# def allInvest(selectValue):
+#     return integrateInvest(selectValue)
 
 # @bp.route('/liquidation')
 # def liquidation():
