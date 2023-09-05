@@ -4,3 +4,15 @@
 th{
     text-align: center;
 }
+.descripBox{
+    display: flex;
+    /* 水平置中 */
+    justify-content: center;    
+    /* 垂直置中 */
+    align-items: center;   
+}
+.descrip{
+    width: 50%;
+    margin-bottom: 10px;
+    text-align: left;
+}

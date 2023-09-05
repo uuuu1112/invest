@@ -22,10 +22,11 @@ def invest():
 @bp.route('/form')
 def form():
     selected_option=request.args.get('selected_option')
-    api_response=integrateInvest(selected_option)
+    descrip=integrateInvest(selected_option)['descrip']
+    api_response=integrateInvest(selected_option)['table']
     table_html=api_response.to_html(classes='table table-bordered', index=False)
 
-    return render_template('invest.html', invest_options=InvestDict, table_html=table_html)
+    return render_template('invest.html', invest_options=InvestDict, table_html=table_html,descrip=descrip)
 
 
 # @bp.route('/allInvest/<selectValue>')

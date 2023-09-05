@@ -15,9 +15,10 @@ class InvestBase:
     def expectEarn(self):
         self.df=self.priceGoal()
         return expectEarnTrans(self.df,self.filterCondition())
-    # def expectEarnApi(self):
-    #     self.df=self.expectEarn()
-    #     return transToApi(self.df)  
+    def expectEarnApi(self):
+        self.df=self.expectEarn().reset_index() 
+        allContent={'table':self.df,'descrip':self.descrip()}
+        return allContent
 
 # 清算價值=總資產-()-()
 # (短期負債 長期負債)
@@ -28,6 +29,11 @@ class InvestBase:
 class LiquidationInvest(InvestBase):
     def __init__(self,seasonBalance):
         self.seasonBalance=seasonBalance
+    def descrip(self):
+        return '''# 清算價值=總資產 - () - ()<br>
+                # - (短期負債 長期負債) - (存貨 應收帳款 長期投資)<br>
+                # 市價小於清算價值３０％買近（沒設）<br>
+                # 市價大於清算價值３０％賣出'''
     def getLiquidation(self):
         return self.seasonBalance.getNetWorth()-self.seasonBalance.getDebt()-self.seasonBalance.getStock()-self.seasonBalance.getInvest()-self.seasonBalance.getReceive()
     def baseDf(self):
@@ -68,6 +74,14 @@ class CashInvest(InvestBase):
     def __init__(self,cashList,dividendRatio):
         self.cash=cashList
         self.dividendRatio=dividendRatio
+    def descrip(self):
+        return '''# 近一年股息殖利率大於５％
+            # 近五年平均股息殖利率大於５％<br>
+            # 連續５年發放股利
+            # 股息發放率五年平均大於50%<br>
+            # 以近５年現金股利的平均值 來計算殖利率<br>
+            # 當現金來到５％時賣出
+            # 依股息成長率估的報酬率'''
     def baseDf(self):
         self.df=baseDf.copy()
         self.df.loc[:,cashDict['latestYield']]=(self.cash.latestCash()/self.df[commonDict['price']])
@@ -96,6 +110,13 @@ class LynchInvest(InvestBase):
         self.shortRevenueGrowth=shortRevenueGrowth
         self.seasonEps=seasonEpsList
         self.baseInfo=baseInfo
+    def descrip(self):
+        return '''# 慶龍林區成長股策略
+            # 近3個月營收年增率都大於30%
+            # 連續4季的eps都大於0
+            # 本益比10倍買進(沒設)
+            # 本益比15倍賣出
+            # 不要營建股'''
     def baseDf(self):
         self.df=baseDf.copy()
         self.df[lynchDict['minGrowth']]=self.shortRevenueGrowth.revenue3MinYoY()
@@ -122,6 +143,11 @@ class BuffettInvest(InvestBase):
         self.seasonEps=seasonEpsList
         self.dividendRatio=dividendRatio
         self.innerGrowth=InnerGrowth(self.dividendRatio,self.seasonRoe)
+    def descrip(self):
+        return '''# # 林區巴菲特選股
+            # 近4季ROE在20%以上
+            # 近4季EPS本益比在10以下(沒設)
+            # 近4季皆有獲利 '''        
     def baseDf(self):
         self.df=baseDf.copy()
         self.df[roeDict['roe']]=self.seasonRoe.seasonRoeTrans.loc[roeDict['roe']]
@@ -146,21 +172,21 @@ def integrateInvest(selectValue):
     if selectValue==InvestDict['LiquidationInvest']:
         seasonBalance=SeasonBalance()
         liquidationInvest=LiquidationInvest(seasonBalance)
-        return liquidationInvest.expectEarn().reset_index()
+        return liquidationInvest.expectEarnApi()
     elif selectValue==InvestDict['CashInvest']:
         cashList=CashList()
         cashInvest=CashInvest(cashList,dividendRatio)
-        return cashInvest.expectEarn().reset_index()
+        return cashInvest.expectEarnApi()
     elif selectValue==InvestDict['LynchInvest']:
         revenue=Revenue()
         shortRevenueGrowth=ShortRevenueGrowth(revenue)
         baseInfo=BaseInfo()
         lynchInvest=LynchInvest(seasonEpsList,baseInfo,shortRevenueGrowth)        
-        return lynchInvest.expectEarn().reset_index()
+        return lynchInvest.expectEarnApi()
     elif selectValue==InvestDict['BuffettInvest']:
         seasonRoe=SeasonRoe()
         buffettInvest=BuffettInvest(seasonRoe,seasonEpsList,dividendRatio)        
-        return buffettInvest.expectEarn().reset_index()
+        return buffettInvest.expectEarnApi()
     else:
         seasonBalance=SeasonBalance()
         cashList=CashList()

@@ -21,8 +21,11 @@
             <!-- 提交按鈕 -->
             <input type="submit" value="Submit">
         </form>
-        
+        <div class="descripBox">
+            <div class="descrip">{{ descrip|safe }}</div>
+        </div>
         <div id="table-container">
+
             {{ table_html|safe }}
         </div>
         
