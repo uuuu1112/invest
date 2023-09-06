@@ -14,7 +14,7 @@
             <label for="dropdown">choose an investment:</label>
             <select id="dropdown" name="selected_option">
                 {% for key, value in invest_options.items() %}
-                    <option value="{{ value }}">{{ key }}</option>
+                    <option value="{{ value }}" {% if selected_option == value %}selected{% endif %}>{{ key }}</option>
                 {% endfor %}
             </select>
    

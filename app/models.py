@@ -30,10 +30,15 @@ class LiquidationInvest(InvestBase):
     def __init__(self,seasonBalance):
         self.seasonBalance=seasonBalance
     def descrip(self):
-        return '''# 清算價值=總資產 - () - ()<br>
-                # - (短期負債 長期負債) - (存貨 應收帳款 長期投資)<br>
-                # 市價小於清算價值３０％買近（沒設）<br>
-                # 市價大於清算價值３０％賣出'''
+        return '''
+<h3>清算價值投資法</h3>
+定義 : 
+清算價值 = 總資產 - (短期負債 長期負債) - (存貨 應收帳款 長期投資)<br>
+投資策略: 
+市價小於清算價值３０％買進，市價大於清算價值３０％賣出<br>
+預期報酬率 : 
+市價到清算價值*1.3的報酬率
+'''
     def getLiquidation(self):
         return self.seasonBalance.getNetWorth()-self.seasonBalance.getDebt()-self.seasonBalance.getStock()-self.seasonBalance.getInvest()-self.seasonBalance.getReceive()
     def baseDf(self):
@@ -75,13 +80,17 @@ class CashInvest(InvestBase):
         self.cash=cashList
         self.dividendRatio=dividendRatio
     def descrip(self):
-        return '''# 近一年股息殖利率大於５％
-            # 近五年平均股息殖利率大於５％<br>
-            # 連續５年發放股利
-            # 股息發放率五年平均大於50%<br>
-            # 以近５年現金股利的平均值 來計算殖利率<br>
-            # 當現金來到５％時賣出
-            # 依股息成長率估的報酬率'''
+        return '''
+<h3>凡人說&慶龍存股策略</h3>
+篩選規則 : <br>
+近一年股息殖利率大於５％ 、近五年平均股息殖利率大於５％、
+股息發放率五年平均大於50% 、連續５年發放股利<br>
+投資策略: <br>
+以近５年現金股利的平均值來計算殖利率。 
+當現金殖利率來到７％時買進 ，當現金殖利率來到５％時賣出<br>
+預期報酬率 : 
+市價到現金殖利率來到５％的報酬率
+'''
     def baseDf(self):
         self.df=baseDf.copy()
         self.df.loc[:,cashDict['latestYield']]=(self.cash.latestCash()/self.df[commonDict['price']])
@@ -92,7 +101,7 @@ class CashInvest(InvestBase):
     def priceGoal(self):
         self.df=self.baseDf()
         self.df.loc[:,commonDict['priceGoal']]=self.cash.avgCashList()/0.05
-        return self.df
+        return self.df.round(2)
     def filterCondition(self):
         self.df=self.baseDf()
         self.filterCondition=(self.df[cashDict['latestYield']]>0.05)&(self.df[cashDict['avgYield']]>0.05)&(self.df[cashDict['minCash']]>0)&(self.df[cashDict['avgDividendRatio']]>50)
@@ -111,12 +120,15 @@ class LynchInvest(InvestBase):
         self.seasonEps=seasonEpsList
         self.baseInfo=baseInfo
     def descrip(self):
-        return '''# 慶龍林區成長股策略
-            # 近3個月營收年增率都大於30%
-            # 連續4季的eps都大於0
-            # 本益比10倍買進(沒設)
-            # 本益比15倍賣出
-            # 不要營建股'''
+        return '''
+<h3>慶龍林區成長股策略</h3>
+篩選規則 : 
+近3個月營收年增率都大於30% 、連續4季的eps都大於0 、不要營建股<br>
+投資策略: 
+本益比10倍買進 本益比15倍賣出<br>
+預期報酬率 : 
+市價到本益比15倍的報酬率
+'''
     def baseDf(self):
         self.df=baseDf.copy()
         self.df[lynchDict['minGrowth']]=self.shortRevenueGrowth.revenue3MinYoY()
@@ -144,10 +156,13 @@ class BuffettInvest(InvestBase):
         self.dividendRatio=dividendRatio
         self.innerGrowth=InnerGrowth(self.dividendRatio,self.seasonRoe)
     def descrip(self):
-        return '''# # 林區巴菲特選股
-            # 近4季ROE在20%以上
-            # 近4季EPS本益比在10以下(沒設)
-            # 近4季皆有獲利 '''        
+        return '''
+<h3>林區巴菲特選股</h3>
+篩選規則 : 
+近4季ROE在20%以上、近4季EPS本益比在10以下、近4季皆有獲利<br>
+預期報酬率 : 
+市價到 ( 內部成長率(%)*EPS ) 的報酬率
+'''        
     def baseDf(self):
         self.df=baseDf.copy()
         self.df[roeDict['roe']]=self.seasonRoe.seasonRoeTrans.loc[roeDict['roe']]
@@ -158,7 +173,7 @@ class BuffettInvest(InvestBase):
         return self.df
     def filterCondition(self):
         self.df=self.baseDf()
-        self.filterCondition=(self.df[roeDict['roe']]>20)&(self.df[lynchDict['minEps']]>0)
+        self.filterCondition=(self.df[roeDict['roe']]>20)&(self.df[lynchDict['minEps']]>0)&(self.df[commonDict['price']]<self.df[commonDict['eps']]*10)
         return self.filterCondition
     def priceGoal(self):
         self.df=self.baseDf()

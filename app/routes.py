@@ -25,8 +25,8 @@ def form():
     descrip=integrateInvest(selected_option)['descrip']
     api_response=integrateInvest(selected_option)['table']
     table_html=api_response.to_html(classes='table table-bordered', index=False)
+    return render_template('invest.html', invest_options=InvestDict, table_html=table_html,descrip=descrip,selected_option=selected_option)
 
-    return render_template('invest.html', invest_options=InvestDict, table_html=table_html,descrip=descrip)
 
 
 # @bp.route('/allInvest/<selectValue>')

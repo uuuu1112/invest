@@ -29,7 +29,7 @@ lynchDict={
     'minEps':'最小EPS',
     'dividendRatio':'盈餘配發率',
     'priceGoal':commonDict['priceGoal'],
-    'innerGrowth':'內部成長率',
+    'innerGrowth':'內部成長率(%)',
 }
 balaceDict={
     'debt':'負債總額(%)',
