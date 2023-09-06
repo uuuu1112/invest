@@ -24,4 +24,18 @@ class CashList(Cash):
         return self.avgCash(n).iloc[-1]
     def minCashList(self,n=5):
         return self.minCash(n).iloc[-1]
+    
+def getCashList(selectCash):
+    cashList=CashList()
+    if selectCash==cashListDict['latest4SeasonEPS']:
+        seasonEpsList=SeasonEpsList()
+        return seasonEpsList.latestEps()
+    elif selectCash==cashDistDict['avg5YearsEPS']:
+        yearEpsList=YearEpsList()
+        return yearEpsList.avgEps()
+    elif selectCash==cashDict['latestCash']:
+        return cashList.latestCash()
+    elif selectCash==cashDict['avg5YearsCash']:
+        return cashList.avgCashList()
+
 

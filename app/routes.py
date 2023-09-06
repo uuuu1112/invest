@@ -18,6 +18,9 @@ def contact():
 @bp.route('/invest')
 def invest():
     return render_template('invest.html', invest_options=InvestDict)
+@bp.route('/dcfModel')
+def dcfModel():
+    return render_template('dcfModel.html',cash_option=cashListDict,growth_option=growthDict)
 
 @bp.route('/form')
 def form():
@@ -26,6 +29,8 @@ def form():
     api_response=integrateInvest(selected_option)['table']
     table_html=api_response.to_html(classes='table table-bordered', index=False)
     return render_template('invest.html', invest_options=InvestDict, table_html=table_html,descrip=descrip,selected_option=selected_option)
+
+# @bp.route('/dcfForm')
 
 
 

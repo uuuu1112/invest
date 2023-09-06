@@ -72,6 +72,19 @@ InvestDict={
     'LynchInvest':"3",
     'BuffettInvest':"4"
 }
+cashListDict={
+    "latest4SeasonEPS":"1",
+    "avg5YearsEPS":"2",
+    "latestCash":"3",
+    "avg5YearsCash":"4"
+}
+growthDict={
+    "innerGrowth":"1",
+    "avg5InnerGrowth":"2",
+    "year5CAGR":"3",
+    "min3n5CAGR":"4",
+    "revenue3MinYOY":"5"
+}
 
 baseDropRows=['成交','排名','漲跌價','漲跌幅']
 monthDrop=['\xa0平均\xa0營收(億)','\xa0合計\xa0營收(億)']

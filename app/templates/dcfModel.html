@@ -7,13 +7,20 @@
 {% endblock%}
 {% block content %}
     <div class="jumbotron text-center">
-        <h1 class="display-4">INVESTMENTS</h1>
+        <h1 class="display-4">DCF Model</h1>
         <br>
-        <form method="get" action="/form">
+        <form method="get" action="/dcfForm">
             <!-- 下拉式選單 -->
-            <label for="dropdown">choose an investment:</label>
-            <select id="dropdown" name="selected_option">
-                {% for key, value in invest_options.items() %}
+            <label for="dropdown">choose init cash:</label>
+            <select id="dropdown" name="cash_option">
+                {% for key, value in cash_option.items() %}
+                    <option value="{{ value }}" {% if selected_option == value %}selected{% endif %}>{{ key }}</option>
+                {% endfor %}
+            </select>
+            <!-- 下拉式選單 -->
+            <label for="dropdown">choose future 5 year CAGR:</label>
+            <select id="dropdown" name="growth_option">
+                {% for key, value in growth_option.items() %}
                     <option value="{{ value }}" {% if selected_option == value %}selected{% endif %}>{{ key }}</option>
                 {% endfor %}
             </select>

@@ -16,7 +16,7 @@ class AvgInnerGrowth:
         self.yearRoe=yearRoe
         self.dividendRatio=dividendRatio
         self.n=n
-    def avgInnerGrowth(self):
+    def getAvgInnerGrowth(self):
         self.df=pd.DataFrame({})
         self.df[roeDict['avgRoe']]=self.yearRoe.avgRoe(self.n).iloc[-1]/100
         self.df[cashDict['avgDividendRatio']]=self.dividendRatio.avgDividendRatio(self.n).iloc[-1]/100
@@ -78,4 +78,27 @@ class ShortStockGrowth:
         self.df[shortGrowthDict['stockQoQ']]=self.stockQoQ().iloc[-1]
         self.df[shortGrowthDict['stockYoY']]=self.stockYoY().iloc[-1]
         return self.df.applymap(lambda x: f'{x*100:.2f}%') 
+    
+def getGrowth(selectGrowth):
+    dividendRatio=DividendRatio()
+    yearEps=YearEps()
+    yearCAGR=YearCAGR(yearEps)
+    if selectGrowth==growthDict['innerGrowth']:
+        seasonRoe=SeasonRoe()
+        innerGrowth=InnerGrowth(dividendRatio,seasonRoe)
+        return innerGrowth.getInnerGrowth()
+    elif selectGrowth==growthDict['avg5InnerGrowth']:
+        yearRoe=YearRoe()
+        avgInnerGrowth=InnerGrowth(dividendRatio,yearRoe)
+        return avgInnerGrowth.getAvgInnerGrowth()
+    elif selectGrowth==growthDict['year5CAGR']:
+        return yearCAGR.year5Cagr()
+    elif selectGrowth==growthDict['min3n5CAGR']:
+        return yearCAGR.minCagr()
+    elif selectGrowth==growthDict['revenue3MinYOY']:
+        revenue=Revenue()
+        shortRevenueGrowth=ShortRevenueGrowth(revenue)
+        return shortRevenueGrowth.revenue3MinYoY()
+
+
 

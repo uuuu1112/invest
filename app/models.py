@@ -202,16 +202,21 @@ def integrateInvest(selectValue):
         seasonRoe=SeasonRoe()
         buffettInvest=BuffettInvest(seasonRoe,seasonEpsList,dividendRatio)        
         return buffettInvest.expectEarnApi()
-    else:
-        seasonBalance=SeasonBalance()
-        cashList=CashList()
-        liquidationInvest=LiquidationInvest(seasonBalance)
-        cashInvest=CashInvest(cashList,dividendRatio)
 
 class CashDiscount(InvestBase):
     def __init__(self,cashList,growth):
         self.cashList=cashList
         self.growth=growth
+    def descrip(self):
+        return '''
+<h3>現金流折現模型</h3>
+第一個變數說明(起初的每股現金流) : 
+近4季的EPS、近5年平均的EPS、最近的現金股息、近五年的現金股息<br>
+第二個變數說明(未來5年的複合成長率預估) : 
+最新的內部成長率、近5年平均的內部成長率、過去5年的複合成長率、過去3年5年的複合成長率取小的、過去3個月的年增率取小的<br>
+模型說明 : 
+假設未來5年的每股現金流是照第二個變數成長，後來是2%的成長，每年的每股現金流用10%折現到今天，把他們相加當成我的目標價
+'''      
     def baseDf(self):
         self.df=baseDf.copy()
         self.df[cashDistDict['beginCash']]=self.cashList
@@ -240,3 +245,8 @@ class InnerValue(InvestBase):
         self.df[commonDict['priceGoal']]=self.df[balaceDict['liquidationValue']]+self.df[cashDistDict['discount']]
         return self.df
     
+def getPridictValue(selectCash,selectGrowth):
+    cashList=getCashList(selectCash)
+    growth=getGrowth(selectGrowth)
+    cashDiscount=CashDiscount(cashList,growth)
+    return cashDiscount.expectEarnApi()
