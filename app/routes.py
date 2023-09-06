@@ -17,10 +17,10 @@ def contact():
     return render_template('contact.html')
 @bp.route('/invest')
 def invest():
-    return render_template('invest.html', invest_options=InvestDict)
+    return render_template('invest.html', invest_options=InvestDict,descrip=investDescrip)
 @bp.route('/dcfModel')
 def dcfModel():
-    return render_template('dcfModel.html',cash_option=cashListDict,growth_option=growthDict)
+    return render_template('dcfModel.html',cash_option=cashListDict,growth_option=growthDict,descrip=dcfDescrip)
 
 @bp.route('/form')
 def form():
@@ -30,8 +30,14 @@ def form():
     table_html=api_response.to_html(classes='table table-bordered', index=False)
     return render_template('invest.html', invest_options=InvestDict, table_html=table_html,descrip=descrip,selected_option=selected_option)
 
-# @bp.route('/dcfForm')
-
+@bp.route('/dcfForm')
+def dcfForm():
+    selectCash=request.args.get('cash_option')
+    selectGrowth=request.args.get('growth_option')
+    descrip=getPridictValue(selectCash,selectGrowth)['descrip']
+    api_response=getPridictValue(selectCash,selectGrowth)['table']
+    table_html=api_response.to_html(classes='table table-bordered', index=False)
+    return render_template('dcfModel.html',cash_option=cashListDict,growth_option=growthDict, table_html=table_html,descrip=descrip,selectCash=selectCash,selectGrowth=selectGrowth)
 
 
 # @bp.route('/allInvest/<selectValue>')

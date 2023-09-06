@@ -89,7 +89,7 @@ def getGrowth(selectGrowth):
         return innerGrowth.getInnerGrowth()
     elif selectGrowth==growthDict['avg5InnerGrowth']:
         yearRoe=YearRoe()
-        avgInnerGrowth=InnerGrowth(dividendRatio,yearRoe)
+        avgInnerGrowth=AvgInnerGrowth(dividendRatio,yearRoe)
         return avgInnerGrowth.getAvgInnerGrowth()
     elif selectGrowth==growthDict['year5CAGR']:
         return yearCAGR.year5Cagr()

@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 from app.commonWord import *
+pd.set_option('display.float_format', '{:.2f}'.format)
 
 class BaseTrans:
     def baseDf(self,csvData):

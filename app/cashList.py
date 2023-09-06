@@ -30,12 +30,12 @@ def getCashList(selectCash):
     if selectCash==cashListDict['latest4SeasonEPS']:
         seasonEpsList=SeasonEpsList()
         return seasonEpsList.latestEps()
-    elif selectCash==cashDistDict['avg5YearsEPS']:
+    elif selectCash==cashListDict['avg5YearsEPS']:
         yearEpsList=YearEpsList()
         return yearEpsList.avgEps()
-    elif selectCash==cashDict['latestCash']:
+    elif selectCash==cashListDict['latestCash']:
         return cashList.latestCash()
-    elif selectCash==cashDict['avg5YearsCash']:
+    elif selectCash==cashListDict['avg5YearsCash']:
         return cashList.avgCashList()
 
 
