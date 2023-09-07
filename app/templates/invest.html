@@ -14,17 +14,19 @@
             <label for="dropdown">choose an investment:</label>
             <select id="dropdown" name="selected_option">
                 {% for key, value in invest_options.items() %}
-                    <option value="{{ value }}" {% if selected_option == value %}selected{% endif %}>{{ key }}</option>
+                    <option value="{{ value }}" {% if query.selected_option == value %}selected{% endif %}>{{ key }}</option>
                 {% endfor %}
             </select>
             <!-- 提交按鈕 -->
             <input type="submit" value="Submit">
         </form>
+        <!-- 策略說明 -->
         <div class="descripBox">
-            <div class="descrip">{{ descrip|safe }}</div>
+            <div class="descrip">{{ query.descrip|safe }}</div>
         </div>
+        <!-- 變數表格 -->
         <div id="table-container">
-            {{ table_html|safe }}
+            {{ query.table_html|safe }}
         </div>
         
     </div>

@@ -1,3 +1,4 @@
+
 // function createStockTable(stockData) {
 //     console.log("print stock data",stockData)
 //     // 创建一个表格元素

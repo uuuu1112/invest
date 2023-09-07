@@ -14,26 +14,26 @@
             <label for="dropdown">init cash:</label>
             <select id="dropdown" name="cash_option">
                 {% for key, value in cash_option.items() %}
-                    <option value="{{ value }}" {% if selectCash == value %}selected{% endif %}>{{ key }}</option>
+                    <option value="{{ value }}" {% if query.selectCash == value %}selected{% endif %}>{{ key }}</option>
                 {% endfor %}
             </select>
             <!-- 下拉式選單 -->
             <label for="dropdown">future 5 year CAGR:</label>
             <select id="dropdown" name="growth_option">
                 {% for key, value in growth_option.items() %}
-                    <option value="{{ value }}" {% if selectGrowth == value %}selected{% endif %}>{{ key }}</option>
+                    <option value="{{ value }}" {% if query.selectGrowth == value %}selected{% endif %}>{{ key }}</option>
                 {% endfor %}
             </select>
             <label for="inputText">growth max:</label>
-            <input class="inputBox" type="text" id="inputText" name="maxValue" value="{{maxValue}}">
+            <input class="inputBox" type="text" id="inputText" name="maxValue" value="{{query.maxValue}}">
             <!-- 提交按鈕 -->
             <input type="submit" value="Submit">
         </form>
         <div class="descripBox">
-            <div class="descrip">{{ descrip|safe }}</div>
+            <div class="descrip">{{ query.descrip|safe }}</div>
         </div>
         <div id="table-container">
-            {{ table_html|safe }}
+            {{ query.table_html|safe }}
         </div>
         
     </div>

@@ -17,29 +17,35 @@ def contact():
     return render_template('contact.html')
 @bp.route('/invest')
 def invest():
-    return render_template('invest.html', invest_options=InvestDict,descrip=investDescrip)
+    query={}
+    query['descrip']=investDescrip
+    return render_template('invest.html', invest_options=InvestDict,query=query)
+
 @bp.route('/dcfModel')
 def dcfModel():
-    return render_template('dcfModel.html',cash_option=cashListDict,growth_option=growthDict,descrip=dcfDescrip,maxValue=str(0.4))
+    query={}
+    query['descrip']=dcfDescrip
+    query['maxValue']=str(0.4)
+    return render_template('dcfModel.html',cash_option=cashListDict,growth_option=growthDict,query=query)
 
 @bp.route('/form')
 def form():
-    selected_option=request.args.get('selected_option')
-    descrip=integrateInvest(selected_option)['descrip']
-    api_response=integrateInvest(selected_option)['table']
-    table_html=api_response.to_html(classes='table table-bordered', index=False)
-    return render_template('invest.html', invest_options=InvestDict, table_html=table_html,descrip=descrip,selected_option=selected_option)
-
+    query={}
+    query['selected_option']=request.args.get('selected_option')
+    query['descrip']=integrateInvest(query['selected_option'])['descrip']
+    api_response=integrateInvest(query['selected_option'])['table']
+    query['table_html']=api_response.to_html(classes='table table-bordered', index=False)
+    return render_template('invest.html', invest_options=InvestDict, query=query)
 @bp.route('/dcfForm')
 def dcfForm():
-    selectCash=request.args.get('cash_option')
-    selectGrowth=request.args.get('growth_option')
-    maxValue=request.args.get('maxValue')
-    descrip=getPridictValue(selectCash,selectGrowth)['descrip']
-    api_response=getPridictValue(selectCash,selectGrowth,float(maxValue))['table']
-    table_html=api_response.to_html(classes='table table-bordered', index=False)
-    return render_template('dcfModel.html',cash_option=cashListDict,growth_option=growthDict, table_html=table_html,descrip=descrip,selectCash=selectCash,selectGrowth=selectGrowth,maxValue=maxValue)
-
+    query={}
+    query['selectCash']=request.args.get('cash_option')
+    query['selectGrowth']=request.args.get('growth_option')
+    query['maxValue']=request.args.get('maxValue')
+    query['descrip']=getPridictValue(query['selectCash'],query['selectGrowth'])['descrip']
+    api_response=getPridictValue(query['selectCash'],query['selectGrowth'],float(query['maxValue']))['table']
+    query['table_html']=api_response.to_html(classes='table table-bordered', index=False)
+    return render_template('dcfModel.html',cash_option=cashListDict,growth_option=growthDict,query=query)
 
 # @bp.route('/allInvest/<selectValue>')
 # def allInvest(selectValue):
