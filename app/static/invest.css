@@ -4,6 +4,9 @@
 th{
     text-align: center;
 }
+.inputBox{
+    width: 50px;
+}
 .descripBox{
     display: flex;
     /* 水平置中 */

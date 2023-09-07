@@ -20,7 +20,7 @@ def invest():
     return render_template('invest.html', invest_options=InvestDict,descrip=investDescrip)
 @bp.route('/dcfModel')
 def dcfModel():
-    return render_template('dcfModel.html',cash_option=cashListDict,growth_option=growthDict,descrip=dcfDescrip)
+    return render_template('dcfModel.html',cash_option=cashListDict,growth_option=growthDict,descrip=dcfDescrip,maxValue=str(0.4))
 
 @bp.route('/form')
 def form():
@@ -34,10 +34,11 @@ def form():
 def dcfForm():
     selectCash=request.args.get('cash_option')
     selectGrowth=request.args.get('growth_option')
+    maxValue=request.args.get('maxValue')
     descrip=getPridictValue(selectCash,selectGrowth)['descrip']
-    api_response=getPridictValue(selectCash,selectGrowth)['table']
+    api_response=getPridictValue(selectCash,selectGrowth,float(maxValue))['table']
     table_html=api_response.to_html(classes='table table-bordered', index=False)
-    return render_template('dcfModel.html',cash_option=cashListDict,growth_option=growthDict, table_html=table_html,descrip=descrip,selectCash=selectCash,selectGrowth=selectGrowth)
+    return render_template('dcfModel.html',cash_option=cashListDict,growth_option=growthDict, table_html=table_html,descrip=descrip,selectCash=selectCash,selectGrowth=selectGrowth,maxValue=maxValue)
 
 
 # @bp.route('/allInvest/<selectValue>')

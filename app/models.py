@@ -207,10 +207,12 @@ class CashDiscount(InvestBase):
     def __init__(self,cashList,growth):
         self.cashList=cashList
         self.growth=growth
+        self.baseInfo=BaseInfo()
     def descrip(self):
         return dcfDescrip
     def baseDf(self):
         self.df=baseDf.copy()
+        self.df[lynchDict['industry']]=self.baseInfo.industry()
         self.df[cashDistDict['beginCash']]=self.cashList
         self.df[cashDistDict['expectGrowth']]=self.growth
         return self.df
@@ -237,8 +239,8 @@ class InnerValue(InvestBase):
         self.df[commonDict['priceGoal']]=self.df[balaceDict['liquidationValue']]+self.df[cashDistDict['discount']]
         return self.df.round(1)  
     
-def getPridictValue(selectCash,selectGrowth):
+def getPridictValue(selectCash,selectGrowth,maxValue='none'):
     cashList=getCashList(selectCash)
-    growth=getGrowth(selectGrowth)
+    growth=getGrowth(selectGrowth,maxValue)
     cashDiscount=CashDiscount(cashList,growth)
     return cashDiscount.expectEarnApi()

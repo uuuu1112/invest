@@ -11,19 +11,21 @@
         <br>
         <form method="get" action="/dcfForm">
             <!-- 下拉式選單 -->
-            <label for="dropdown">choose init cash:</label>
+            <label for="dropdown">init cash:</label>
             <select id="dropdown" name="cash_option">
                 {% for key, value in cash_option.items() %}
                     <option value="{{ value }}" {% if selectCash == value %}selected{% endif %}>{{ key }}</option>
                 {% endfor %}
             </select>
             <!-- 下拉式選單 -->
-            <label for="dropdown">choose future 5 year CAGR:</label>
+            <label for="dropdown">future 5 year CAGR:</label>
             <select id="dropdown" name="growth_option">
                 {% for key, value in growth_option.items() %}
                     <option value="{{ value }}" {% if selectGrowth == value %}selected{% endif %}>{{ key }}</option>
                 {% endfor %}
             </select>
+            <label for="inputText">growth max:</label>
+            <input class="inputBox" type="text" id="inputText" name="maxValue" value="{{maxValue}}">
             <!-- 提交按鈕 -->
             <input type="submit" value="Submit">
         </form>
