@@ -10,6 +10,9 @@
         <h1 class="display-4">DCF Model</h1>
         <br>
         <form method="get" action="/dcfForm">
+            <input type="checkbox" id="checkbox" name="checkbox" {% if query.withLiquidation == "on" %}checked{% endif %}>
+            <label for="checkbox">with liquidation</label>
+            <br>
             <!-- 下拉式選單 -->
             <label for="dropdown">init cash:</label>
             <select id="dropdown" name="cash_option">
@@ -17,6 +20,7 @@
                     <option value="{{ value }}" {% if query.selectCash == value %}selected{% endif %}>{{ key }}</option>
                 {% endfor %}
             </select>
+
             <!-- 下拉式選單 -->
             <label for="dropdown">future 5 year CAGR:</label>
             <select id="dropdown" name="growth_option">
@@ -24,10 +28,14 @@
                     <option value="{{ value }}" {% if query.selectGrowth == value %}selected{% endif %}>{{ key }}</option>
                 {% endfor %}
             </select>
+
+            <!-- 最大年增率 -->
             <label for="inputText">growth max:</label>
             <input class="inputBox" type="text" id="inputText" name="maxValue" value="{{query.maxValue}}">
+
             <!-- 提交按鈕 -->
             <input type="submit" value="Submit">
+
         </form>
         <div class="descripBox">
             <div class="descrip">{{ query.descrip|safe }}</div>

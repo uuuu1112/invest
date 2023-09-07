@@ -232,6 +232,8 @@ class InnerValue(InvestBase):
     def __init__(self,cashDiscount,liquidationInvest):
         self.cashDiscount=cashDiscount
         self.liquidationInvest=liquidationInvest
+    def descrip(self):
+        return dcfDescrip
     def priceGoal(self):
         self.df=self.cashDiscount.priceGoal()
         self.df.rename(columns={commonDict['priceGoal']:cashDistDict['discount']},inplace=True)
@@ -239,8 +241,14 @@ class InnerValue(InvestBase):
         self.df[commonDict['priceGoal']]=self.df[balaceDict['liquidationValue']]+self.df[cashDistDict['discount']]
         return self.df.round(1)  
     
-def getPridictValue(selectCash,selectGrowth,maxValue='none'):
+def getPridictValue(selectCash,selectGrowth,maxValue='none',withLiqui='none'):
     cashList=getCashList(selectCash)
     growth=getGrowth(selectGrowth,maxValue)
     cashDiscount=CashDiscount(cashList,growth)
-    return cashDiscount.expectEarnApi()
+    if withLiqui=="on":
+        seasonBalance=SeasonBalance()
+        liquidationInvest=LiquidationInvest(seasonBalance)
+        innerValue=InnerValue(cashDiscount,liquidationInvest)
+        return innerValue.expectEarnApi()
+    else:
+        return cashDiscount.expectEarnApi()
