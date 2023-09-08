@@ -32,10 +32,11 @@ def dcfModel():
 def form():
     query={}
     query['selected_option']=request.args.get('selected_option')
-    query['descrip']=integrateInvest(query['selected_option'])['descrip']
-    api_response=integrateInvest(query['selected_option'])['table']
-    query['table_html']=api_response.to_html(classes='table table-bordered', index=False)
-    return render_template('invest.html', invest_options=InvestDict, query=query)
+    # query['descrip']=integrateInvest(query['selected_option'])['descrip']
+    # api_response=integrateInvest(query['selected_option'])['table']
+    # query['table_html']=api_response.to_html(classes='table table-bordered', index=False)
+    # return render_template('invest.html', invest_options=InvestDict, query=query)
+    return query
 @bp.route('/dcfForm')
 def dcfForm():
     query={}
