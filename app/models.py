@@ -184,21 +184,21 @@ class BuffettInvest(InvestBase):
 def integrateInvest(selectValue):
     seasonEpsList=SeasonEpsList()
     dividendRatio=DividendRatio()
-    if selectValue==InvestDict['LiquidationInvest']:
+    if selectValue==dictMap('LiquidationInvest',InvestDict):
         seasonBalance=SeasonBalance()
         liquidationInvest=LiquidationInvest(seasonBalance)
         return liquidationInvest.expectEarnApi()
-    elif selectValue==InvestDict['CashInvest']:
+    elif selectValue==dictMap('CashInvest',InvestDict):
         cashList=CashList()
         cashInvest=CashInvest(cashList,dividendRatio)
         return cashInvest.expectEarnApi()
-    elif selectValue==InvestDict['LynchInvest']:
+    elif selectValue==dictMap('LynchInvest',InvestDict):
         revenue=Revenue()
         shortRevenueGrowth=ShortRevenueGrowth(revenue)
         baseInfo=BaseInfo()
         lynchInvest=LynchInvest(seasonEpsList,baseInfo,shortRevenueGrowth)        
         return lynchInvest.expectEarnApi()
-    elif selectValue==InvestDict['BuffettInvest']:
+    elif selectValue==dictMap('BuffettInvest',InvestDict):
         seasonRoe=SeasonRoe()
         buffettInvest=BuffettInvest(seasonRoe,seasonEpsList,dividendRatio)        
         return buffettInvest.expectEarnApi()

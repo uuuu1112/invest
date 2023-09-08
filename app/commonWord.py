@@ -131,9 +131,12 @@ monthDrop=['\xa0平均\xa0營收(億)','\xa0合計\xa0營收(億)']
 removeStr=[',','=','"']
 keyList=['代號','名稱']
 
-def getText(selected_option,dict):
-    matching_items = [item['text'] for item in dict if item['value'] == selected_option]
-    return matching_items[0] if matching_items else dict
+def dictMap(key,dict):
+    invest_dict = {item['key']: item['value'] for item in dict}
+    
+    # 检查输入的 key 是否在字典中，如果在就返回相应的 value，否则返回 None
+    return invest_dict.get(key)
+ 
 
 
 
