@@ -66,12 +66,34 @@ cashDistDict={
     'discount':'折現價值',
     'priceGoal':commonDict['priceGoal']
 }
-InvestDict={
-    'LiquidationInvest':"1",
-    'CashInvest':"2",
-    'LynchInvest':"3",
-    'BuffettInvest':"4"
-}
+# InvestDict={
+#     'LiquidationInvest':"1",
+#     'CashInvest':"2",
+#     'LynchInvest':"3",
+#     'BuffettInvest':"4"
+# }
+InvestDict=[
+    {
+        'key':'LiquidationInvest',
+        'value':'1',
+        'text':'清算價值投資法'
+    },
+    {
+        'key':'CashInvest',
+        'value':'2',
+        'text':'慶龍存股策略'
+    },
+    {
+        'key':'LynchInvest',
+        'value':'3',
+        'text':'慶龍林區成長股策略'  
+    },
+    {
+        'key':'BuffettInvest',
+        'value':'4',
+        'text':'林區巴菲特選股'  
+    },    
+]
 cashListDict={
     "latest4SeasonEPS":"1",
     "avg5YearsEPS":"2",
@@ -108,6 +130,10 @@ monthDrop=['\xa0平均\xa0營收(億)','\xa0合計\xa0營收(億)']
 
 removeStr=[',','=','"']
 keyList=['代號','名稱']
+
+def getText(selected_option,dict):
+    matching_items = [item['text'] for item in dict if item['value'] == selected_option]
+    return matching_items[0] if matching_items else dict
 
 
 

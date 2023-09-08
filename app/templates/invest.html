@@ -13,8 +13,8 @@
             <!-- 下拉式選單 -->
             <label for="dropdown">choose an investment:</label>
             <select id="dropdown" name="selected_option">
-                {% for key, value in invest_options.items() %}
-                    <option value="{{ value }}" {% if query.selected_option == value %}selected{% endif %}>{{ key }}</option>
+                {% for item in invest_options %}
+                    <option value="{{ item.value }}" {% if query.selected_option == item.value %}selected{% endif %}>{{ item.text }}</option>
                 {% endfor %}
             </select>
             <!-- 提交按鈕 -->
