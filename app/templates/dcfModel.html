@@ -8,7 +8,18 @@
 {% block content %}
     <div class="jumbotron text-center">
         <h1 class="display-4">DCF Model</h1>
-        <br>
+        <button onclick="openDialog()">開啟對話框</button>
+
+        <!-- 灰色半透明背景 -->
+        <div id="overlay" class="overlay">
+            <!-- 對話框 -->
+            <dialog open class="dialog">
+                <h2>這是一個對話框</h2>
+                <p>這裡可以放入內容</p>
+
+                <button onclick="submitDialog()">送出</button>
+            </dialog>
+        </div>
         <form method="get" action="/dcfForm" onsubmit="disableSubmitButton()">
             <input type="checkbox" id="checkbox" name="checkbox" {% if query.withLiquidation == "on" %}checked{% endif %}>
             <label for="checkbox">加入清算價值</label>
