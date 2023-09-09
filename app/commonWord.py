@@ -128,7 +128,7 @@ growthDict=[
     {
         'key':'avg5InnerGrowth',
         'value':'2',
-        'text':'平均5年內不成長率'  
+        'text':'平均5年內部成長率'  
     },
     {
         'key':'year5CAGR',
