@@ -9,16 +9,16 @@
     <div class="jumbotron text-center">
         <h1 class="display-4">INVESTMENTS</h1>
         <br>
-        <form method="get" action="/form">
+        <form method="get" action="/form" onsubmit="disableSubmitButton()">
             <!-- 下拉式選單 -->
-            <label for="dropdown">choose an investment:</label>
+            <label for="dropdown">選擇策略:</label>
             <select id="dropdown" name="selected_option">
                 {% for item in invest_options %}
                     <option value="{{ item.value }}" {% if query.selected_option == item.value %}selected{% endif %}>{{ item.text }}</option>
                 {% endfor %}
             </select>
             <!-- 提交按鈕 -->
-            <input type="submit" value="Submit">
+            <input type="submit" value="送出" id="submit-button">
         </form>
         <!-- 策略說明 -->
         <div class="descripBox">

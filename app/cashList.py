@@ -27,15 +27,15 @@ class CashList(Cash):
     
 def getCashList(selectCash):
     cashList=CashList()
-    if selectCash==cashListDict['latest4SeasonEPS']:
+    if selectCash==dictMap('latest4SeasonEPS',cashListDict):
         seasonEpsList=SeasonEpsList()
         return seasonEpsList.latestEps()
-    elif selectCash==cashListDict['avg5YearsEPS']:
+    elif selectCash==dictMap('avg5YearsEPS',cashListDict):
         yearEpsList=YearEpsList()
         return yearEpsList.avgEps()
-    elif selectCash==cashListDict['latestCash']:
+    elif selectCash==dictMap('latestCash',cashListDict):
         return cashList.latestCash()
-    elif selectCash==cashListDict['avg5YearsCash']:
+    elif selectCash==dictMap('avg5YearsCash',cashListDict):
         return cashList.avgCashList()
 
 

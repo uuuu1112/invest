@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-<!-- {% block js %}
+{% block js %}
 <script src="{{ url_for('static', filename='invest.js') }}" defer></script>
-{% endblock %} -->
+{% endblock %}
 {% block css %}
 <link rel="stylesheet" type="text/css" href="static/invest.css">
 {% endblock%}
@@ -9,32 +9,32 @@
     <div class="jumbotron text-center">
         <h1 class="display-4">DCF Model</h1>
         <br>
-        <form method="get" action="/dcfForm">
+        <form method="get" action="/dcfForm" onsubmit="disableSubmitButton()">
             <input type="checkbox" id="checkbox" name="checkbox" {% if query.withLiquidation == "on" %}checked{% endif %}>
-            <label for="checkbox">with liquidation</label>
+            <label for="checkbox">加入清算價值</label>
             <br>
             <!-- 下拉式選單 -->
-            <label for="dropdown">init cash:</label>
+            <label for="dropdown">起初每股現金流:</label>
             <select id="dropdown" name="cash_option">
-                {% for key, value in cash_option.items() %}
-                    <option value="{{ value }}" {% if query.selectCash == value %}selected{% endif %}>{{ key }}</option>
+                {% for item in cash_option %}
+                    <option value="{{ item.value }}" {% if query.selectCash == item.value %}selected{% endif %}>{{ item.text }}</option>
                 {% endfor %}
             </select>
 
             <!-- 下拉式選單 -->
-            <label for="dropdown">future 5 year CAGR:</label>
+            <label for="dropdown">未來5年複合成長率:</label>
             <select id="dropdown" name="growth_option">
-                {% for key, value in growth_option.items() %}
-                    <option value="{{ value }}" {% if query.selectGrowth == value %}selected{% endif %}>{{ key }}</option>
+                {% for item in growth_option %}
+                    <option value="{{ item.value }}" {% if query.selectGrowth == item.value %}selected{% endif %}>{{ item.text }}</option>
                 {% endfor %}
             </select>
 
             <!-- 最大年增率 -->
-            <label for="inputText">growth max:</label>
+            <label for="inputText">限制最大年增率:</label>
             <input class="inputBox" type="text" id="inputText" name="maxValue" value="{{query.maxValue}}">
 
             <!-- 提交按鈕 -->
-            <input type="submit" value="Submit">
+            <input type="submit" value="送出" id="submit-button">
 
         </form>
         <div class="descripBox">

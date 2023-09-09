@@ -83,19 +83,19 @@ def getGrowth(selectGrowth,maxValue='none'):
     dividendRatio=DividendRatio()
     yearEps=YearEps()
     yearCAGR=YearCAGR(yearEps)
-    if selectGrowth==growthDict['innerGrowth']:
+    if selectGrowth==dictMap('innerGrowth',growthDict):
         seasonRoe=SeasonRoe()
         innerGrowth=InnerGrowth(dividendRatio,seasonRoe)
         valueGrowth=innerGrowth.getInnerGrowth()
-    elif selectGrowth==growthDict['avg5InnerGrowth']:
+    elif selectGrowth==dictMap('avg5InnerGrowth',growthDict):
         yearRoe=YearRoe()
         avgInnerGrowth=AvgInnerGrowth(dividendRatio,yearRoe)
         valueGrowth=avgInnerGrowth.getAvgInnerGrowth()
-    elif selectGrowth==growthDict['year5CAGR']:
+    elif selectGrowth==dictMap('year5CAGR',growthDict):
         valueGrowth=yearCAGR.year5Cagr()
-    elif selectGrowth==growthDict['min3n5CAGR']:
+    elif selectGrowth==dictMap('min3n5CAGR',growthDict):
         valueGrowth=yearCAGR.minCagr()
-    elif selectGrowth==growthDict['revenue3MinYOY']:
+    elif selectGrowth==dictMap('revenue3MinYOY',growthDict):
         revenue=Revenue()
         shortRevenueGrowth=ShortRevenueGrowth(revenue)
         valueGrowth=shortRevenueGrowth.revenue3MinYoY()
