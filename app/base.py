@@ -12,6 +12,7 @@ seasonEpsPath=os.path.join(os.path.dirname(__file__), '..', 'data','season', 'ep
 seasonRoePath=os.path.join(os.path.dirname(__file__), '..', 'data','season', 'roe.csv')
 seasonBalancePath=os.path.join(os.path.dirname(__file__), '..', 'data','season', 'balance.csv')
 seasonStockPath=os.path.join(os.path.dirname(__file__), '..', 'data','season', 'stock.csv')
+seasonExtraEarnPath=os.path.join(os.path.dirname(__file__),'..','data','season','extraEarn.csv')
 
 monthPath=os.path.join(os.path.dirname(__file__), '..', 'data', 'month','month.csv')
 monthBeforePath=os.path.join(os.path.dirname(__file__), '..', 'data', 'month','monthBefore.csv')
@@ -28,6 +29,7 @@ seasonEps=pd.read_csv(seasonEpsPath)
 seasonRoe=pd.read_csv(seasonRoePath)
 seasonBalance=pd.read_csv(seasonBalancePath)
 seasonStock=pd.read_csv(seasonStockPath)
+seasonExtraEarn=pd.read_csv(seasonExtraEarnPath)
 
 month=pd.read_csv(monthPath)
 monthBefore=pd.read_csv(monthBeforePath)
@@ -88,6 +90,10 @@ class SeasonBalance(BaseTrans):
         return self.balanceTrans.loc['投資(%)']*self.getNetWorth()/100
     def getReceive(self):
         return self.balanceTrans.loc['應收帳款(%)']*self.getNetWorth()/100
+    
+class SeasonExtraEarn(BaseTrans):
+    def __init__(self):
+        self.seasonExtraEarnTrans=self.transDf(seasonExtraEarn)
 
 class Revenue(BaseTrans):
     def __init__(self):

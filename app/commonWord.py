@@ -112,13 +112,7 @@ cashListDict=[
         'text':'平均5年現金股息'  
     }
 ]
-# growthDict={
-#     "innerGrowth":"1",
-#     "avg5InnerGrowth":"2",
-#     "year5CAGR":"3",
-#     "min3n5CAGR":"4",
-#     "revenue3MinYOY":"5"
-# }
+
 growthDict=[
     {
         'key':'innerGrowth',
