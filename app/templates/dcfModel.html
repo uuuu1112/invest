@@ -6,54 +6,45 @@
 <link rel="stylesheet" type="text/css" href="static/invest.css">
 {% endblock%}
 {% block content %}
-    <div class="jumbotron text-center">
-        <h1 class="display-4">DCF Model</h1>
-        <!-- <button onclick="openDialog()">開啟對話框</button> -->
+<div class="jumbotron text-center">
+    <h1 class="display-4">DCF Model</h1>
 
-        <!-- 灰色半透明背景 -->
-        <div id="overlay" class="overlay">
-            <!-- 對話框 -->
-            <dialog open class="dialog">
-                <h2>這是一個對話框</h2>
-                <p>這裡可以放入內容</p>
+    <form method="get" action="/dcfForm" onsubmit="disableSubmitButton()" >
+        <br><br>
+        <!-- 下拉式選單 -->
+        <label for="dropdown">起初每股現金流:</label>
+        <select id="dropdown" name="cash_option">
+            {% for item in cash_option %}
+            <option value="{{ item.value }}" {% if query.selectCash==item.value %}selected{% endif %}>{{ item.text }}
+            </option>
+            {% endfor %}
+        </select>
 
-                <button onclick="submitDialog()">送出</button>
-            </dialog>
-        </div>
-        <form method="get" action="/dcfForm" onsubmit="disableSubmitButton()">
-            <input type="checkbox" id="checkbox" name="checkbox" {% if query.withLiquidation == "on" %}checked{% endif %}>
-            <label for="checkbox">加入清算價值</label>
-            <br>
-            <!-- 下拉式選單 -->
-            <label for="dropdown">起初每股現金流:</label>
-            <select id="dropdown" name="cash_option">
-                {% for item in cash_option %}
-                    <option value="{{ item.value }}" {% if query.selectCash == item.value %}selected{% endif %}>{{ item.text }}</option>
-                {% endfor %}
-            </select>
-
-            <!-- 下拉式選單 -->
-            <label for="dropdown">未來5年複合成長率:</label>
-            <select id="dropdown" name="growth_option">
-                {% for item in growth_option %}
-                    <option value="{{ item.value }}" {% if query.selectGrowth == item.value %}selected{% endif %}>{{ item.text }}</option>
-                {% endfor %}
-            </select>
-
-            <!-- 最大年增率 -->
-            <label for="inputText">限制最大年增率:</label>
-            <input class="inputBox" type="text" id="inputText" name="maxValue" value="{{query.maxValue}}">
-
-            <!-- 提交按鈕 -->
-            <input type="submit" value="送出" id="submit-button">
-
-        </form>
-        <div class="descripBox">
-            <div class="descrip">{{ query.descrip|safe }}</div>
-        </div>
-        <div id="table-container">
-            {{ query.table_html|safe }}
-        </div>
+        <!-- 下拉式選單 -->
+        <label for="dropdown">未來5年複合成長率:</label>
+        <select id="dropdown" name="growth_option">
+            {% for item in growth_option %}
+            <option value="{{ item.value }}" {% if query.selectGrowth==item.value %}selected{% endif %}>{{ item.text }}
+            </option>
+            {% endfor %}
+        </select>
+        <br>
+        <!-- 最大年增率 -->
+        <label for="inputText">限制最大年增率:</label>
+        <input class="inputBox" type="text" id="inputText" name="maxValue" value="{{query.maxValue}}">
         
+        <input type="checkbox" id="checkbox" name="checkbox" {% if query.withLiquidation=="on" %}checked{% endif %}>
+        <label for="checkbox">加入清算價值</label>
+        <!-- 提交按鈕 -->
+        <input type="submit" value="送出" id="submit-button">
+    </form>
+    <br>
+    <div class="descripBox">
+        <div class="descrip">{{ query.descrip|safe }}</div>
     </div>
+    <div id="table-container">
+        {{ query.table_html|safe }}
+    </div>
+
+</div>
 {% endblock %}

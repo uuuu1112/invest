@@ -48,7 +48,7 @@ def dcfForm():
     api_response=getPridictValue(query['selectCash'],query['selectGrowth'],float(query['maxValue']),query['withLiquidation'])['table']
     query['table_html']=api_response.to_html(classes='table table-bordered', index=False)
     return render_template('dcfModel.html',cash_option=cashListDict,growth_option=growthDict,query=query)
-    # return query
+
 # @bp.route('/allInvest/<selectValue>')
 # def allInvest(selectValue):
 #     return integrateInvest(selectValue)
