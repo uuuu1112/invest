@@ -91,9 +91,10 @@ class SeasonBalance(BaseTrans):
     def getReceive(self):
         return self.balanceTrans.loc['應收帳款(%)']*self.getNetWorth()/100
     
-class SeasonExtraEarn(BaseTrans):
+class SeasonEpsWithExtraEarn(BaseTrans):
     def __init__(self):
-        self.seasonExtraEarnTrans=self.transDf(seasonExtraEarn)
+        self.seasonExtraEarnTrans=self.transDf(seasonExtraEarn,removeStrExtraEarn)
+        self.seasonEpsTrans=self.transDf(seasonEps,removeStrExtraEarn)
 
 class Revenue(BaseTrans):
     def __init__(self):
