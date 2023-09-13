@@ -46,8 +46,6 @@ class YearRoe(BaseTrans):
 class Cash(BaseTrans):
     def __init__(self):
         self.cashTrans=self.transDf(cash)
-    # def latest(self):
-    #     return self.cashTrans.iloc[-1]
     def avgCash(self,n):
         return cacul.nPeriodMean(self.cashTrans,n)
     def minCash(self,n):
@@ -93,8 +91,8 @@ class SeasonBalance(BaseTrans):
     
 class SeasonEpsWithExtraEarn(BaseTrans):
     def __init__(self):
-        self.seasonExtraEarnTrans=self.transDf(seasonExtraEarn,removeStrExtraEarn)
-        self.seasonEpsTrans=self.transDf(seasonEps,removeStrExtraEarn)
+        self.seasonExtraEarnTrans=self.transDf(seasonExtraEarn,removeExtraEarnColums)
+        self.seasonEpsTrans=self.transDf(seasonEps,removeExtraEarnColums)
 
 class Revenue(BaseTrans):
     def __init__(self):

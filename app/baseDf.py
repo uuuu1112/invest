@@ -5,14 +5,15 @@ from app.commonWord import *
 pd.set_option('display.float_format', '{:.2f}'.format)
 
 class BaseTrans:
-    def baseDf(self,csvData,replaceStr=removeStr):
+    def baseDf(self,csvData,removeColumns=removeColumns):
         csvData=csvData.astype(str)
-        csvData=csvData.replace(replaceStr,'',regex=True)
+        csvData.columns = csvData.columns.str.replace(removeColumns, '', regex=True)
+        csvData=csvData.replace(removeStr,'',regex=True)
         csvData=csvData.set_index(keyList)
         csvData=csvData.apply(lambda s:pd.to_numeric(s,errors='coerce'))
         return csvData
-    def transDf(self,csvData,replaceStr=removeStr):
-        return self.baseDf(csvData,replaceStr).transpose()
+    def transDf(self,csvData,removeColumns=removeColumns):
+        return self.baseDf(csvData,removeColumns).transpose()
     def dropRows(self,csvData,dropRows):
         return self.transDf(csvData).drop(index=dropRows)
     def baseTrans(self,csvData):

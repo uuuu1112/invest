@@ -158,7 +158,9 @@ baseDropRows=['成交','排名','漲跌價','漲跌幅']
 monthDrop=['\xa0平均\xa0營收(億)','\xa0合計\xa0營收(億)']
 
 removeStr=[',','=','"']
-removeStrExtraEarn=[',','=','"','EPS(元)','業外損益(%)']
+removeColumns=''
+removeExtraEarnColums=r'(業外損益\(%\))|(EPS\(元\))'
+
 keyList=['代號','名稱']
 
 def dictMap(key,dict):
@@ -166,6 +168,7 @@ def dictMap(key,dict):
     
     # 检查输入的 key 是否在字典中，如果在就返回相应的 value，否则返回 None
     return invest_dict.get(key)
+
  
 
 
