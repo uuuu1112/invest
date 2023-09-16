@@ -79,26 +79,27 @@ class ShortStockGrowth:
         self.df[shortGrowthDict['stockYoY']]=self.stockYoY().iloc[-1]
         return self.df.applymap(lambda x: f'{x*100:.2f}%') 
     
-def getGrowth(selectGrowth):
+def getGrowth(selectGrowth,maxValue='none'):
     dividendRatio=DividendRatio()
     yearEps=YearEps()
     yearCAGR=YearCAGR(yearEps)
-    if selectGrowth==growthDict['innerGrowth']:
+    if selectGrowth==dictMap('innerGrowth',growthDict):
         seasonRoe=SeasonRoe()
         innerGrowth=InnerGrowth(dividendRatio,seasonRoe)
-        return innerGrowth.getInnerGrowth()
-    elif selectGrowth==growthDict['avg5InnerGrowth']:
+        valueGrowth=innerGrowth.getInnerGrowth()
+    elif selectGrowth==dictMap('avg5InnerGrowth',growthDict):
         yearRoe=YearRoe()
         avgInnerGrowth=AvgInnerGrowth(dividendRatio,yearRoe)
-        return avgInnerGrowth.getAvgInnerGrowth()
-    elif selectGrowth==growthDict['year5CAGR']:
-        return yearCAGR.year5Cagr()
-    elif selectGrowth==growthDict['min3n5CAGR']:
-        return yearCAGR.minCagr()
-    elif selectGrowth==growthDict['revenue3MinYOY']:
+        valueGrowth=avgInnerGrowth.getAvgInnerGrowth()
+    elif selectGrowth==dictMap('year5CAGR',growthDict):
+        valueGrowth=yearCAGR.year5Cagr()
+    elif selectGrowth==dictMap('min3n5CAGR',growthDict):
+        valueGrowth=yearCAGR.minCagr()
+    elif selectGrowth==dictMap('revenue3MinYOY',growthDict):
         revenue=Revenue()
         shortRevenueGrowth=ShortRevenueGrowth(revenue)
-        return shortRevenueGrowth.revenue3MinYoY()
+        valueGrowth=shortRevenueGrowth.revenue3MinYoY()
+    return setMax(valueGrowth,maxValue)
 
 
 

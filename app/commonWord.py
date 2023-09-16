@@ -1,4 +1,4 @@
-dataPath='../data'
+# dataPath='../data'
 commonDict={
     'latestAvg':'近期平均',
     'conditionCount':'符合個數',
@@ -66,25 +66,80 @@ cashDistDict={
     'discount':'折現價值',
     'priceGoal':commonDict['priceGoal']
 }
-InvestDict={
-    'LiquidationInvest':"1",
-    'CashInvest':"2",
-    'LynchInvest':"3",
-    'BuffettInvest':"4"
-}
-cashListDict={
-    "latest4SeasonEPS":"1",
-    "avg5YearsEPS":"2",
-    "latestCash":"3",
-    "avg5YearsCash":"4"
-}
-growthDict={
-    "innerGrowth":"1",
-    "avg5InnerGrowth":"2",
-    "year5CAGR":"3",
-    "min3n5CAGR":"4",
-    "revenue3MinYOY":"5"
-}
+
+InvestDict=[
+    {
+        'key':'LiquidationInvest',
+        'value':'1',
+        'text':'清算價值投資法'
+    },
+    {
+        'key':'CashInvest',
+        'value':'2',
+        'text':'慶龍存股策略'
+    },
+    {
+        'key':'LynchInvest',
+        'value':'3',
+        'text':'慶龍林區成長股策略'  
+    },
+    {
+        'key':'BuffettInvest',
+        'value':'4',
+        'text':'林區巴菲特選股'  
+    },    
+]
+
+cashListDict=[
+    {
+        'key':'latest4SeasonEPS',
+        'value':'1',
+        'text':'近4季EPS'     
+    },
+    {
+        'key':'avg5YearsEPS',
+        'value':'2',
+        'text':'平均5年EPS'  
+    },
+    {
+        'key':'latestCash',
+        'value':'3',
+        'text':'近一年現金股息'  
+    },
+    {
+        'key':'avg5YearsCash',
+        'value':'4',
+        'text':'平均5年現金股息'  
+    }
+]
+
+growthDict=[
+    {
+        'key':'innerGrowth',
+        'value':'1',
+        'text':'內部成長率'  
+    },
+    {
+        'key':'avg5InnerGrowth',
+        'value':'2',
+        'text':'平均5年內部成長率'  
+    },
+    {
+        'key':'year5CAGR',
+        'value':'3',
+        'text':'過去5年複合成長率'  
+    },
+    {
+        'key':'min3n5CAGR',
+        'value':'4',
+        'text':'過去3年5年的複合成長率取低值'  
+    },
+    {
+        'key':'revenue3MinYOY',
+        'value':'5',
+        'text':'過去3個月的年增率取最小值'  
+    }
+]
 investDescrip='''
 策略簡述（點選後送出有詳細說明） ： <br>
 清算價值投資法 ： 市價小於清算價值３０％買進，市價大於清算價值３０％賣出<br>
@@ -95,10 +150,6 @@ investDescrip='''
 
 dcfDescrip='''
 <h3>現金流折現模型</h3>
-第一個變數說明(起初的每股現金流) : 
-近4季的EPS、近5年平均的EPS、最近的現金股息、近五年的現金股息<br>
-第二個變數說明(未來5年的複合成長率預估) : 
-最新的內部成長率、近5年平均的內部成長率、過去5年的複合成長率、過去3年5年的複合成長率取小的、過去3個月的年增率取小的<br>
 模型說明 : 
 假設未來5年的每股現金流是照第二個變數成長，後來是2%的成長，每年的每股現金流用10%折現到今天，把他們相加當成我的目標價
 ''' 
@@ -107,7 +158,18 @@ baseDropRows=['成交','排名','漲跌價','漲跌幅']
 monthDrop=['\xa0平均\xa0營收(億)','\xa0合計\xa0營收(億)']
 
 removeStr=[',','=','"']
+removeColumns=''
+removeExtraEarnColums=r'(業外損益\(%\))|(EPS\(元\))'
+
 keyList=['代號','名稱']
+
+def dictMap(key,dict):
+    invest_dict = {item['key']: item['value'] for item in dict}
+    
+    # 检查输入的 key 是否在字典中，如果在就返回相应的 value，否则返回 None
+    return invest_dict.get(key)
+
+ 
 
 
 

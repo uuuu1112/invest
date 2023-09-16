@@ -7,11 +7,13 @@ cashPath=os.path.join(os.path.dirname(__file__), '..', 'data', 'year','cash.csv'
 dividendRatioPath=os.path.join(os.path.dirname(__file__), '..', 'data','year', 'dividendRatio.csv')
 yearEpsPath=os.path.join(os.path.dirname(__file__), '..', 'data','year', 'eps.csv')
 yearRoePath=os.path.join(os.path.dirname(__file__), '..', 'data', 'year','roe.csv')
+yearExtraEarnPath=os.path.join(os.path.dirname(__file__),'..','data','year','extraEarn.csv')
 
 seasonEpsPath=os.path.join(os.path.dirname(__file__), '..', 'data','season', 'eps.csv')
 seasonRoePath=os.path.join(os.path.dirname(__file__), '..', 'data','season', 'roe.csv')
 seasonBalancePath=os.path.join(os.path.dirname(__file__), '..', 'data','season', 'balance.csv')
 seasonStockPath=os.path.join(os.path.dirname(__file__), '..', 'data','season', 'stock.csv')
+seasonExtraEarnPath=os.path.join(os.path.dirname(__file__),'..','data','season','extraEarn.csv')
 
 monthPath=os.path.join(os.path.dirname(__file__), '..', 'data', 'month','month.csv')
 monthBeforePath=os.path.join(os.path.dirname(__file__), '..', 'data', 'month','monthBefore.csv')
@@ -23,11 +25,13 @@ cash=pd.read_csv(cashPath)
 dividendRatio=pd.read_csv(dividendRatioPath)
 yearEps=pd.read_csv(yearEpsPath)
 yearRoe=pd.read_csv(yearRoePath)
+yearExtraEarn=pd.read_csv(yearExtraEarnPath)
 
 seasonEps=pd.read_csv(seasonEpsPath)
 seasonRoe=pd.read_csv(seasonRoePath)
 seasonBalance=pd.read_csv(seasonBalancePath)
 seasonStock=pd.read_csv(seasonStockPath)
+seasonExtraEarn=pd.read_csv(seasonExtraEarnPath)
 
 month=pd.read_csv(monthPath)
 monthBefore=pd.read_csv(monthBeforePath)
@@ -35,6 +39,18 @@ monthBefore=pd.read_csv(monthBeforePath)
 class YearEps(BaseTrans):
     def __init__(self):
         self.epsTrans=self.transDf(yearEps)
+
+class YearEpsLoseExtraEarn(YearEps):
+    def __init__(self,loseExtra=None):
+        self.yearEpsTransWithExtar=self.transDf(yearEps)
+        self.epsTrans=self.epsWithExtra(loseExtra)
+    def epsWithExtra(self,loseExtra):
+        if loseExtra==None:
+            return self.yearEpsTransWithExtar
+        else:
+            self.yearExtraEarnTrans=self.transDf(yearExtraEarn,removeExtraEarnColums)
+            self.yearPureEpsTrans=(1-self.yearExtraEarnTrans)*self.yearExtraEarnTrans
+            return self.yearPureEpsTrans
 
 class YearRoe(BaseTrans):
     def __init__(self):
@@ -44,13 +60,27 @@ class YearRoe(BaseTrans):
 class Cash(BaseTrans):
     def __init__(self):
         self.cashTrans=self.transDf(cash)
-    # def latest(self):
-    #     return self.cashTrans.iloc[-1]
     def avgCash(self,n):
         return cacul.nPeriodMean(self.cashTrans,n)
     def minCash(self,n):
         return cacul.nPeriodMin(self.cashTrans,n)
-
+class CashLoseExtraEarn(Cash):
+    def __init__(self,loseExtra=None):
+        self.yearCashWithExtra=self.transDf(cash)[-12:]
+        self.cashTrans=self.cashWithExtra(loseExtra)
+    def yearExtraEaraTrans(self):
+        self.yearExtraEarnTrans=self.transDf(yearExtraEarn,removeExtraEarnColums)[-12:]
+        new_index_values = self.yearCashWithExtra.index
+        new_index = list(new_index_values)
+        self.yearExtraEarnTrans.index = new_index
+        return self.yearExtraEarnTrans
+    def cashWithExtra(self,loseExtra):
+        if loseExtra==None:
+            return self.yearCashWithExtra
+        else:
+            self.yearExtraEaraTrans=self.yearExtraEaraTrans()
+            self.yearPureCashTrans=(1-self.yearExtraEaraTrans)*self.yearCashWithExtra
+            return self.yearPureCashTrans
 class DividendRatio(BaseTrans):
     def __init__(self):
         self.dividendRatioTrans=self.transDf(dividendRatio)
@@ -88,6 +118,18 @@ class SeasonBalance(BaseTrans):
         return self.balanceTrans.loc['投資(%)']*self.getNetWorth()/100
     def getReceive(self):
         return self.balanceTrans.loc['應收帳款(%)']*self.getNetWorth()/100
+    
+class SeasonEpsLoseExtraEarn(SeasonEps):
+    def __init__(self,loseExtra=None):
+        self.seasonEpsTransWithExtra=self.transDf(seasonEps,removeExtraEarnColums)
+        self.seasonEpsTrans=self.epsWithExtra(loseExtra)
+    def epsWithExtra(self,loseExtra):
+        if loseExtra==None:
+            return self.seasonEpsTransWithExtra
+        else:
+            self.seasonExtraEarnTrans=self.transDf(seasonExtraEarn,removeExtraEarnColums)
+            self.seasonPureEpsTrans=(1-self.seasonExtraEarnTrans/100)*self.seasonEpsTransWithExtra
+            return self.seasonPureEpsTrans
 
 class Revenue(BaseTrans):
     def __init__(self):
@@ -117,6 +159,5 @@ class BaseInfo(BaseTrans):
     def industry(self):
         return self.baseInfoTrans.loc['產業別']
     
-# print(Today().todayPrice())
 
 

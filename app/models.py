@@ -1,5 +1,6 @@
 from app.stats import *
 from app.base import Today,SeasonBalance,BaseInfo
+# ,SeasonEpsLoseExtraEarn,CashLoseExtraEarn
 # ,Cash,SeasonEps
 from app.growth import *
 from app.cashList import *
@@ -184,21 +185,21 @@ class BuffettInvest(InvestBase):
 def integrateInvest(selectValue):
     seasonEpsList=SeasonEpsList()
     dividendRatio=DividendRatio()
-    if selectValue==InvestDict['LiquidationInvest']:
+    if selectValue==dictMap('LiquidationInvest',InvestDict):
         seasonBalance=SeasonBalance()
         liquidationInvest=LiquidationInvest(seasonBalance)
         return liquidationInvest.expectEarnApi()
-    elif selectValue==InvestDict['CashInvest']:
+    elif selectValue==dictMap('CashInvest',InvestDict):
         cashList=CashList()
         cashInvest=CashInvest(cashList,dividendRatio)
         return cashInvest.expectEarnApi()
-    elif selectValue==InvestDict['LynchInvest']:
+    elif selectValue==dictMap('LynchInvest',InvestDict):
         revenue=Revenue()
         shortRevenueGrowth=ShortRevenueGrowth(revenue)
         baseInfo=BaseInfo()
         lynchInvest=LynchInvest(seasonEpsList,baseInfo,shortRevenueGrowth)        
         return lynchInvest.expectEarnApi()
-    elif selectValue==InvestDict['BuffettInvest']:
+    elif selectValue==dictMap('BuffettInvest',InvestDict):
         seasonRoe=SeasonRoe()
         buffettInvest=BuffettInvest(seasonRoe,seasonEpsList,dividendRatio)        
         return buffettInvest.expectEarnApi()
@@ -207,10 +208,12 @@ class CashDiscount(InvestBase):
     def __init__(self,cashList,growth):
         self.cashList=cashList
         self.growth=growth
+        self.baseInfo=BaseInfo()
     def descrip(self):
         return dcfDescrip
     def baseDf(self):
         self.df=baseDf.copy()
+        self.df[lynchDict['industry']]=self.baseInfo.industry()
         self.df[cashDistDict['beginCash']]=self.cashList
         self.df[cashDistDict['expectGrowth']]=self.growth
         return self.df
@@ -230,6 +233,8 @@ class InnerValue(InvestBase):
     def __init__(self,cashDiscount,liquidationInvest):
         self.cashDiscount=cashDiscount
         self.liquidationInvest=liquidationInvest
+    def descrip(self):
+        return dcfDescrip
     def priceGoal(self):
         self.df=self.cashDiscount.priceGoal()
         self.df.rename(columns={commonDict['priceGoal']:cashDistDict['discount']},inplace=True)
@@ -237,8 +242,15 @@ class InnerValue(InvestBase):
         self.df[commonDict['priceGoal']]=self.df[balaceDict['liquidationValue']]+self.df[cashDistDict['discount']]
         return self.df.round(1)  
     
-def getPridictValue(selectCash,selectGrowth):
-    cashList=getCashList(selectCash)
-    growth=getGrowth(selectGrowth)
+def getPridictValue(selectCash,selectGrowth,maxValue='none',withLiqui='none',loseExtra=None):
+    print('getPridictValue')
+    cashList=getCashList(selectCash,loseExtra)
+    growth=getGrowth(selectGrowth,maxValue)
     cashDiscount=CashDiscount(cashList,growth)
-    return cashDiscount.expectEarnApi()
+    if withLiqui=="on":
+        seasonBalance=SeasonBalance()
+        liquidationInvest=LiquidationInvest(seasonBalance)
+        innerValue=InnerValue(cashDiscount,liquidationInvest)
+        return innerValue.expectEarnApi()
+    else:
+        return cashDiscount.expectEarnApi()

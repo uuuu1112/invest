@@ -69,3 +69,9 @@ class DCF:
         listDiscountValue=self.discountValue(epsList,discountRate,gdpGrowth)
         return listDiscountValue
 dcf=DCF()
+
+def setMax(series,maxValue='none'):
+    if maxValue=='none':
+        return series
+    else:
+        return series.clip(upper=maxValue)

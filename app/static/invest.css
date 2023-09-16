@@ -4,6 +4,9 @@
 th{
     text-align: center;
 }
+.inputBox{
+    width: 50px;
+}
 .descripBox{
     display: flex;
     /* 水平置中 */
@@ -16,3 +19,6 @@ th{
     margin-bottom: 10px;
     text-align: left;
 }
+/* #checkbox{
+
+} */
