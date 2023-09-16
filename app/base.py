@@ -25,7 +25,7 @@ cash=pd.read_csv(cashPath)
 dividendRatio=pd.read_csv(dividendRatioPath)
 yearEps=pd.read_csv(yearEpsPath)
 yearRoe=pd.read_csv(yearRoePath)
-yearExtraEarn=pd.read_csv(seasonExtraEarnPath)
+yearExtraEarn=pd.read_csv(yearExtraEarnPath)
 
 seasonEps=pd.read_csv(seasonEpsPath)
 seasonRoe=pd.read_csv(seasonRoePath)
@@ -64,7 +64,18 @@ class Cash(BaseTrans):
         return cacul.nPeriodMean(self.cashTrans,n)
     def minCash(self,n):
         return cacul.nPeriodMin(self.cashTrans,n)
+class CashLoseExtraEarn(Cash):
+    def __init__(self,loseExtra='none'):
+        self.cashWithExtra=self.transDf(cash)
+        self.temp=yearExtraEarn
+    def yearExtraEaraTrans(self):
+        self.yearExtraEarnTrans=self.transDf(yearExtraEarn,removeExtraEarnColums)
+        # # 创建一个索引映射字典
+        # index_mapping = {str(year): str(int(year) + 1) for year in self.yearExtraEarnTrans.index}
 
+        # # 使用 .rename() 方法将索引替换为新的映射索引
+        # self.yearExtraEarnTrans.rename(index=index_mapping, inplace=True)
+        return self.yearExtraEarnTrans
 class DividendRatio(BaseTrans):
     def __init__(self):
         self.dividendRatioTrans=self.transDf(dividendRatio)

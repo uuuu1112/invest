@@ -1,5 +1,5 @@
 from app.stats import *
-from app.base import Today,SeasonBalance,BaseInfo,SeasonEpsLoseExtraEarn
+from app.base import Today,SeasonBalance,BaseInfo,SeasonEpsLoseExtraEarn,CashLoseExtraEarn
 # ,Cash,SeasonEps
 from app.growth import *
 from app.cashList import *
