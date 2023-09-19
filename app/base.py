@@ -49,7 +49,7 @@ class YearEpsLoseExtraEarn(YearEps):
             return self.yearEpsTransWithExtar
         else:
             self.yearExtraEarnTrans=self.transDf(yearExtraEarn,removeExtraEarnColums)
-            self.yearPureEpsTrans=(1-self.yearExtraEarnTrans)*self.yearExtraEarnTrans
+            self.yearPureEpsTrans=(1-self.yearExtraEarnTrans/100)*self.yearExtraEarnTrans
             return self.yearPureEpsTrans
 
 class YearRoe(BaseTrans):
