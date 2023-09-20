@@ -40,11 +40,22 @@ class YearEps(BaseTrans):
     def __init__(self):
         self.epsTrans=self.transDf(yearEps)
 
+def earnWithExtra(extraEarn,earnTransWithExtra,loseExtra):
+    if loseExtra==None:
+        return earnTransWithExtra
+    else:
+        extraEarnTrans=setRange(extraEarn)
+        pureEarnTrans=(1-extraEarnTrans/100)*earnTransWithExtra
+        return pureEarnTrans
+    
 class YearEpsLoseExtraEarn(YearEps):
     def __init__(self,loseExtra=None):
         self.yearEpsTransWithExtar=self.transDf(yearEps,removeExtraEarnColums)
         self.epsTrans=self.epsWithExtra(loseExtra)
-    def epsWithExtra(self,loseExtra):
+        self.extraEarn=self.transDf(yearExtraEarn,removeExtraEarnColums)
+        # self.epseTrans=earnWithExtra(self.extraEarn,self.yearEpsTransWithExtar,loseExtra)
+    def epsWithExtra(self,loseExtra=None):
+   
         if loseExtra==None:
             return self.yearEpsTransWithExtar
         else:
