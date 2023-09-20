@@ -75,3 +75,5 @@ def setMax(series,maxValue='none'):
         return series
     else:
         return series.clip(upper=maxValue)
+def setRange(series,maxValue=100,minValue=-100):
+    return series.clip(upper=maxValue,lower=minValue)

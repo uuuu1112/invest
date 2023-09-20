@@ -42,14 +42,14 @@ class YearEps(BaseTrans):
 
 class YearEpsLoseExtraEarn(YearEps):
     def __init__(self,loseExtra=None):
-        self.yearEpsTransWithExtar=self.transDf(yearEps)
+        self.yearEpsTransWithExtar=self.transDf(yearEps,removeExtraEarnColums)
         self.epsTrans=self.epsWithExtra(loseExtra)
     def epsWithExtra(self,loseExtra):
         if loseExtra==None:
             return self.yearEpsTransWithExtar
         else:
-            self.yearExtraEarnTrans=self.transDf(yearExtraEarn,removeExtraEarnColums)
-            self.yearPureEpsTrans=(1-self.yearExtraEarnTrans/100)*self.yearExtraEarnTrans
+            self.yearExtraEarnTrans=setRange(self.transDf(yearExtraEarn,removeExtraEarnColums))
+            self.yearPureEpsTrans=(1-self.yearExtraEarnTrans/100)*self.yearEpsTransWithExtar
             return self.yearPureEpsTrans
 
 class YearRoe(BaseTrans):
@@ -78,8 +78,8 @@ class CashLoseExtraEarn(Cash):
         if loseExtra==None:
             return self.yearCashWithExtra
         else:
-            self.yearExtraEaraTrans=self.yearExtraEaraTrans()
-            self.yearPureCashTrans=(1-self.yearExtraEaraTrans)*self.yearCashWithExtra
+            self.yearExtraEaraTrans=setRange(self.yearExtraEaraTrans())
+            self.yearPureCashTrans=(1-self.yearExtraEaraTrans/100)*self.yearCashWithExtra
             return self.yearPureCashTrans
 class DividendRatio(BaseTrans):
     def __init__(self):
@@ -127,7 +127,7 @@ class SeasonEpsLoseExtraEarn(SeasonEps):
         if loseExtra==None:
             return self.seasonEpsTransWithExtra
         else:
-            self.seasonExtraEarnTrans=self.transDf(seasonExtraEarn,removeExtraEarnColums)
+            self.seasonExtraEarnTrans=setRange(self.transDf(seasonExtraEarn,removeExtraEarnColums))
             self.seasonPureEpsTrans=(1-self.seasonExtraEarnTrans/100)*self.seasonEpsTransWithExtra
             return self.seasonPureEpsTrans
 
