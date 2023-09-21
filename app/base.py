@@ -52,7 +52,7 @@ class YearEpsLoseExtraEarn(YearEps):
     def __init__(self,loseExtra=None):
         self.yearEpsTransWithExtar=self.transDf(yearEps,removeExtraEarnColums)
         self.epsTrans=self.epsWithExtra(loseExtra)
-        self.extraEarn=self.transDf(yearExtraEarn,removeExtraEarnColums)
+        self.extraEarnTrans=self.transDf(yearExtraEarn,removeExtraEarnColums)
         # self.epseTrans=earnWithExtra(self.extraEarn,self.yearEpsTransWithExtar,loseExtra)
     def epsWithExtra(self,loseExtra=None):
    
