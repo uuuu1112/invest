@@ -66,9 +66,10 @@ class ShortRevenueGrowth:
         self.df[lynchDict['minGrowth']]=self.revenue3MinYoY()
         return self.df.applymap(lambda x: f'{x*100:.2f}%') 
     
-class ShortStockGrowth:
-    def __init__(self,seasonStock):
+class ShortGrowth:
+    def __init__(self,seasonStock,revenue):
         self.stock=seasonStock
+        self.revenue=revenue
     def stockQoQ(self):
         return self.stock.stockGrowth(1)
     def stockYoY(self):
