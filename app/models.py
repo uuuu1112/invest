@@ -82,9 +82,40 @@ class CashInvest(InvestBase):
         self.dividendRatio=dividendRatio
     def descrip(self):
         return '''
-<h3>凡人說&慶龍存股策略</h3>
+<h3>慶龍存股策略</h3>
 篩選規則 : <br>
-近一年股息殖利率大於５％ 、近五年平均股息殖利率大於５％、
+近五年平均股息殖利率大於５％、連續５年發放股利<br>
+投資策略: <br>
+以近５年現金股利的平均值來計算殖利率。 
+當現金殖利率來到７％時買進 ，當現金殖利率來到５％時賣出<br>
+預期報酬率 : 
+市價到現金殖利率來到５％的報酬率
+'''
+    def baseDf(self):
+        self.df=baseDf.copy()
+        self.df.loc[:,cashDict['avgYield']]=(self.cash.avgCashList()/self.df[commonDict['price']])
+        self.df.loc[:,cashDict['minCash']]=self.cash.minCashList()
+        self.df.loc[:,cashDict['avgDividendRatio']]=self.dividendRatio.avgDividendRatio(5).iloc[-1]
+        return self.df
+    def priceGoal(self):
+        self.df=self.baseDf()
+        self.df.loc[:,commonDict['priceGoal']]=self.cash.avgCashList()/0.05
+        return self.df.round(2)
+    def filterCondition(self):
+        self.df=self.baseDf()
+        self.filterCondition=(self.df[cashDict['avgYield']]>0.05)&(self.df[cashDict['minCash']]>0)
+        return self.filterCondition
+
+class CashInvest2(InvestBase):
+    def __init__(self,cashList,dividendRatio,baseInfo):
+        self.cash=cashList
+        self.dividendRatio=dividendRatio
+        self.baseInfo=baseInfo
+    def descrip(self):
+        return '''
+<h3>延伸存股策略</h3>
+篩選規則 : <br>
+近一年股息殖利率大於５％（業內）、近五年平均股息殖利率大於５％（業內）、
 股息發放率五年平均大於50% 、連續５年發放股利<br>
 投資策略: <br>
 以近５年現金股利的平均值來計算殖利率。 
@@ -94,6 +125,7 @@ class CashInvest(InvestBase):
 '''
     def baseDf(self):
         self.df=baseDf.copy()
+        self.df[lynchDict['industry']]=self.baseInfo.industry()
         self.df.loc[:,cashDict['latestYield']]=(self.cash.latestCash()/self.df[commonDict['price']])
         self.df.loc[:,cashDict['avgYield']]=(self.cash.avgCashList()/self.df[commonDict['price']])
         self.df.loc[:,cashDict['minCash']]=self.cash.minCashList()
@@ -203,6 +235,11 @@ def integrateInvest(selectValue):
         seasonRoe=SeasonRoe()
         buffettInvest=BuffettInvest(seasonRoe,seasonEpsList,dividendRatio)        
         return buffettInvest.expectEarnApi()
+    elif selectValue==dictMap('CashInvest2',InvestDict):
+        cashList=CashList('on')
+        baseInfo=BaseInfo()
+        cashInvest2=CashInvest2(cashList,dividendRatio,baseInfo)
+        return cashInvest2.expectEarnApi()
 
 class CashDiscount(InvestBase):
     def __init__(self,cashList,growth):
