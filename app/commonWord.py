@@ -93,6 +93,11 @@ InvestDict=[
         'value':'5',
         'text':'存股策略（延伸）'
     },   
+    {
+        'key':'LynchInvest2',
+        'value':'6',
+        'text':'成長股策略（延伸）'
+    }, 
 ]
 
 cashListDict=[

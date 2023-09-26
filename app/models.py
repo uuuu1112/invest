@@ -82,15 +82,15 @@ class CashInvest(InvestBase):
         self.dividendRatio=dividendRatio
     def descrip(self):
         return '''
-<h3>慶龍存股策略</h3>
-篩選規則 : <br>
-近五年平均股息殖利率大於５％、連續５年發放股利<br>
-投資策略: <br>
-以近５年現金股利的平均值來計算殖利率。 
-當現金殖利率來到７％時買進 ，當現金殖利率來到５％時賣出<br>
-預期報酬率 : 
-市價到現金殖利率來到５％的報酬率
-'''
+        <h3>慶龍存股策略</h3>
+        篩選規則 : <br>
+        近五年平均股息殖利率大於５％、連續５年發放股利<br>
+        投資策略: <br>
+        以近５年現金股利的平均值來計算殖利率。 
+        當現金殖利率來到７％時買進 ，當現金殖利率來到５％時賣出<br>
+        預期報酬率 : 
+        市價到現金殖利率來到５％的報酬率
+        '''
     def baseDf(self):
         self.df=baseDf.copy()
         self.df.loc[:,cashDict['avgYield']]=(self.cash.avgCashList()/self.df[commonDict['price']])
@@ -113,16 +113,16 @@ class CashInvest2(InvestBase):
         self.baseInfo=baseInfo
     def descrip(self):
         return '''
-<h3>延伸存股策略</h3>
-篩選規則 : <br>
-近一年股息殖利率大於５％（業內）、近五年平均股息殖利率大於５％（業內）、
-股息發放率五年平均大於50% 、連續５年發放股利<br>
-投資策略: <br>
-以近５年現金股利的平均值來計算殖利率。 
-當現金殖利率來到７％時買進 ，當現金殖利率來到５％時賣出<br>
-預期報酬率 : 
-市價到現金殖利率來到５％的報酬率
-'''
+        <h3>延伸存股策略</h3>
+        篩選規則 : <br>
+        近一年股息殖利率大於５％（業內）、近五年平均股息殖利率大於５％（業內）、
+        股息發放率五年平均大於50% 、連續５年發放股利<br>
+        投資策略: <br>
+        以近５年現金股利的平均值來計算殖利率。 
+        當現金殖利率來到７％時買進 ，當現金殖利率來到５％時賣出<br>
+        預期報酬率 : 
+        市價到現金殖利率來到５％的報酬率
+        '''
     def baseDf(self):
         self.df=baseDf.copy()
         self.df[lynchDict['industry']]=self.baseInfo.industry()
@@ -154,14 +154,14 @@ class LynchInvest(InvestBase):
         self.baseInfo=baseInfo
     def descrip(self):
         return '''
-<h3>慶龍林區成長股策略</h3>
-篩選規則 : 
-近3個月營收年增率都大於30% 、連續4季的eps都大於0 、不要營建股<br>
-投資策略: 
-本益比10倍買進 本益比15倍賣出<br>
-預期報酬率 : 
-市價到本益比15倍的報酬率
-'''
+        <h3>慶龍林區成長股策略</h3>
+        篩選規則 : 
+        近3個月營收年增率都大於30% 、連續4季的eps都大於0 、不要營建股<br>
+        投資策略: 
+        本益比10倍買進 本益比15倍賣出<br>
+        預期報酬率 : 
+        市價到本益比15倍的報酬率
+        '''
     def baseDf(self):
         self.df=baseDf.copy()
         self.df[lynchDict['minGrowth']]=self.shortRevenueGrowth.revenue3MinYoY()
@@ -175,6 +175,36 @@ class LynchInvest(InvestBase):
     def priceGoal(self):
         self.df=self.baseDf()
         self.df[commonDict['priceGoal']]=self.seasonEps.latestEps()*15
+        return self.df.round(1)
+    
+class LynchInvest2(InvestBase):
+    def __init__(self,seasonEpsList,baseInfo,shortRevenueGrowth):
+        self.shortRevenueGrowth=shortRevenueGrowth
+        self.seasonEps=seasonEpsList
+        self.baseInfo=baseInfo
+    def descrip(self):
+        return '''
+        <h3>成長股策略(延伸)</h3>
+        篩選規則 : 
+        近3個月營收年增率都大於0% 、連續4季的eps(業內)都大於0<br>
+        投資策略: 
+        eps*3個月的最小月營收年增率(%)/2賣出<br>
+        預期報酬率 : 
+        市價到(eps*3個月的最小月營收年增率(%))/2的報酬率
+        '''
+    def baseDf(self):
+        self.df=baseDf.copy()
+        self.df[lynchDict['minGrowth']]=self.shortRevenueGrowth.revenue3MinYoY()
+        self.df[lynchDict['minEps']]=self.seasonEps.minEpsList()
+        self.df[lynchDict['industry']]=self.baseInfo.industry()
+        return self.df
+    def filterCondition(self):
+        self.df=self.priceGoal()
+        self.filterCondition=(self.df[lynchDict['minGrowth']]>0)&(self.df[lynchDict['minEps']]>0)&(self.df[commonDict['priceGoal']]>self.df[commonDict['price']])
+        return self.filterCondition
+    def priceGoal(self):
+        self.df=self.baseDf()
+        self.df[commonDict['priceGoal']]=self.seasonEps.latestEps()*self.df[lynchDict['minGrowth']]*100/2
         return self.df.round(1)
 
 # 林區巴菲特選股
@@ -190,12 +220,12 @@ class BuffettInvest(InvestBase):
         self.innerGrowth=InnerGrowth(self.dividendRatio,self.seasonRoe)
     def descrip(self):
         return '''
-<h3>林區巴菲特選股</h3>
-篩選規則 : 
-近4季ROE在20%以上、近4季EPS本益比在10以下、近4季皆有獲利<br>
-預期報酬率 : 
-市價到 ( 內部成長率(%)*EPS ) 的報酬率
-'''        
+        <h3>林區巴菲特選股</h3>
+        篩選規則 : 
+        近4季ROE在20%以上、近4季EPS本益比在10以下、近4季皆有獲利<br>
+        預期報酬率 : 
+        市價到 ( 內部成長率(%)*EPS ) 的報酬率
+        '''        
     def baseDf(self):
         self.df=baseDf.copy()
         self.df[roeDict['roe']]=self.seasonRoe.seasonRoeTrans.loc[roeDict['roe']]
@@ -240,6 +270,13 @@ def integrateInvest(selectValue):
         baseInfo=BaseInfo()
         cashInvest2=CashInvest2(cashList,dividendRatio,baseInfo)
         return cashInvest2.expectEarnApi()
+    elif selectValue==dictMap('LynchInvest2',InvestDict):
+        revenue=Revenue()
+        shortRevenueGrowth=ShortRevenueGrowth(revenue)
+        baseInfo=BaseInfo()
+        seasonEpsList2=SeasonEpsList('on')
+        lynchInvest2=LynchInvest2(seasonEpsList2,baseInfo,shortRevenueGrowth)
+        return lynchInvest2.expectEarnApi()  
 
 class CashDiscount(InvestBase):
     def __init__(self,cashList,growth):
