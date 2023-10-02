@@ -50,7 +50,8 @@ shortGrowthDict={
     'revenue3Growth':'3個月營收MoM',
     'revenue3YoY':'3個月營收YoY',
     'stockQoQ':'存貨QoQ',
-    'stockYoY':'存貨YoY'
+    'stockYoY':'存貨YoY',
+    'stockSellRatio':'存銷比QoQ'
 }
 cagrDict={
     'year10Cagr':'CAGR(10年)',
@@ -150,6 +151,28 @@ growthDict=[
         'text':'過去3個月的年增率取最小值'  
     }
 ]
+
+reportRelease=[
+    {
+        'value':'-5-15',
+        'key':'Q1'
+    },
+    {
+        'value':'-8-14',
+        'key':'Q2'
+    },
+    {
+        'value':'-11-14',
+        'key':'Q3'
+    },
+    {
+        'value':'-3-31',
+        'key':'Q4'
+    }
+]
+
+revenueRelase='-10'
+
 investDescrip='''
 策略簡述（點選後送出有詳細說明） ： <br>
 清算價值投資法 ： 市價小於清算價值３０％買進，市價大於清算價值３０％賣出<br>

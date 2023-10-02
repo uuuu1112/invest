@@ -155,6 +155,10 @@ class Revenue(BaseTrans):
         revenueNSum=cacul.nPeriodMin(self.revenueDf,n)
         revenueNGrowth=cacul.nPeriodGrowth(revenueNSum,k)
         return revenueNGrowth
+    def revenueNsumGroup(self,n=3):
+        revenueNsum=cacul.nPeriodSum(self.revenueDf,n).reset_index()
+        revenueNSumGroup=revenueNsum.iloc[revenueNsum.index % n == n-1]
+        return revenueNSumGroup
 
 class Today(BaseTrans):
     def __init__(self):

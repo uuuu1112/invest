@@ -1,4 +1,5 @@
 from app.baseDf import *
+import datetime
 
 class CaCul:
     def nPeriodSum(self,transDf,n):
@@ -77,3 +78,25 @@ def setMax(series,maxValue='none'):
         return series.clip(upper=maxValue)
 def setRange(series,maxValue=100,minValue=-100):
     return series.clip(upper=maxValue,lower=minValue)
+
+class DateManage():
+    # 今天的日期
+    def todayDate(self):
+        return datetime.date.today()
+    # 轉化成日期
+    def transToDate(self,dateString):
+        return datetime.datetime.strptime(dateString,'%Y-%m-%d')
+    # get time stamp
+    def getTimeStamp(self,dateString):
+        date=self.transToDate(dateString)
+        return datetime.datetime.timestamp(date)
+    # 日期轉為文字    
+    def transToString(self,date):
+        return date.strftime('%Y-%m-%d')
+
+# class ReportData(DateManage):
+#     def dateToQuater(self,dateStr):
+#         date=self.transToDate(dateStr)
+#         timeStamp=self.getTimeStamp(dateStr)
+#         if timeStamp>str(date.year)+dictMap('Q4',reportRelease)
+#         return

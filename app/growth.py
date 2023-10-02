@@ -72,12 +72,18 @@ class ShortGrowth:
         self.revenue=revenue
     def stockQoQ(self):
         return self.stock.stockGrowth(1)
-    def stockYoY(self):
-        return self.stock.stockGrowth(4)
+    def stockSellRatio(self):
+        nRevenueGroup=self.revenue.revenueNsumGroup()
+        stock=self.stock.stockTrans[-8:]
+        nRevenueGroup.index=stock.index
+        return stock/nRevenueGroup
+    # def stockYoY(self):
+    #     return self.stock.stockGrowth(4)
     def allGrowth(self):
         self.df=pd.DataFrame({})
         self.df[shortGrowthDict['stockQoQ']]=self.stockQoQ().iloc[-1]
-        self.df[shortGrowthDict['stockYoY']]=self.stockYoY().iloc[-1]
+        # self.df[shortGrowthDict['stockSellRatio']]=self.stockSellRatio()
+        # self.df[shortGrowthDict['stockYoY']]=self.stockYoY().iloc[-1]
         return self.df.applymap(lambda x: f'{x*100:.2f}%') 
     
 def getGrowth(selectGrowth,maxValue='none'):
