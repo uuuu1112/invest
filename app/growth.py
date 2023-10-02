@@ -77,14 +77,27 @@ class ShortGrowth:
         stock=self.stock.stockTrans[-8:]
         nRevenueGroup.index=stock.index
         return stock/nRevenueGroup
+    # def shortGrowhtCondition(self,df):
+    #     if df[shortGrowthDict['stockSellRatio']]>0 & df[shortGrowthDict['stockQoQ']]>0:
+    #         return '供給變大，又供過於求'
+    #     elif df[shortGrowthDict['stockSellRatio']]>0 & df[shortGrowthDict['stockQoQ']]<0:
+    #         return '供給變變小，又供過於求'
+    #     elif df[shortGrowthDict['stockSellRatio']]<0 & df[shortGrowthDict['stockQoQ']]<0:
+    #         return '供給變變小，又供不應求'
+    #     elif df[shortGrowthDict['stockSellRatio']]<0 & df[shortGrowthDict['stockQoQ']]>0:
+    #         return '供給變變大，又供不應求'     
+        # else:
+        #     return ''   
     # def stockYoY(self):
     #     return self.stock.stockGrowth(4)
     def allGrowth(self):
         self.df=pd.DataFrame({})
         self.df[shortGrowthDict['stockQoQ']]=self.stockQoQ().iloc[-1]
+        self.df[shortGrowthDict['stockSellRatio']]=cacul.nPeriodGrowth(self.stockSellRatio(),1).iloc[-1]
+        # self.df[shortGrowthDict['stockSellCond']]=self.shortGrowhtCondition(self.df)
         # self.df[shortGrowthDict['stockSellRatio']]=self.stockSellRatio()
         # self.df[shortGrowthDict['stockYoY']]=self.stockYoY().iloc[-1]
-        return self.df.applymap(lambda x: f'{x*100:.2f}%') 
+        return self.df
     
 def getGrowth(selectGrowth,maxValue='none'):
     dividendRatio=DividendRatio()
