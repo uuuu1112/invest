@@ -51,7 +51,8 @@ shortGrowthDict={
     'revenue3YoY':'3個月營收YoY',
     'stockQoQ':'存貨QoQ',
     'stockYoY':'存貨YoY',
-    'stockSellRatio':'存銷比QoQ'
+    'stockSellRatio':'存銷比QoQ',
+    'stockSellCond':'短期評估'
 }
 cagrDict={
     'year10Cagr':'CAGR(10年)',
