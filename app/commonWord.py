@@ -38,7 +38,7 @@ balaceDict={
     'invest':'投資(%)',
     'liquidationValue':'清算價值',
     'expectEarn':commonDict['expectEarn'],
-    'price':commonDict['price'],
+    'price':commonDict['price'],  
 }
 roeDict={
     'avgRoe':'平均ROE(%)',
