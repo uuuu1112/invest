@@ -241,7 +241,36 @@ class BuffettInvest(InvestBase):
     def priceGoal(self):
         self.df=self.baseDf()
         self.df[commonDict['priceGoal']]=self.df[lynchDict['innerGrowth']]*self.df[commonDict['eps']]
-        return self.df.round(1)    
+        return self.df.round(1) 
+
+class ShortTerm(InvestBase):
+    def __init__(self,seasonStock,revenue):
+        self.seasonStock=seasonStock
+        self.revenue=revenue
+        self.shortGrowth=ShortGrowth(self.seasonStock,self.revenue)
+        self.seasonEps=SeasonEpsList('on')
+    def descrip(self):
+        return '''
+ 
+        '''  
+    def baseDf(self):
+        self.df=baseDf.copy()
+        self.df[dictTextMap('latest4SeasonEPS',cashListDict)]=self.seasonEps.latestEps()
+        self.df[dictTextMap('min3n5CAGR',growthDict)]=getGrowth(dictMap('min3n5CAGR',growthDict),0.4)
+        self.df[dictTextMap('revenue3MinYOY',growthDict)]=getGrowth(dictMap('revenue3MinYOY',growthDict),0.4)
+        self.df[dictTextMap('innerGrowth',growthDict)]=getGrowth(dictMap('innerGrowth',growthDict),0.4)
+        self.df[shortGrowthDict['avgGrowth']]=self.df[[dictTextMap('min3n5CAGR',growthDict),dictTextMap('revenue3MinYOY',growthDict),dictTextMap('innerGrowth',growthDict)]].mean(axis=1)
+        # self.df[cashDistDict['discount']]=dcf.dcfEstimate(self.df[dictTextMap('latest4SeasonEPS',cashListDict)],self.df[shortGrowthDict['avgGrowth']])
+        self.df[shortGrowthDict['stockSellCond']]=self.shortGrowth.shortCond()
+        return self.df
+    def filterCondition(self):
+        self.df=self.baseDf()
+        self.filterCondition=(self.df[dictTextMap('latest4SeasonEPS',cashListDict)].notna())
+        return self.filterCondition
+    def priceGoal(self):
+        self.df=self.baseDf()
+        self.df[commonDict['priceGoal']]=dcf.dcfEstimate(self.df[dictTextMap('latest4SeasonEPS',cashListDict)],self.df[shortGrowthDict['avgGrowth']])
+        return self.df.round(1) 
     
 # 所有基本投資策略的總結
 def integrateInvest(selectValue):
@@ -276,7 +305,12 @@ def integrateInvest(selectValue):
         baseInfo=BaseInfo()
         seasonEpsList2=SeasonEpsList('on')
         lynchInvest2=LynchInvest2(seasonEpsList2,baseInfo,shortRevenueGrowth)
-        return lynchInvest2.expectEarnApi()  
+        return lynchInvest2.expectEarnApi() 
+    elif selectValue==dictMap('shortTerm',InvestDict):
+        seasonStock=SeasonStock()
+        revenue=Revenue()
+        shortTerm=ShortTerm(seasonStock,revenue)
+        return shortTerm.expectEarnApi() 
 
 class CashDiscount(InvestBase):
     def __init__(self,cashList,growth):
@@ -317,7 +351,7 @@ class InnerValue(InvestBase):
         return self.df.round(1)  
     
 def getPridictValue(selectCash,selectGrowth,maxValue='none',withLiqui='none',loseExtra=None):
-    print('getPridictValue')
+    # print('getPridictValue')
     cashList=getCashList(selectCash,loseExtra)
     growth=getGrowth(selectGrowth,maxValue)
     cashDiscount=CashDiscount(cashList,growth)

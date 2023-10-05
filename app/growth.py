@@ -81,9 +81,9 @@ class ShortGrowth:
         if (row[shortGrowthDict['stockSellRatio']]>0) and (row[shortGrowthDict['stockQoQ']]>0):
             return '供給變大，又供過於求'
         elif (row[shortGrowthDict['stockSellRatio']]>0) and (row[shortGrowthDict['stockQoQ']]<0):
-            return '供給變變小，又供過於求'
+            return '供給變小，又供過於求'
         elif (row[shortGrowthDict['stockSellRatio']]<0) and (row[shortGrowthDict['stockQoQ']]<0):
-            return '供給變變小，又供不應求'
+            return '供給變小，又供不應求'
         elif (row[shortGrowthDict['stockSellRatio']]<0) and (row[shortGrowthDict['stockQoQ']]>0):
             return '供給變變大，又供不應求'     
         else:

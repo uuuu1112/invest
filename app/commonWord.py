@@ -52,7 +52,8 @@ shortGrowthDict={
     'stockQoQ':'存貨QoQ',
     'stockYoY':'存貨YoY',
     'stockSellRatio':'存銷比QoQ',
-    'stockSellCond':'短期評估'
+    'stockSellCond':'短期評估',
+    'avgGrowth':'平均成長率'
 }
 cagrDict={
     'year10Cagr':'CAGR(10年)',
@@ -100,6 +101,11 @@ InvestDict=[
         'value':'6',
         'text':'成長股策略（延伸）'
     }, 
+    {
+        'key':"shortTerm",
+        'value':'7',
+        'text':'短期綜合評估'
+    }
 ]
 
 cashListDict=[
@@ -144,12 +150,12 @@ growthDict=[
     {
         'key':'min3n5CAGR',
         'value':'4',
-        'text':'過去3年5年的複合成長率取低值'  
+        'text':'過去3.5年的複合成長率低值'  
     },
     {
         'key':'revenue3MinYOY',
         'value':'5',
-        'text':'過去3個月的年增率取最小值'  
+        'text':'過去3個月的年增率最小值'  
     }
 ]
 
@@ -202,7 +208,11 @@ def dictMap(key,dict):
     
     # 检查输入的 key 是否在字典中，如果在就返回相应的 value，否则返回 None
     return invest_dict.get(key)
-
+def dictTextMap(key,dict):
+    invest_dict = {item['key']: item['text'] for item in dict}
+    
+    # 检查输入的 key 是否在字典中，如果在就返回相应的 value，否则返回 None
+    return invest_dict.get(key)
  
 
 
