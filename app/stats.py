@@ -76,6 +76,10 @@ class DCF:
         perMap=map(self.dcfTrans,growthList)
         perList=list(perMap)
         perDict=dict(zip(perList,growthList))
+        if per<perList[0]:
+            per=perList[0]
+        elif per>perList[-1]:
+            per=perList[-1]
         return round(perDict[per],2)
 dcf=DCF()
 
