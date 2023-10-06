@@ -69,6 +69,14 @@ class DCF:
             epsList=self.futureEpsList(eps,startGrowth,n,normalGrowth)
         listDiscountValue=self.discountValue(epsList,discountRate,gdpGrowth)
         return listDiscountValue
+    def dcfTrans(self,startGrowth):
+        return round(self.dcfEstimate(1,startGrowth),0) 
+    def disRate(self,per=10):
+        growthList = np.arange(-0.4, 0.41, 0.01).tolist()
+        perMap=map(self.dcfTrans,growthList)
+        perList=list(perMap)
+        perDict=dict(zip(perList,growthList))
+        return round(perDict[per],2)
 dcf=DCF()
 
 def setMax(series,maxValue='none'):
