@@ -53,7 +53,8 @@ shortGrowthDict={
     'stockYoY':'存貨YoY',
     'stockSellRatio':'存銷比QoQ',
     'stockSellCond':'短期評估',
-    'avgGrowth':'平均成長率'
+    'avgGrowth':'平均成長率',
+    'potentialGrowth':'潛在成長率'
 }
 cagrDict={
     'year10Cagr':'CAGR(10年)',
