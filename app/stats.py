@@ -1,5 +1,6 @@
 from app.baseDf import *
 import datetime
+import math
 
 class CaCul:
     def nPeriodSum(self,transDf,n):
@@ -72,7 +73,7 @@ class DCF:
     def dcfTrans(self,startGrowth):
         return round(self.dcfEstimate(1,startGrowth),0) 
     def disRate(self,per=10):
-        growthList = np.arange(-0.4, 0.41, 0.01).tolist()
+        growthList = np.arange(-0.4, 0.41, 0.005).tolist()
         perMap=map(self.dcfTrans,growthList)
         perList=list(perMap)
         perDict=dict(zip(perList,growthList))
