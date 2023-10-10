@@ -10,8 +10,13 @@ def index():
     return render_template('index.html')
 
 @bp.route('/about')
-def about():
+def login():
     return render_template('about.html')
+
+@bp.route('/login')
+def about():
+    return render_template('login.html')
+
 @bp.route('/contact')
 def contact():
     return render_template('contact.html')
