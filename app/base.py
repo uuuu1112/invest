@@ -167,6 +167,8 @@ class Today(BaseTrans):
         return self.todayTrans.loc['成交']
     def todayPBR(self):
         return self.todayTrans.loc['PBR']
+    def todayPER(self):
+        return self.todayTrans.loc['PER']
 
 class BaseInfo(BaseTrans):
     def __init__(self):

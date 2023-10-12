@@ -261,9 +261,11 @@ class ShortTerm(InvestBase):
         self.df[dictTextMap('innerGrowth',growthDict)]=getGrowth(dictMap('innerGrowth',growthDict),0.5)
         self.df[dictTextMap('revenue3MinYOY',growthDict)]=getGrowth(dictMap('revenue3MinYOY',growthDict),0.5)
         self.df[shortGrowthDict['avgGrowth']]=self.df[[dictTextMap('min3n5CAGR',growthDict),dictTextMap('revenue3MinYOY',growthDict),dictTextMap('innerGrowth',growthDict)]].mean(axis=1)
+        self.df[dictTextMap('latest4SeasonEPS',cashListDict)].fillna(today.todayPrice()/today.todayPER(),inplace=True)
         per=round(self.df[commonDict['price']]/self.df[dictTextMap('latest4SeasonEPS',cashListDict)],0)
         per=per.fillna(0)
         self.df[shortGrowthDict['potentialGrowth']]=per.apply(dcf.disRate)
+        
         # self.df[cashDistDict['discount']]=dcf.dcfEstimate(self.df[dictTextMap('latest4SeasonEPS',cashListDict)],self.df[shortGrowthDict['avgGrowth']])
         self.df[shortGrowthDict['stockSellCond']]=self.shortGrowth.shortCond()
         return self.df
