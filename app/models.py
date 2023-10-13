@@ -13,11 +13,14 @@ class InvestBase:
         return ""
     def priceGoal(self):
         return
-    def expectEarn(self):
+    def expectEarn(self,idList=[]):
         self.df=self.priceGoal()
-        return expectEarnTrans(self.df,self.filterCondition())
-    def expectEarnApi(self):
-        self.df=self.expectEarn().reset_index() 
+        if idList==[]:
+            return expectEarnTrans(self.df,self.filterCondition())
+        else:
+            return safe_loc(expectEarnTrans(self.df,self.filterCondition()),idList)
+    def expectEarnApi(self,idList=[]):
+        self.df=self.expectEarn(idList).reset_index() 
         allContent={'table':self.df,'descrip':self.descrip()}
         return allContent
 

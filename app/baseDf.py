@@ -34,3 +34,12 @@ def transToApi(dfWithIndex):
     df=dfWithIndex.reset_index()
     df_json =df.to_json(orient='records')
     return df_json 
+
+def safe_loc(df, rows_to_select):
+    # 检查 rows_to_select 中哪些行标签在 DataFrame 的索引中存在
+    valid_rows = [label for label in rows_to_select if label in df.index]
+
+    # 使用 .loc 选择存在于索引中的行
+    selected_data = df.loc[valid_rows, :]
+
+    return selected_data
