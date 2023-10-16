@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="static/contact.css">
+{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-3">User Profile</h1>
+<p>Welcome, {{ email }}!</p>
+<a href="/logout">Logout</a>
+
+{% endblock %}

@@ -1,21 +1,42 @@
-from flask import Blueprint,render_template,request
+from flask import Blueprint,render_template,request,session,redirect,url_for
 from app.models import *
 import requests
 
-
 bp = Blueprint('routes', __name__)
+
 
 @bp.route('/')
 def index():
     return render_template('index.html')
 
 @bp.route('/about')
-def login():
+def about():
     return render_template('about.html')
 
-@bp.route('/login')
-def about():
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        # 假设这里进行了用户身份验证，验证通过后将用户名存储在会话中
+        session['email'] = email
+        return redirect(url_for('routes.profile'))
     return render_template('login.html')
+
+# 用户个人资料页面
+@bp.route('/profile')
+def profile():
+    # 从会话中获取用户名
+    email = session.get('email', None)
+    if email is None:
+        return redirect(url_for('routes.login'))
+    return render_template('profile.html', email=email) 
+
+# 登出
+@bp.route('/logout')
+def logout():
+    # 从会话中移除用户名
+    session.pop('email', None)
+    return redirect(url_for('login'))
 
 @bp.route('/contact')
 def contact():
