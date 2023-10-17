@@ -279,7 +279,7 @@ class ShortTerm(InvestBase):
     def priceGoal(self):
         self.df=self.baseDf()
         self.df[commonDict['priceGoal']]=dcf.dcfEstimate(self.df[dictTextMap('latest4SeasonEPS',cashListDict)],self.df[shortGrowthDict['avgGrowth']])
-        return self.df.round(1) 
+        return self.df.round(2) 
     
 # 所有基本投資策略的總結
 def integrateInvest(selectValue):
