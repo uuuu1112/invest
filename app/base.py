@@ -1,4 +1,5 @@
 from app.stats import *
+import os
 
 
 todayPath=os.path.join(os.path.dirname(__file__), '..', 'data', 'today.csv')

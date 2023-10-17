@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-import os
-import re
+
+# import re
 from app.commonWord import *
 pd.set_option('display.float_format', '{:.2f}'.format)
 
@@ -27,7 +27,7 @@ def expectEarnTrans(df,filterCondition=""):
         df=df[filterCondition].copy()
     df.loc[:,commonDict['expectEarn']]=df[commonDict['priceGoal']]/df[commonDict['price']]-1
     df=df.sort_values(by=cashDict['expectEarn'],ascending=False)
-    df.loc[:,cashDict['expectEarn']]=df[commonDict['expectEarn']].apply(lambda x: f'{x*100:.1f}%')
+    df.loc[:,cashDict['expectEarn']]=df[commonDict['expectEarn']].apply(lambda x: f'{x*100:.2f}%')
     return df
 
 def transToApi(dfWithIndex):
