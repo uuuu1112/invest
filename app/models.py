@@ -259,10 +259,9 @@ class ShortTerm(InvestBase):
     def baseDf(self):
         self.df=baseDf.copy()
         self.df[dictTextMap('latest4SeasonEPS',cashListDict)]=self.seasonEps.latestEps()
-        self.df[dictTextMap('min3n5CAGR',growthDict)]=getGrowth(dictMap('min3n5CAGR',growthDict),0.5)
-        
-        self.df[dictTextMap('innerGrowth',growthDict)]=getGrowth(dictMap('innerGrowth',growthDict),0.5)
-        self.df[dictTextMap('revenue3MinYOY',growthDict)]=getGrowth(dictMap('revenue3MinYOY',growthDict),0.5)
+        self.df[dictTextMap('min3n5CAGR',growthDict)]=setRange(getGrowth(dictMap('min3n5CAGR',growthDict)),0.4,-0.4)
+        self.df[dictTextMap('innerGrowth',growthDict)]=setRange(getGrowth(dictMap('innerGrowth',growthDict)),0.4,-0.4)
+        self.df[dictTextMap('revenue3MinYOY',growthDict)]=setRange(getGrowth(dictMap('revenue3MinYOY',growthDict)),0.4,-0.4)
         self.df[shortGrowthDict['avgGrowth']]=self.df[[dictTextMap('min3n5CAGR',growthDict),dictTextMap('revenue3MinYOY',growthDict),dictTextMap('innerGrowth',growthDict)]].mean(axis=1)
         self.df[dictTextMap('latest4SeasonEPS',cashListDict)].fillna(today.todayPrice()/today.todayPER(),inplace=True)
         per=round(self.df[commonDict['price']]/self.df[dictTextMap('latest4SeasonEPS',cashListDict)],0)
@@ -357,7 +356,7 @@ class InnerValue(InvestBase):
         self.df.rename(columns={commonDict['priceGoal']:cashDistDict['discount']},inplace=True)
         self.df[balaceDict['liquidationValue']]=self.liquidationInvest.getLiquidation()
         self.df[commonDict['priceGoal']]=self.df[balaceDict['liquidationValue']]+self.df[cashDistDict['discount']]
-        return self.df.round(1)  
+        return self.df.round(2)  
     
 def getPridictValue(selectCash,selectGrowth,maxValue='none',withLiqui='none',loseExtra=None):
     # print('getPridictValue')
