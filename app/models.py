@@ -247,9 +247,11 @@ class BuffettInvest(InvestBase):
         return self.df.round(1) 
 
 class ShortTerm(InvestBase):
-    def __init__(self,seasonStock,revenue):
+    def __init__(self,seasonStock,revenue,cashList,baseInfo):
         self.seasonStock=seasonStock
         self.revenue=revenue
+        self.cash=cashList
+        self.baseInfo=baseInfo
         self.shortGrowth=ShortGrowth(self.seasonStock,self.revenue)
         self.seasonEps=SeasonEpsList('on')
     def descrip(self):
@@ -258,11 +260,12 @@ class ShortTerm(InvestBase):
         '''  
     def baseDf(self):
         self.df=baseDf.copy()
+        self.df[lynchDict['industry']]=self.baseInfo.industry()
         self.df[dictTextMap('latest4SeasonEPS',cashListDict)]=self.seasonEps.latestEps()
         self.df[dictTextMap('min3n5CAGR',growthDict)]=setRange(getGrowth(dictMap('min3n5CAGR',growthDict)),0.4,-0.4)
         self.df[dictTextMap('innerGrowth',growthDict)]=setRange(getGrowth(dictMap('innerGrowth',growthDict)),0.4,-0.4)
         self.df[dictTextMap('revenue3MinYOY',growthDict)]=setRange(getGrowth(dictMap('revenue3MinYOY',growthDict)),0.4,-0.4)
-        self.df[shortGrowthDict['avgGrowth']]=self.df[[dictTextMap('min3n5CAGR',growthDict),dictTextMap('revenue3MinYOY',growthDict),dictTextMap('innerGrowth',growthDict)]].mean(axis=1)
+        self.df[shortGrowthDict['avgGrowth']]=self.df[[dictTextMap('min3n5CAGR',growthDict),dictTextMap('revenue3MinYOY',growthDict),dictTextMap('innerGrowth',growthDict)]].mean(axis=1)+(self.cash.avgCashList()/self.df[commonDict['price']]).fillna(0)
         self.df[dictTextMap('latest4SeasonEPS',cashListDict)].fillna(today.todayPrice()/today.todayPER(),inplace=True)
         per=round(self.df[commonDict['price']]/self.df[dictTextMap('latest4SeasonEPS',cashListDict)],0)
         per=per.fillna(0)
@@ -317,7 +320,9 @@ def integrateInvest(selectValue):
     elif selectValue==dictMap('shortTerm',InvestDict):
         seasonStock=SeasonStock()
         revenue=Revenue()
-        shortTerm=ShortTerm(seasonStock,revenue)
+        cashList=CashList('on')
+        baseInfo=BaseInfo()
+        shortTerm=ShortTerm(seasonStock,revenue,cashList,baseInfo)
         return shortTerm.expectEarnApi() 
 
 class CashDiscount(InvestBase):
