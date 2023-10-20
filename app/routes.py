@@ -21,7 +21,10 @@ def login():
         # 假设这里进行了用户身份验证，验证通过后将用户名存储在会话中
         session['email'] = email
         return redirect(url_for('routes.profile'))
-    return render_template('login.html')
+    else:
+        if "email" in session:
+            return redirect(url_for('routes.profile'))
+        return render_template('login.html')
 
 # 用户个人资料页面
 @bp.route('/profile')
