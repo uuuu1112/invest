@@ -1,3 +1,4 @@
+# app/routes.py
 from flask import Blueprint,render_template,request,session,redirect,url_for
 from app.models import *
 import requests
@@ -36,7 +37,7 @@ def profile():
 def logout():
     # 从会话中移除用户名
     session.pop('email', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('routes.login'))
 
 @bp.route('/contact')
 def contact():

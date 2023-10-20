@@ -1,4 +1,3 @@
-# dataPath='../data'
 commonDict={
     'latestAvg':'近期平均',
     'conditionCount':'符合個數',

@@ -1,12 +1,7 @@
-from app import app
-# from flask import Flask
-# from app.routes import bp as routes_bp
-
-# app = Flask(__name__)
-# app.template_folder = 'app/templates'
-
-# # 註冊藍圖
-# app.register_blueprint(routes_bp)
+# run.py
+from app import app,db
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
