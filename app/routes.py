@@ -1,3 +1,4 @@
+# app/routes.py
 from flask import Blueprint,render_template,request,session,redirect,url_for
 from app.models import *
 import requests
@@ -20,7 +21,10 @@ def login():
         # 假设这里进行了用户身份验证，验证通过后将用户名存储在会话中
         session['email'] = email
         return redirect(url_for('routes.profile'))
-    return render_template('login.html')
+    else:
+        if "email" in session:
+            return redirect(url_for('routes.profile'))
+        return render_template('login.html')
 
 # 用户个人资料页面
 @bp.route('/profile')
@@ -36,7 +40,7 @@ def profile():
 def logout():
     # 从会话中移除用户名
     session.pop('email', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('routes.login'))
 
 @bp.route('/contact')
 def contact():
