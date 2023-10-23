@@ -1,5 +1,5 @@
 #app/models.py
-from app import db
+# from app import db
 from app.stats import *
 from app.base import Today,SeasonBalance,BaseInfo
 from app.growth import *
@@ -8,12 +8,12 @@ from app.cashList import *
 today=Today()
 baseDf=pd.DataFrame({commonDict['price']:today.todayPrice()})
 
-class User(db.Model):
-    _id=db.Column("id",db.Integer,primary_key=True)
-    email=db.Column(db.String(100))
+# class User(db.Model):
+#     _id=db.Column("id",db.Integer,primary_key=True)
+#     email=db.Column(db.String(100))
 
-    def __init__(self,email):
-        self.email=email
+#     def __init__(self,email):
+#         self.email=email
 
 class InvestBase:
     def filterCondition(self):
