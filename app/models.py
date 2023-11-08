@@ -4,7 +4,7 @@ from app.stats import *
 from app.base import Today,SeasonBalance,BaseInfo
 from app.growth import *
 from app.cashList import *
-from flask_login import UserMixin
+# from flask_login import UserMixin
 
 today=Today()
 baseDf=pd.DataFrame({commonDict['price']:today.todayPrice()})
