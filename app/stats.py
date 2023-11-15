@@ -11,6 +11,8 @@ class CaCul:
         return transDf.rolling(window=n,min_periods=n).min()
     def nPeriodMean(self,transDf,n):
         return transDf.rolling(window=n,min_periods=n).mean()
+    def cagr(self,startEps,endEps,nPeriod):
+        return round((endEps/startEps)**(1/nPeriod)-1,2)
 
 cacul=CaCul()
 
